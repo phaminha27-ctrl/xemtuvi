@@ -85,16 +85,16 @@ const ScrollResultCard = ({
 }) => {
   return (
     <div className={`relative ${className}`}>
-      {/* Top roller */}
-      <div className="h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
+      {/* Top roller - overlapping the parchment */}
+      <div className="relative z-10 h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
       
-      {/* Parchment body */}
-      <div className="relative bg-gradient-to-b from-[#FFF7E0] to-[#FCEEC7] border-x-2 border-festive-brown px-4 py-4">
+      {/* Parchment body - pulled up to go under rollers */}
+      <div className="relative -mt-3 -mb-3 bg-gradient-to-b from-[#FFF7E0] to-[#FCEEC7] border-x-2 border-festive-brown px-4 py-6">
         {/* Corner decorations */}
-        <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-festive-brown opacity-60" />
-        <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-festive-brown opacity-60" />
-        <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-festive-brown opacity-60" />
-        <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-festive-brown opacity-60" />
+        <div className="absolute top-4 left-2 w-4 h-4 border-l-2 border-t-2 border-festive-brown opacity-60" />
+        <div className="absolute top-4 right-2 w-4 h-4 border-r-2 border-t-2 border-festive-brown opacity-60" />
+        <div className="absolute bottom-4 left-2 w-4 h-4 border-l-2 border-b-2 border-festive-brown opacity-60" />
+        <div className="absolute bottom-4 right-2 w-4 h-4 border-r-2 border-b-2 border-festive-brown opacity-60" />
         
         {title && (
           <h3 className="text-festive-red font-bold text-lg text-center mb-3 font-sans">
@@ -104,8 +104,8 @@ const ScrollResultCard = ({
         {children}
       </div>
       
-      {/* Bottom roller */}
-      <div className="h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
+      {/* Bottom roller - overlapping the parchment */}
+      <div className="relative z-10 h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
     </div>
   );
 };
@@ -259,6 +259,16 @@ const ResultPage = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
           >
+            <FestiveButton
+              onClick={() => navigate("/")}
+              icon={Home}
+              compact
+              variant="secondary"
+              className="flex-1"
+            >
+              Trang chủ
+            </FestiveButton>
+
             <FestiveButton 
               onClick={handleShare}
               icon={Share2}
@@ -266,15 +276,6 @@ const ResultPage = () => {
               className="flex-1"
             >
               Chia sẻ
-            </FestiveButton>
-
-            <FestiveButton
-              onClick={() => navigate("/")}
-              icon={Home}
-              compact
-              className="flex-1"
-            >
-              Trang chủ
             </FestiveButton>
           </motion.div>
         </div>
