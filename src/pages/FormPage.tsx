@@ -4,14 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import formBackground from "@/assets/form-background.jpg";
 
 const FormPage = () => {
@@ -69,113 +61,183 @@ const FormPage = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center">
-        {/* Form area - centered in the scroll area of background */}
-        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8">
-          <motion.div
-            className="w-full max-w-[200px] sm:max-w-[220px] md:max-w-[260px]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+        {/* Scroll container with float animation */}
+        <motion.div
+          className="w-full max-w-[340px]"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          style={{
+            animation: "float 4s ease-in-out infinite",
+          }}
+        >
+          {/* Top wood roller */}
+          <div 
+            className="h-7 rounded-full relative z-10"
+            style={{
+              background: "linear-gradient(to bottom, #5d3e21, #a67c52, #5d3e21)",
+              border: "1px solid #3d2516",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+            }}
           >
+            {/* Left knob */}
+            <div 
+              className="absolute top-1/2 -translate-y-1/2 -left-2.5 w-8 h-8 rounded-full"
+              style={{
+                background: "radial-gradient(circle, #d4a76a, #8b5e34, #3d2516)",
+                border: "2px solid #22150c",
+              }}
+            />
+            {/* Right knob */}
+            <div 
+              className="absolute top-1/2 -translate-y-1/2 -right-2.5 w-8 h-8 rounded-full"
+              style={{
+                background: "radial-gradient(circle, #d4a76a, #8b5e34, #3d2516)",
+                border: "2px solid #22150c",
+              }}
+            />
+          </div>
+
+          {/* Scroll body */}
+          <div 
+            className="mx-4 -my-1 px-6 py-8 relative"
+            style={{
+              background: "#f9f1e0",
+              backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.05) 100%)",
+              boxShadow: "inset 0 20px 30px rgba(0,0,0,0.05), inset 0 -20px 30px rgba(0,0,0,0.05)",
+              borderLeft: "1px solid rgba(139, 94, 52, 0.2)",
+              borderRight: "1px solid rgba(139, 94, 52, 0.2)",
+            }}
+          >
+            {/* Title */}
+            <h2 
+              className="text-center mb-5 text-2xl font-bold"
+              style={{
+                fontFamily: "'Charm', cursive",
+                color: "#830000",
+              }}
+            >
+              Nhập thông tin cá nhân
+            </h2>
+
             {/* Form fields */}
-            <div className="space-y-1">
+            <div className="flex flex-col gap-4">
               {/* Name */}
-              <div>
-                <span className="text-festive-brown font-semibold text-xs">Họ và tên</span>
-                <Input
-                  placeholder="Nhập họ tên"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown placeholder:text-festive-brown/50"
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Họ và tên"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full px-3 py-3 border-0 border-b outline-none transition-all text-sm"
+                style={{
+                  borderBottomColor: "#d4a76a",
+                  background: "rgba(255, 255, 255, 0.3)",
+                  color: "#4a3420",
+                }}
+              />
 
-              {/* Birth date */}
-              <div>
-                <span className="text-festive-brown font-semibold text-xs">Ngày sinh (Dương lịch)</span>
-                <div className="grid grid-cols-3 gap-1">
-                  <Select
-                    value={formData.birthDay}
-                    onValueChange={(value) => setFormData({ ...formData, birthDay: value })}
-                  >
-                    <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
-                      <SelectValue placeholder="Ngày" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {days.map((day) => (
-                        <SelectItem key={day} value={day}>{day}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <Select
-                    value={formData.birthMonth}
-                    onValueChange={(value) => setFormData({ ...formData, birthMonth: value })}
-                  >
-                    <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
-                      <SelectValue placeholder="Tháng" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {months.map((month) => (
-                        <SelectItem key={month} value={month}>Tháng {month}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <Select
-                    value={formData.birthYear}
-                    onValueChange={(value) => setFormData({ ...formData, birthYear: value })}
-                  >
-                    <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
-                      <SelectValue placeholder="Năm" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {years.map((year) => (
-                        <SelectItem key={year} value={year}>{year}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Gender */}
-              <div>
-                <span className="text-festive-brown font-semibold text-xs">Giới tính</span>
-                <Select
-                  value={formData.gender}
-                  onValueChange={(value) => setFormData({ ...formData, gender: value })}
+              {/* Birth date row */}
+              <div className="flex gap-2">
+                <select
+                  value={formData.birthDay}
+                  onChange={(e) => setFormData({ ...formData, birthDay: e.target.value })}
+                  className="flex-1 px-2 py-3 border-0 border-b outline-none transition-all text-sm"
+                  style={{
+                    borderBottomColor: "#d4a76a",
+                    background: "rgba(255, 255, 255, 0.3)",
+                    color: "#4a3420",
+                  }}
                 >
-                  <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
-                    <SelectValue placeholder="Chọn giới tính" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Nam</SelectItem>
-                    <SelectItem value="female">Nữ</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <option value="">Ngày</option>
+                  {days.map((day) => (
+                    <option key={day} value={day}>{day}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={formData.birthMonth}
+                  onChange={(e) => setFormData({ ...formData, birthMonth: e.target.value })}
+                  className="flex-1 px-2 py-3 border-0 border-b outline-none transition-all text-sm"
+                  style={{
+                    borderBottomColor: "#d4a76a",
+                    background: "rgba(255, 255, 255, 0.3)",
+                    color: "#4a3420",
+                  }}
+                >
+                  <option value="">Tháng</option>
+                  {months.map((month) => (
+                    <option key={month} value={month}>Tháng {month}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={formData.birthYear}
+                  onChange={(e) => setFormData({ ...formData, birthYear: e.target.value })}
+                  className="flex-1 px-2 py-3 border-0 border-b outline-none transition-all text-sm"
+                  style={{
+                    borderBottomColor: "#d4a76a",
+                    background: "rgba(255, 255, 255, 0.3)",
+                    color: "#4a3420",
+                  }}
+                >
+                  <option value="">Năm</option>
+                  {years.map((year) => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
               </div>
 
               {/* Birth hour */}
-              <div>
-                <span className="text-festive-brown font-semibold text-xs">Giờ sinh (tùy chọn)</span>
-                <Select
-                  value={formData.birthHour}
-                  onValueChange={(value) => setFormData({ ...formData, birthHour: value })}
-                >
-                  <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
-                    <SelectValue placeholder="Chọn giờ sinh" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {hours.map((hour) => (
-                      <SelectItem key={hour} value={hour}>{hour}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <select
+                value={formData.birthHour}
+                onChange={(e) => setFormData({ ...formData, birthHour: e.target.value })}
+                className="w-full px-3 py-3 border-0 border-b outline-none transition-all text-sm"
+                style={{
+                  borderBottomColor: "#d4a76a",
+                  background: "rgba(255, 255, 255, 0.3)",
+                  color: "#4a3420",
+                }}
+              >
+                <option value="">Giờ sinh (không bắt buộc)</option>
+                {hours.map((hour) => (
+                  <option key={hour} value={hour}>{hour}</option>
+                ))}
+              </select>
+
+              {/* Gender radio buttons */}
+              <div 
+                className="flex justify-center gap-10 py-2 font-medium text-sm"
+                style={{ color: "#4a3420" }}
+              >
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    checked={formData.gender === "male"}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    className="w-4 h-4"
+                    style={{ accentColor: "#830000" }}
+                  />
+                  Nam
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={formData.gender === "female"}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    className="w-4 h-4"
+                    style={{ accentColor: "#830000" }}
+                  />
+                  Nữ
+                </label>
               </div>
 
-              {/* Submit button */}
-              <div className="pt-1">
+              {/* Submit button - keep existing FestiveButton */}
+              <div className="pt-2">
                 <FestiveButton
                   icon={Sparkles}
                   onClick={handleSubmit}
@@ -186,8 +248,35 @@ const FormPage = () => {
                 </FestiveButton>
               </div>
             </div>
-          </motion.div>
-        </div>
+          </div>
+
+          {/* Bottom wood roller */}
+          <div 
+            className="h-7 rounded-full relative z-10"
+            style={{
+              background: "linear-gradient(to bottom, #5d3e21, #a67c52, #5d3e21)",
+              border: "1px solid #3d2516",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+            }}
+          >
+            {/* Left knob */}
+            <div 
+              className="absolute top-1/2 -translate-y-1/2 -left-2.5 w-8 h-8 rounded-full"
+              style={{
+                background: "radial-gradient(circle, #d4a76a, #8b5e34, #3d2516)",
+                border: "2px solid #22150c",
+              }}
+            />
+            {/* Right knob */}
+            <div 
+              className="absolute top-1/2 -translate-y-1/2 -right-2.5 w-8 h-8 rounded-full"
+              style={{
+                background: "radial-gradient(circle, #d4a76a, #8b5e34, #3d2516)",
+                border: "2px solid #22150c",
+              }}
+            />
+          </div>
+        </motion.div>
       </div>
     </div>
   );
