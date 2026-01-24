@@ -62,20 +62,17 @@ const FormPage = () => {
       />
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Top spacer - push form down */}
-        <div className="flex-[1]" />
-
-        {/* Form area - positioned lower in the scroll area */}
-        <div className="flex-[0.48] flex flex-col items-center px-4 sm:px-6 md:px-8">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center py-4">
+        {/* Form area - centered in the scroll area of background */}
+        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 mt-[28vh] sm:mt-[32vh]">
           <motion.div
-            className="w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px]"
+            className="w-full max-w-[220px] sm:max-w-[260px] md:max-w-[300px]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
             {/* Form fields without frame */}
-            <div className="space-y-2 sm:space-y-3">
+            <div className="space-y-1.5 sm:space-y-2">
               {/* Name */}
               <div>
                 <Label className="text-festive-brown font-semibold text-sm sm:text-base">Họ và tên</Label>
