@@ -57,11 +57,27 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        festive: {
+          red: "hsl(var(--festive-red))",
+          "red-light": "hsl(var(--festive-red-light))",
+          gold: "hsl(var(--festive-gold))",
+          "gold-dark": "hsl(var(--festive-gold-dark))",
+          cream: "hsl(var(--festive-cream))",
+          green: "hsl(var(--festive-green))",
+          brown: "hsl(var(--festive-brown))",
+        },
+        parchment: {
+          DEFAULT: "hsl(var(--parchment))",
+          dark: "hsl(var(--parchment-dark))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        festive: ["Dancing Script", "cursive"],
       },
       keyframes: {
         "accordion-down": {
@@ -80,10 +96,20 @@ export default {
             height: "0",
           },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        float: "float 3s ease-in-out infinite",
+        shimmer: "shimmer 2s linear infinite",
       },
     },
   },
