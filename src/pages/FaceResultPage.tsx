@@ -178,22 +178,6 @@ const FaceResultPage = () => {
             </motion.div>
           ))}
 
-          {/* CTA to detailed result */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="mb-6"
-          >
-            <FestiveButton
-              icon={ArrowRight}
-              onClick={() => navigate("/form")}
-              compact
-              variant="gold"
-            >
-              Xem tử vi theo ngày
-            </FestiveButton>
-          </motion.div>
 
           {/* Actions - Two buttons side by side */}
           <motion.div
