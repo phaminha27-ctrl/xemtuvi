@@ -7,6 +7,7 @@ interface FestiveButtonProps {
   onClick?: () => void;
   icon?: LucideIcon;
   variant?: "primary" | "secondary";
+  compact?: boolean;
   className?: string;
 }
 
@@ -15,6 +16,7 @@ const FestiveButton = ({
   onClick,
   icon: Icon,
   variant = "primary",
+  compact = false,
   className = "",
 }: FestiveButtonProps) => {
   // Wave pattern SVG as data URI
@@ -54,30 +56,21 @@ const FestiveButton = ({
       {/* Icon box */}
       {Icon && (
         <div
-          className="w-10 h-10 sm:w-[50px] sm:h-[50px] rounded-full flex items-center justify-center mr-3 sm:mr-4 z-10 flex-shrink-0"
+          className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center mr-2 sm:mr-3 z-10 flex-shrink-0`}
           style={{
             backgroundColor: "#F5D27B",
             border: "2px solid #8B5E34",
             boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
           }}
         >
-          <Icon className="w-5 h-5 sm:w-7 sm:h-7" style={{ color: "#5d3e21" }} />
+          <Icon className={`${compact ? 'w-4 h-4' : 'w-5 h-5 sm:w-7 sm:h-7'}`} style={{ color: "#5d3e21" }} />
         </div>
       )}
 
-      {/* Text group */}
-      <div className="flex flex-col text-left z-10 min-w-0">
+      {/* Text - single line for compact mode */}
+      {compact ? (
         <span
-          className="font-extrabold uppercase leading-tight text-sm sm:text-base"
-          style={{
-            color: "#FFF9C4",
-            textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
-          }}
-        >
-          XEM TỬ VI
-        </span>
-        <span
-          className="font-extrabold uppercase leading-tight text-base sm:text-lg truncate"
+          className="font-extrabold uppercase leading-tight text-sm z-10"
           style={{
             color: "#FFF9C4",
             textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
@@ -85,7 +78,28 @@ const FestiveButton = ({
         >
           {children}
         </span>
-      </div>
+      ) : (
+        <div className="flex flex-col text-left z-10 min-w-0">
+          <span
+            className="font-extrabold uppercase leading-tight text-sm sm:text-base"
+            style={{
+              color: "#FFF9C4",
+              textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
+            }}
+          >
+            XEM TỬ VI
+          </span>
+          <span
+            className="font-extrabold uppercase leading-tight text-base sm:text-lg truncate"
+            style={{
+              color: "#FFF9C4",
+              textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
+            }}
+          >
+            {children}
+          </span>
+        </div>
+      )}
     </motion.button>
   );
 };
