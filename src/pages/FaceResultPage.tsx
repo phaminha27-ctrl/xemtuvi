@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Heart, Briefcase, DollarSign, Activity, ArrowRight } from "lucide-react";
+import { Heart, Briefcase, DollarSign, Activity, ArrowRight, Share2, Home } from "lucide-react";
 import FestiveLayout from "@/components/FestiveLayout";
-import ScrollCard from "@/components/ScrollCard";
-import ShareButton from "@/components/ShareButton";
 import FestiveButton from "@/components/FestiveButton";
+import { toast } from "sonner";
 
 const faceResultData = {
   summary: "Khuôn mặt bạn toát lên khí chất vương giả, năm Bính Ngọ 2026 sẽ là năm hanh thông với nhiều cơ hội phát triển sự nghiệp và tình duyên tốt đẹp.",
@@ -13,47 +12,105 @@ const faceResultData = {
       icon: Briefcase,
       title: "Sự Nghiệp",
       description: "Vận thế tốt, cần chủ ý rèn chữ nghĩ ngợi. Có quý nhân phù trợ, thuận lợi trong công việc.",
-      color: "festive-green",
+      iconBg: "from-blue-500 to-blue-700",
     },
     {
       icon: Heart,
       title: "Tình Duyên",
       description: "Gặp gỡ người mới, tình cảm tiến triển tốt đẹp. Người đã có đôi sẽ thêm gắn bó.",
-      color: "festive-red",
+      iconBg: "from-pink-500 to-rose-600",
     },
     {
       icon: DollarSign,
       title: "Tài Lộc",
       description: "Tiền tài hanh thông, có cơ hội đầu tư sinh lời. Cần cẩn trọng chi tiêu.",
-      color: "festive-gold",
+      iconBg: "from-yellow-500 to-amber-600",
     },
     {
       icon: Activity,
       title: "Sức Khỏe",
       description: "Vận thế tốt, cần chú ý rèn luyện sức khỏe. Tránh làm việc quá sức.",
-      color: "festive-green",
+      iconBg: "from-green-500 to-emerald-600",
     },
   ],
+};
+
+// Scroll Card Component with traditional scroll design
+const ScrollResultCard = ({ 
+  children, 
+  title,
+  className = "" 
+}: { 
+  children: React.ReactNode; 
+  title?: string;
+  className?: string;
+}) => {
+  return (
+    <div className={`relative ${className}`}>
+      {/* Top roller - overlapping the parchment */}
+      <div className="relative z-10 h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
+      
+      {/* Parchment body - narrower than rollers, pulled up to go under */}
+      <div className="relative -mt-3 -mb-3 mx-3 bg-gradient-to-b from-[#FFF7E0] to-[#FCEEC7] border-2 border-festive-brown px-4 py-6">
+        {/* Corner decorations */}
+        <div className="absolute top-4 left-2 w-4 h-4 border-l-2 border-t-2 border-festive-brown opacity-60" />
+        <div className="absolute top-4 right-2 w-4 h-4 border-r-2 border-t-2 border-festive-brown opacity-60" />
+        <div className="absolute bottom-4 left-2 w-4 h-4 border-l-2 border-b-2 border-festive-brown opacity-60" />
+        <div className="absolute bottom-4 right-2 w-4 h-4 border-r-2 border-b-2 border-festive-brown opacity-60" />
+        
+        {title && (
+          <h3 className="text-festive-red font-bold text-lg text-center mb-3 font-sans">
+            {title}
+          </h3>
+        )}
+        {children}
+      </div>
+      
+      {/* Bottom roller - overlapping the parchment */}
+      <div className="relative z-10 h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
+    </div>
+  );
 };
 
 const FaceResultPage = () => {
   const navigate = useNavigate();
   const capturedFace = sessionStorage.getItem("capturedFace");
 
+  const handleShare = async () => {
+    const shareData = {
+      title: "Tử Vi Xem Tướng Bính Ngọ 2026",
+      text: "Xem kết quả tử vi khuôn mặt năm Bính Ngọ 2026 của tôi!",
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(`${shareData.text}\n${window.location.href}`);
+        toast.success("Đã sao chép link để chia sẻ!");
+      }
+    } catch (error) {
+      if ((error as Error).name !== "AbortError") {
+        toast.error("Không thể chia sẻ. Vui lòng thử lại!");
+      }
+    }
+  };
+
   return (
     <FestiveLayout>
-      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-12">
+      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 font-sans">
         <div className="max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
           {/* Header */}
           <motion.div
-            className="text-center mb-4 sm:mb-6"
+            className="text-center mb-6"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-festive text-2xl sm:text-3xl md:text-4xl text-festive-gold text-shadow-festive">
+            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-festive-gold drop-shadow-lg">
               Kết Quả Xem Tướng
             </h1>
-            <p className="text-festive-cream/80 mt-2 text-sm sm:text-base">Năm Bính Ngọ 2026</p>
+            <p className="text-festive-cream/80 mt-2 text-sm sm:text-base font-sans">Năm Bính Ngọ 2026</p>
           </motion.div>
 
           {/* Face preview */}
@@ -77,63 +134,82 @@ const FaceResultPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+            className="mb-6"
           >
-            <ScrollCard title="Tử Vi Bính Ngọ" className="mb-6">
-              <p className="text-foreground text-center leading-relaxed">
+            <ScrollResultCard title="Tử Vi Bính Ngọ">
+              <p className="text-gray-700 text-center leading-relaxed font-sans">
                 {faceResultData.summary}
               </p>
-            </ScrollCard>
+            </ScrollResultCard>
           </motion.div>
 
           {/* Category cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
-            {faceResultData.categories.map((category, index) => (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-              >
-                <ScrollCard className="h-full">
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`w-12 h-12 rounded-full bg-${category.color}/20 flex items-center justify-center mb-2`}>
-                      <category.icon className={`w-6 h-6 text-${category.color}`} />
-                    </div>
-                    <h3 className="font-bold text-festive-brown mb-1">
+          {faceResultData.categories.map((category, index) => (
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              className="mb-4"
+            >
+              <ScrollResultCard>
+                <div className="flex items-start gap-3">
+                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${category.iconBg} flex items-center justify-center flex-shrink-0 border-2 border-white/30 shadow-lg`}>
+                    <category.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-festive-brown text-lg mb-1 font-sans">
                       {category.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-700 font-sans">
                       {category.description}
                     </p>
                   </div>
-                </ScrollCard>
-              </motion.div>
-            ))}
-          </div>
+                </div>
+              </ScrollResultCard>
+            </motion.div>
+          ))}
 
-          {/* Actions */}
+          {/* CTA to detailed result */}
           <motion.div
-            className="flex flex-col items-center gap-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
+            className="mb-6"
           >
-            <ShareButton text="Xem kết quả tử vi khuôn mặt năm Bính Ngọ 2026 của tôi!" />
-            
             <FestiveButton
               icon={ArrowRight}
-              variant="secondary"
               onClick={() => navigate("/form")}
             >
               Xem Chi Tiết Theo Ngày Sinh
             </FestiveButton>
+          </motion.div>
 
-            <button
+          {/* Actions - Two buttons side by side */}
+          <motion.div
+            className="flex gap-3 pb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            <FestiveButton
               onClick={() => navigate("/")}
-              className="text-festive-cream underline mt-2"
+              icon={Home}
+              compact
+              variant="secondary"
+              className="flex-1 whitespace-nowrap"
             >
-              ← Về trang chủ
-            </button>
+              Trang chủ
+            </FestiveButton>
+
+            <FestiveButton 
+              onClick={handleShare}
+              icon={Share2}
+              compact
+              className="flex-1"
+            >
+              Chia sẻ
+            </FestiveButton>
           </motion.div>
         </div>
       </div>
