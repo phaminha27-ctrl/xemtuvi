@@ -1,9 +1,10 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera } from "lucide-react";
+import { Camera, Sparkles, RotateCcw } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import CaptureButton from "@/components/CaptureButton";
+import FestiveButton from "@/components/FestiveButton";
 import scanBackground from "@/assets/scan-background.jpg";
 
 const FaceScanPage = () => {
@@ -250,9 +251,13 @@ const FaceScanPage = () => {
         )}
 
         {capturedImage && (
-          <div className="flex flex-col gap-4 items-center">
-            <CaptureButton onClick={analyzeFace} icon="sparkles" label="XEM TỬ VI" />
-            <CaptureButton onClick={retake} icon="camera" label="CHỤP LẠI" />
+          <div className="flex flex-col gap-3 items-center w-full max-w-xs">
+            <FestiveButton onClick={analyzeFace} icon={Sparkles} compact variant="primary">
+              Xem Tử Vi
+            </FestiveButton>
+            <FestiveButton onClick={retake} icon={RotateCcw} compact variant="secondary">
+              Chụp Lại
+            </FestiveButton>
           </div>
         )}
       </div>
