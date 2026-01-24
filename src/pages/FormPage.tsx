@@ -69,9 +69,9 @@ const FormPage = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center py-4">
+      <div className="relative z-10 min-h-screen flex items-center justify-center">
         {/* Form area - centered in the scroll area of background */}
-        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 mt-[34vh] sm:mt-[36vh]">
+        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8">
           <motion.div
             className="w-full max-w-[200px] sm:max-w-[220px] md:max-w-[260px]"
             initial={{ opacity: 0, y: 20 }}
