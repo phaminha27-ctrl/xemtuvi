@@ -118,7 +118,7 @@ const FaceScanPage = () => {
       </div>
 
       {/* Center area - Scan frame absolutely centered */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 z-10 pointer-events-none">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 z-10 pointer-events-none" style={{ marginTop: '-60px' }}>
         {/* Instruction text */}
         <p 
           className="text-sm font-medium mb-4"
@@ -240,7 +240,7 @@ const FaceScanPage = () => {
       </div>
 
       {/* Bottom area - Action buttons */}
-      <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 z-10">
+      <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 z-10">
         {!isStreaming && !capturedImage && (
           <CaptureButton onClick={() => startCamera()} icon="camera" label="MỞ CAMERA" />
         )}
