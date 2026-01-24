@@ -28,7 +28,7 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative flex items-center px-6 py-2 cursor-pointer rounded-full overflow-hidden
+        relative flex items-center w-full px-4 sm:px-6 py-2 cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
         ${className}
       `}
@@ -54,34 +54,32 @@ const FestiveButton = ({
       {/* Icon box */}
       {Icon && (
         <div
-          className="w-[50px] h-[50px] rounded-full flex items-center justify-center mr-4 z-10"
+          className="w-10 h-10 sm:w-[50px] sm:h-[50px] rounded-full flex items-center justify-center mr-3 sm:mr-4 z-10 flex-shrink-0"
           style={{
             backgroundColor: "#F5D27B",
             border: "2px solid #8B5E34",
             boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
           }}
         >
-          <Icon className="w-7 h-7" style={{ color: "#5d3e21" }} />
+          <Icon className="w-5 h-5 sm:w-7 sm:h-7" style={{ color: "#5d3e21" }} />
         </div>
       )}
 
       {/* Text group */}
-      <div className="flex flex-col text-left z-10">
+      <div className="flex flex-col text-left z-10 min-w-0">
         <span
-          className="font-extrabold uppercase leading-tight whitespace-nowrap"
+          className="font-extrabold uppercase leading-tight text-sm sm:text-base"
           style={{
             color: "#FFF9C4",
-            fontSize: "18px",
             textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
           }}
         >
           XEM TỬ VI
         </span>
         <span
-          className="font-extrabold uppercase leading-tight whitespace-nowrap"
+          className="font-extrabold uppercase leading-tight text-base sm:text-lg truncate"
           style={{
             color: "#FFF9C4",
-            fontSize: "20px",
             textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
           }}
         >

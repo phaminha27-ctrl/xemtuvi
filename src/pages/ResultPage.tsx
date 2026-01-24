@@ -93,15 +93,15 @@ const ResultPage = () => {
 
   return (
     <FestiveLayout>
-      <div className="min-h-screen px-4 py-8">
-        <div className="max-w-lg mx-auto">
+      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8">
+        <div className="max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
           {/* Header */}
           <motion.div
-            className="text-center mb-6"
+            className="text-center mb-4 sm:mb-6"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-festive text-3xl md:text-4xl text-festive-gold text-shadow-festive">
+            <h1 className="font-festive text-2xl sm:text-3xl md:text-4xl text-festive-gold text-shadow-festive">
               Kết Quả Tử Vi
             </h1>
             {userData && (

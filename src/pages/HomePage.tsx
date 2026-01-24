@@ -21,8 +21,8 @@ const HomePage = () => {
       <div className="flex-1 relative z-10" />
       
       {/* Bottom half - buttons centered */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
-        <div className="flex flex-col gap-4 w-full max-w-sm">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 relative z-10">
+        <div className="flex flex-col gap-4 w-full max-w-xs sm:max-w-sm md:max-w-md">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

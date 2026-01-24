@@ -42,18 +42,18 @@ const FaceResultPage = () => {
 
   return (
     <FestiveLayout>
-      <div className="min-h-screen px-4 py-8 md:py-12">
-        <div className="max-w-lg mx-auto">
+      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-12">
+        <div className="max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
           {/* Header */}
           <motion.div
-            className="text-center mb-6"
+            className="text-center mb-4 sm:mb-6"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-festive text-3xl md:text-4xl text-festive-gold text-shadow-festive">
+            <h1 className="font-festive text-2xl sm:text-3xl md:text-4xl text-festive-gold text-shadow-festive">
               Kết Quả Xem Tướng
             </h1>
-            <p className="text-festive-cream/80 mt-2">Năm Bính Ngọ 2026</p>
+            <p className="text-festive-cream/80 mt-2 text-sm sm:text-base">Năm Bính Ngọ 2026</p>
           </motion.div>
 
           {/* Face preview */}
@@ -86,7 +86,7 @@ const FaceResultPage = () => {
           </motion.div>
 
           {/* Category cards */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
             {faceResultData.categories.map((category, index) => (
               <motion.div
                 key={category.title}
