@@ -9,10 +9,12 @@ interface FestiveLayoutProps {
 const FestiveLayout = ({ children }: FestiveLayoutProps) => {
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${festiveBackground})` }}
+      {/* Background Image - Responsive */}
+      <img
+        src={festiveBackground}
+        alt=""
+        className="fixed inset-0 w-full h-full object-cover object-center"
+        aria-hidden="true"
       />
       
       {/* Overlay for readability */}
