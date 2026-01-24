@@ -64,7 +64,7 @@ const FormPage = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Top spacer - push form down */}
-        <div className="flex-[0.52]" />
+        <div className="flex-[1]" />
 
         {/* Form area - positioned lower in the scroll area */}
         <div className="flex-[0.48] flex flex-col items-center px-4 sm:px-6 md:px-8">
