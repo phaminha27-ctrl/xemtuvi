@@ -28,7 +28,7 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative flex items-center px-8 py-3 cursor-pointer rounded-full overflow-hidden
+        relative flex items-center px-6 py-2 cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
         ${className}
       `}

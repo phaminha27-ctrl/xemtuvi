@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-end px-6 pb-16 bg-cover bg-center bg-no-repeat"
+      className="min-h-screen flex flex-col items-center justify-end px-6 pb-8 bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${homeBackground})` }}
     >
       {/* Buttons */}
