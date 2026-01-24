@@ -76,12 +76,16 @@ const FaceScanPage = () => {
   }, [capturedImage, navigate]);
 
   return (
-    <div
-      className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat relative"
-      style={{ backgroundImage: `url(${scanBackground})` }}
-    >
+    <div className="min-h-screen flex flex-col relative">
+      {/* Background Image - Responsive */}
+      <img
+        src={scanBackground}
+        alt=""
+        className="fixed inset-0 w-full h-full object-cover object-center"
+        aria-hidden="true"
+      />
       {/* Top buttons */}
-      <div className="absolute top-3 left-4 right-4 flex justify-between items-start z-10">
+      <div className="absolute top-3 left-4 right-4 flex justify-between items-start z-20">
         {/* Back Button */}
         <IconButton onClick={() => navigate("/")} label="QUAY LẠI">
           <svg 
@@ -114,7 +118,7 @@ const FaceScanPage = () => {
       </div>
 
       {/* Center area - Scan frame centered vertically */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
         {/* Instruction text */}
         <p 
           className="text-sm font-medium mb-4"
@@ -236,7 +240,7 @@ const FaceScanPage = () => {
       </div>
 
       {/* Bottom half - Action buttons centered */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
         {!isStreaming && !capturedImage && (
           <CaptureButton onClick={() => startCamera()} icon="camera" label="MỞ CAMERA" />
         )}

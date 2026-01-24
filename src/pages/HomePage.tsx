@@ -8,15 +8,20 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${homeBackground})` }}
-    >
+    <div className="min-h-screen flex flex-col relative">
+      {/* Background Image - Responsive */}
+      <img
+        src={homeBackground}
+        alt=""
+        className="fixed inset-0 w-full h-full object-cover object-center"
+        aria-hidden="true"
+      />
+      
       {/* Top half - empty for background */}
-      <div className="flex-1" />
+      <div className="flex-1 relative z-10" />
       
       {/* Bottom half - buttons centered */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
         <div className="flex flex-col gap-4 w-full max-w-sm">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
