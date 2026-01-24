@@ -113,9 +113,20 @@ const FaceScanPage = () => {
         </IconButton>
       </div>
 
+      {/* Instruction text */}
+      <p 
+        className="text-sm font-medium mb-3"
+        style={{ 
+          color: "#FFF9C4",
+          textShadow: "0 2px 4px rgba(0,0,0,0.6)"
+        }}
+      >
+        Quét mặt của bạn
+      </p>
+
       {/* Camera Frame - Rounded square with corner accents */}
       <motion.div
-        className="relative w-48 h-48 md:w-56 md:h-56 mt-16 mb-4"
+        className="relative w-48 h-48 md:w-56 md:h-56 mb-4"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
