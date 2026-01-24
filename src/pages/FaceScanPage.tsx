@@ -113,21 +113,37 @@ const FaceScanPage = () => {
         </IconButton>
       </div>
 
-      {/* Camera Frame - Slightly squared corners */}
+      {/* Camera Frame - Rounded square with corner accents */}
       <motion.div
-        className="relative w-52 h-52 md:w-60 md:h-60 overflow-hidden border-8 border-festive-gold shadow-2xl mb-8"
-        style={{ borderRadius: "40%" }}
+        className="relative w-56 h-56 md:w-64 md:h-64 mt-8 mb-6"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="absolute inset-0 bg-parchment flex items-center justify-center" style={{ borderRadius: "35%" }}>
+        {/* Corner borders */}
+        <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-festive-gold rounded-tl-3xl" />
+        <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-festive-gold rounded-tr-3xl" />
+        <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-festive-gold rounded-bl-3xl" />
+        <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-festive-gold rounded-br-3xl" />
+
+        {/* Inner content area */}
+        <div className="absolute inset-2 rounded-2xl overflow-hidden flex items-center justify-center bg-black/20">
           {!isStreaming && !capturedImage && (
             <div className="text-center p-4">
-              <Camera className="w-12 h-12 mx-auto text-festive-brown/50 mb-2" />
-              <p className="text-festive-brown/70 text-xs">
-                Nhấn nút bên dưới để bắt đầu
-              </p>
+              {/* Face icon */}
+              <svg 
+                className="w-16 h-16 mx-auto"
+                viewBox="0 0 24 24"
+                style={{ 
+                  fill: "none",
+                  stroke: "#FFF9C4",
+                  strokeWidth: 1.5,
+                  opacity: 0.7
+                }}
+              >
+                <circle cx="12" cy="8" r="5" />
+                <path d="M20 21a8 8 0 1 0-16 0" />
+              </svg>
             </div>
           )}
           
@@ -137,7 +153,6 @@ const FaceScanPage = () => {
             playsInline
             muted
             className={`w-full h-full object-cover ${isStreaming ? "block" : "hidden"}`}
-            style={{ borderRadius: "35%" }}
           />
           
           {capturedImage && (
@@ -145,7 +160,6 @@ const FaceScanPage = () => {
               src={capturedImage}
               alt="Captured face"
               className="w-full h-full object-cover"
-              style={{ borderRadius: "35%" }}
             />
           )}
         </div>
@@ -153,12 +167,11 @@ const FaceScanPage = () => {
         {/* Scanning overlay */}
         {isStreaming && (
           <motion.div
-            className="absolute inset-0 border-4 border-festive-gold"
-            style={{ borderRadius: "40%" }}
+            className="absolute inset-2 rounded-2xl border-2 border-festive-gold"
             animate={{
               boxShadow: [
                 "0 0 0 0 rgba(255, 215, 0, 0.4)",
-                "0 0 0 20px rgba(255, 215, 0, 0)",
+                "0 0 0 15px rgba(255, 215, 0, 0)",
               ],
             }}
             transition={{ duration: 1.5, repeat: Infinity }}
