@@ -47,7 +47,7 @@ const LoadingPage = () => {
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
         {/* Loading mascot with floating animation */}
         <motion.div 
-          className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 mb-8"
+          className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 mb-8"
           animate={{ 
             y: [0, -15, 0],
             scale: [1, 1.02, 1]
@@ -87,9 +87,6 @@ const LoadingPage = () => {
             transition={{ duration: 0.1 }}
           />
         </div>
-
-        {/* Percentage */}
-        <p className="text-festive-gold font-bold text-sm mt-2">{progress}%</p>
       </div>
     </div>
   );
