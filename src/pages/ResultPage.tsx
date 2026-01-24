@@ -28,6 +28,7 @@ const detailedResults = {
       score: 90,
       content: "Năm nay sự nghiệp phát triển mạnh mẽ. Có nhiều cơ hội thăng tiến và được cấp trên tin tưởng. Quý nhân xuất hiện vào tháng 3 và tháng 8. Tuy nhiên cần tránh tranh cãi với đồng nghiệp vào tháng 6.",
       advice: "Hãy mạnh dạn đề xuất ý tưởng mới và thể hiện năng lực của mình.",
+      iconBg: "from-blue-500 to-blue-700",
     },
     {
       icon: Heart,
@@ -35,6 +36,7 @@ const detailedResults = {
       score: 80,
       content: "Tình duyên năm nay khá tốt. Người độc thân có cơ hội gặp người ý hợp tâm đầu vào tháng 5 hoặc tháng 10. Người đã có đôi tình cảm thêm gắn bó, có thể tiến tới hôn nhân.",
       advice: "Hãy mở lòng và tham gia các hoạt động xã hội để mở rộng mối quan hệ.",
+      iconBg: "from-pink-500 to-rose-600",
     },
     {
       icon: DollarSign,
@@ -42,6 +44,7 @@ const detailedResults = {
       score: 75,
       content: "Tài lộc năm nay ổn định. Thu nhập chính tăng trưởng tốt. Có một số khoản chi bất ngờ vào giữa năm nhưng không ảnh hưởng lớn. Tránh đầu tư mạo hiểm vào tháng 7.",
       advice: "Nên tiết kiệm và đầu tư dài hạn thay vì các khoản lợi nhanh.",
+      iconBg: "from-yellow-500 to-amber-600",
     },
     {
       icon: Activity,
@@ -49,6 +52,7 @@ const detailedResults = {
       score: 70,
       content: "Sức khỏe cần được chú ý nhiều hơn năm nay. Có thể gặp vấn đề về giấc ngủ và tiêu hóa. Tháng 4 và tháng 9 là thời điểm cần cẩn thận với tai nạn nhỏ.",
       advice: "Duy trì thói quen tập thể dục đều đặn và ăn uống khoa học.",
+      iconBg: "from-green-500 to-emerald-600",
     },
     {
       icon: GraduationCap,
@@ -56,6 +60,7 @@ const detailedResults = {
       score: 88,
       content: "Năm thuận lợi cho việc học hành và thi cử. Khả năng tiếp thu kiến thức mới rất tốt. Đây là thời điểm thích hợp để học thêm kỹ năng mới hoặc lấy bằng cấp cao hơn.",
       advice: "Đăng ký các khóa học nâng cao kỹ năng chuyên môn.",
+      iconBg: "from-purple-500 to-violet-600",
     },
     {
       icon: Users,
@@ -63,6 +68,7 @@ const detailedResults = {
       score: 82,
       content: "Quan hệ gia đình hòa thuận, ấm áp. Có tin vui từ người thân vào cuối năm. Nên dành nhiều thời gian cho gia đình, đặc biệt là cha mẹ.",
       advice: "Tổ chức các buổi sum họp gia đình để gắn kết tình cảm.",
+      iconBg: "from-orange-500 to-red-500",
     },
   ],
   luckyInfo: {
@@ -201,7 +207,7 @@ const ResultPage = () => {
             >
               <ScrollResultCard>
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-festive-gold to-festive-brown flex items-center justify-center flex-shrink-0 border-2 border-festive-brown shadow">
+                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${category.iconBg} flex items-center justify-center flex-shrink-0 border-2 border-white/30 shadow-lg`}>
                     <category.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1">
