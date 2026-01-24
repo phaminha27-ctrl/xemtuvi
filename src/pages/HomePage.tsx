@@ -24,7 +24,7 @@ const HomePage = () => {
             onClick={() => navigate("/scan")}
             className="w-full"
           >
-            Xem Tử Vi<br />Qua Khuôn Mặt
+            Qua Khuôn Mặt
           </FestiveButton>
         </motion.div>
 
@@ -39,7 +39,7 @@ const HomePage = () => {
             onClick={() => navigate("/form")}
             className="w-full"
           >
-            Xem Tử Vi<br />Theo Ngày Sinh
+            Theo Ngày Sinh
           </FestiveButton>
         </motion.div>
       </div>
