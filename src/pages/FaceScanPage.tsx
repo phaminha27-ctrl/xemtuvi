@@ -2,8 +2,8 @@ import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Camera, RotateCcw, Sparkles } from "lucide-react";
-import FestiveLayout from "@/components/FestiveLayout";
 import FestiveButton from "@/components/FestiveButton";
+import scanBackground from "@/assets/scan-background.jpg";
 
 const FaceScanPage = () => {
   const navigate = useNavigate();
@@ -61,15 +61,10 @@ const FaceScanPage = () => {
   }, [capturedImage, navigate]);
 
   return (
-    <FestiveLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12">
-        <motion.h1
-          className="font-festive text-3xl md:text-4xl text-festive-gold text-center mb-6 text-shadow-festive"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          Xem Tử Vi Qua Khuôn Mặt
-        </motion.h1>
+    <div
+      className="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${scanBackground})` }}
+    >
 
         {/* Camera Frame */}
         <motion.div
@@ -170,10 +165,9 @@ const FaceScanPage = () => {
           onClick={() => navigate("/")}
           whileHover={{ scale: 1.05 }}
         >
-          ← Quay lại trang chủ
+        ← Quay lại trang chủ
         </motion.button>
-      </div>
-    </FestiveLayout>
+    </div>
   );
 };
 
