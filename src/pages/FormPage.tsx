@@ -2,8 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import FestiveLayout from "@/components/FestiveLayout";
-import ScrollCard from "@/components/ScrollCard";
 import FestiveButton from "@/components/FestiveButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import formBackground from "@/assets/form-background.jpg";
 
 const FormPage = () => {
   const navigate = useNavigate();
@@ -54,44 +53,49 @@ const FormPage = () => {
   ];
 
   return (
-    <FestiveLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-6 sm:py-8">
-        <motion.h1
-          className="font-festive text-2xl sm:text-3xl md:text-4xl text-festive-gold text-center mb-4 sm:mb-6 text-shadow-festive"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          Nhập Thông Tin
-        </motion.h1>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background image */}
+      <img
+        src={formBackground}
+        alt="Background"
+        className="fixed inset-0 w-full h-full object-cover object-center"
+      />
 
-        <motion.div
-          className="w-full max-w-xs sm:max-w-sm md:max-w-md"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <ScrollCard title="Thông Tin Cá Nhân">
-            <div className="space-y-4">
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Top spacer - accounts for horse mascot area */}
+        <div className="flex-[0.42]" />
+
+        {/* Form area - centered in the scroll/form area of background */}
+        <div className="flex-[0.58] flex flex-col items-center px-4 sm:px-6 md:px-8">
+          <motion.div
+            className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            {/* Form fields without frame */}
+            <div className="space-y-3 sm:space-y-4">
               {/* Name */}
               <div>
-                <Label className="text-festive-brown font-medium">Họ và tên</Label>
+                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Họ và tên</Label>
                 <Input
                   placeholder="Nhập họ tên của bạn"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 bg-background/80 border-festive-brown/30"
+                  className="mt-1 bg-parchment-light/90 border-festive-brown/40 text-festive-brown placeholder:text-festive-brown/50"
                 />
               </div>
 
               {/* Birth date */}
               <div>
-                <Label className="text-festive-brown font-medium">Ngày sinh (Dương lịch)</Label>
+                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Ngày sinh (Dương lịch)</Label>
                 <div className="grid grid-cols-3 gap-2 mt-1">
                   <Select
                     value={formData.birthDay}
                     onValueChange={(value) => setFormData({ ...formData, birthDay: value })}
                   >
-                    <SelectTrigger className="bg-background/80 border-festive-brown/30">
+                    <SelectTrigger className="bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                       <SelectValue placeholder="Ngày" />
                     </SelectTrigger>
                     <SelectContent>
@@ -107,7 +111,7 @@ const FormPage = () => {
                     value={formData.birthMonth}
                     onValueChange={(value) => setFormData({ ...formData, birthMonth: value })}
                   >
-                    <SelectTrigger className="bg-background/80 border-festive-brown/30">
+                    <SelectTrigger className="bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                       <SelectValue placeholder="Tháng" />
                     </SelectTrigger>
                     <SelectContent>
@@ -123,7 +127,7 @@ const FormPage = () => {
                     value={formData.birthYear}
                     onValueChange={(value) => setFormData({ ...formData, birthYear: value })}
                   >
-                    <SelectTrigger className="bg-background/80 border-festive-brown/30">
+                    <SelectTrigger className="bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                       <SelectValue placeholder="Năm" />
                     </SelectTrigger>
                     <SelectContent>
@@ -139,12 +143,12 @@ const FormPage = () => {
 
               {/* Gender */}
               <div>
-                <Label className="text-festive-brown font-medium">Giới tính</Label>
+                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Giới tính</Label>
                 <Select
                   value={formData.gender}
                   onValueChange={(value) => setFormData({ ...formData, gender: value })}
                 >
-                  <SelectTrigger className="mt-1 bg-background/80 border-festive-brown/30">
+                  <SelectTrigger className="mt-1 bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                     <SelectValue placeholder="Chọn giới tính" />
                   </SelectTrigger>
                   <SelectContent>
@@ -156,12 +160,12 @@ const FormPage = () => {
 
               {/* Birth hour */}
               <div>
-                <Label className="text-festive-brown font-medium">Giờ sinh (tùy chọn)</Label>
+                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Giờ sinh (tùy chọn)</Label>
                 <Select
                   value={formData.birthHour}
                   onValueChange={(value) => setFormData({ ...formData, birthHour: value })}
                 >
-                  <SelectTrigger className="mt-1 bg-background/80 border-festive-brown/30">
+                  <SelectTrigger className="mt-1 bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                     <SelectValue placeholder="Chọn giờ sinh" />
                   </SelectTrigger>
                   <SelectContent>
@@ -173,34 +177,29 @@ const FormPage = () => {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Submit button */}
+              <div className="pt-2">
+                <FestiveButton
+                  icon={Sparkles}
+                  onClick={handleSubmit}
+                  className="w-full"
+                >
+                  Xem Tử Vi
+                </FestiveButton>
+              </div>
+
+              <button
+                onClick={() => navigate("/")}
+                className="w-full text-center text-festive-brown font-medium underline text-sm sm:text-base"
+              >
+                ← Quay lại trang chủ
+              </button>
             </div>
-          </ScrollCard>
-        </motion.div>
-
-        {/* Submit button */}
-        <motion.div
-          className="mt-4 sm:mt-6 w-full max-w-xs sm:max-w-sm md:max-w-md"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <FestiveButton
-            icon={Sparkles}
-            onClick={handleSubmit}
-            className="w-full"
-          >
-            Xem Tử Vi
-          </FestiveButton>
-
-          <button
-            onClick={() => navigate("/")}
-            className="w-full text-center text-festive-cream underline mt-4"
-          >
-            ← Quay lại trang chủ
-          </button>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </FestiveLayout>
+    </div>
   );
 };
 
