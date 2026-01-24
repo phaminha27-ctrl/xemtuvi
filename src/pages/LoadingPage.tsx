@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import FestiveLayout from "@/components/FestiveLayout";
-import horseMascot from "@/assets/horse-mascot.png";
+import loadingMascot from "@/assets/loading-mascot.png";
 
 const loadingMessages = [
   "Đang phân tích vận mệnh...",
@@ -51,42 +51,24 @@ const LoadingPage = () => {
   return (
     <FestiveLayout>
       <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8">
-        {/* Spinning circles */}
-        <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 mb-6 sm:mb-8">
-          {/* Outer ring */}
-          <motion.div
-            className="absolute inset-0 rounded-full border-4 border-festive-gold border-t-transparent"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        {/* Loading mascot with glow effect */}
+        <motion.div 
+          className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 mb-6 sm:mb-8"
+          animate={{ 
+            rotate: [0, 360],
+            scale: [1, 1.05, 1]
+          }}
+          transition={{ 
+            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+          }}
+        >
+          <img
+            src={loadingMascot}
+            alt="Loading mascot"
+            className="w-full h-full object-contain"
           />
-          
-          {/* Middle ring */}
-          <motion.div
-            className="absolute inset-4 rounded-full border-4 border-festive-red border-b-transparent"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          />
-          
-          {/* Inner ring */}
-          <motion.div
-            className="absolute inset-8 rounded-full border-4 border-festive-green border-t-transparent border-l-transparent"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          />
-
-          {/* Mascot in center */}
-          <motion.div
-            className="absolute inset-12 flex items-center justify-center"
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <img
-              src={horseMascot}
-              alt="Loading mascot"
-              className="w-full h-full object-contain"
-            />
-          </motion.div>
-        </div>
+        </motion.div>
 
         {/* Loading text */}
         <motion.p
