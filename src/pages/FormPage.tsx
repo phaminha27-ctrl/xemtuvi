@@ -55,9 +55,9 @@ const FormPage = () => {
 
   return (
     <FestiveLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-6 sm:py-8">
         <motion.h1
-          className="font-festive text-3xl md:text-4xl text-festive-gold text-center mb-6 text-shadow-festive"
+          className="font-festive text-2xl sm:text-3xl md:text-4xl text-festive-gold text-center mb-4 sm:mb-6 text-shadow-festive"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -65,7 +65,7 @@ const FormPage = () => {
         </motion.h1>
 
         <motion.div
-          className="w-full max-w-md"
+          className="w-full max-w-xs sm:max-w-sm md:max-w-md"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -179,7 +179,7 @@ const FormPage = () => {
 
         {/* Submit button */}
         <motion.div
-          className="mt-6 w-full max-w-md"
+          className="mt-4 sm:mt-6 w-full max-w-xs sm:max-w-sm md:max-w-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}

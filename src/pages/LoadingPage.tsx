@@ -50,9 +50,9 @@ const LoadingPage = () => {
 
   return (
     <FestiveLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8">
         {/* Spinning circles */}
-        <div className="relative w-48 h-48 md:w-64 md:h-64 mb-8">
+        <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 mb-6 sm:mb-8">
           {/* Outer ring */}
           <motion.div
             className="absolute inset-0 rounded-full border-4 border-festive-gold border-t-transparent"
@@ -91,7 +91,7 @@ const LoadingPage = () => {
         {/* Loading text */}
         <motion.p
           key={messageIndex}
-          className="text-festive-cream text-xl md:text-2xl font-medium text-center mb-6"
+          className="text-festive-cream text-lg sm:text-xl md:text-2xl font-medium text-center mb-4 sm:mb-6 px-4"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -100,7 +100,7 @@ const LoadingPage = () => {
         </motion.p>
 
         {/* Progress bar */}
-        <div className="w-64 md:w-80 h-4 bg-parchment rounded-full overflow-hidden border-2 border-festive-gold">
+        <div className="w-56 sm:w-64 md:w-80 h-3 sm:h-4 bg-parchment rounded-full overflow-hidden border-2 border-festive-gold">
           <motion.div
             className="h-full bg-gradient-to-r from-festive-red via-festive-gold to-festive-green"
             initial={{ width: 0 }}
