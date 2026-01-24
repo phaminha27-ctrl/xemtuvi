@@ -88,8 +88,8 @@ const ScrollResultCard = ({
       {/* Top roller - overlapping the parchment */}
       <div className="relative z-10 h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
       
-      {/* Parchment body - pulled up to go under rollers */}
-      <div className="relative -mt-3 -mb-3 bg-gradient-to-b from-[#FFF7E0] to-[#FCEEC7] border-x-2 border-festive-brown px-4 py-6">
+      {/* Parchment body - narrower than rollers, pulled up to go under */}
+      <div className="relative -mt-3 -mb-3 mx-3 bg-gradient-to-b from-[#FFF7E0] to-[#FCEEC7] border-2 border-festive-brown px-4 py-6">
         {/* Corner decorations */}
         <div className="absolute top-4 left-2 w-4 h-4 border-l-2 border-t-2 border-festive-brown opacity-60" />
         <div className="absolute top-4 right-2 w-4 h-4 border-r-2 border-t-2 border-festive-brown opacity-60" />
@@ -264,7 +264,7 @@ const ResultPage = () => {
               icon={Home}
               compact
               variant="secondary"
-              className="flex-1"
+              className="flex-1 whitespace-nowrap"
             >
               Trang chủ
             </FestiveButton>
