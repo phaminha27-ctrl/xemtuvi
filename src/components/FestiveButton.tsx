@@ -30,8 +30,9 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative flex items-center w-full px-4 sm:px-6 py-2 cursor-pointer rounded-full overflow-hidden
+        relative flex items-center justify-center w-full cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
+        ${compact ? 'px-3 py-1' : 'px-4 sm:px-6 py-2'}
         ${className}
       `}
       style={{
