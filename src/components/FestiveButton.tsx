@@ -6,7 +6,7 @@ interface FestiveButtonProps {
   children: ReactNode;
   onClick?: () => void;
   icon?: LucideIcon;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "gold";
   compact?: boolean;
   className?: string;
 }
@@ -25,6 +25,13 @@ const FestiveButton = ({
   const gradients = {
     primary: "linear-gradient(180deg, #00A396 0%, #007D75 100%)",
     secondary: "linear-gradient(180deg, #C92A2A 0%, #A61E1E 100%)",
+    gold: "linear-gradient(180deg, #F5D27B 0%, #C49A45 100%)",
+  };
+
+  const textColors = {
+    primary: "#FFF9C4",
+    secondary: "#FFF9C4",
+    gold: "#5d3e21",
   };
 
   return (
@@ -73,8 +80,8 @@ const FestiveButton = ({
         <span
           className="font-extrabold uppercase leading-tight text-sm z-10"
           style={{
-            color: "#FFF9C4",
-            textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
+            color: textColors[variant],
+            textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
           }}
         >
           {children}
@@ -84,8 +91,8 @@ const FestiveButton = ({
           <span
             className="font-extrabold uppercase leading-tight text-sm sm:text-base"
             style={{
-              color: "#FFF9C4",
-              textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
+              color: textColors[variant],
+              textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
             }}
           >
             XEM TỬ VI
@@ -93,8 +100,8 @@ const FestiveButton = ({
           <span
             className="font-extrabold uppercase leading-tight text-base sm:text-lg truncate"
             style={{
-              color: "#FFF9C4",
-              textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
+              color: textColors[variant],
+              textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
             }}
           >
             {children}
