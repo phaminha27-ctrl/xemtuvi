@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Heart, Briefcase, DollarSign, Activity, GraduationCap, Users } from "lucide-react";
+import { Heart, Briefcase, DollarSign, Activity, GraduationCap, Users, Share2, Home } from "lucide-react";
 import FestiveLayout from "@/components/FestiveLayout";
-import ScrollCard from "@/components/ScrollCard";
-import ShareButton from "@/components/ShareButton";
-import horseMascot from "@/assets/horse-mascot.png";
+import FestiveButton from "@/components/FestiveButton";
+import { toast } from "sonner";
 
 interface FormData {
   name: string;
@@ -74,6 +73,43 @@ const detailedResults = {
   },
 };
 
+// Scroll Card Component with traditional scroll design
+const ScrollResultCard = ({ 
+  children, 
+  title,
+  className = "" 
+}: { 
+  children: React.ReactNode; 
+  title?: string;
+  className?: string;
+}) => {
+  return (
+    <div className={`relative ${className}`}>
+      {/* Top roller */}
+      <div className="h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
+      
+      {/* Parchment body */}
+      <div className="relative bg-gradient-to-b from-[#FFF7E0] to-[#FCEEC7] border-x-2 border-festive-brown px-4 py-4">
+        {/* Corner decorations */}
+        <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-festive-brown opacity-60" />
+        <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-festive-brown opacity-60" />
+        <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-festive-brown opacity-60" />
+        <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-festive-brown opacity-60" />
+        
+        {title && (
+          <h3 className="text-festive-red font-bold text-lg text-center mb-3 font-sans">
+            {title}
+          </h3>
+        )}
+        {children}
+      </div>
+      
+      {/* Bottom roller */}
+      <div className="h-6 rounded-full bg-gradient-to-b from-festive-gold via-festive-brown to-festive-gold border-2 border-festive-brown shadow-md" />
+    </div>
+  );
+};
+
 const ResultPage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<FormData | null>(null);
@@ -86,39 +122,50 @@ const ResultPage = () => {
   }, []);
 
   const getScoreColor = (score: number) => {
-    if (score >= 85) return "text-festive-green";
-    if (score >= 70) return "text-festive-gold";
-    return "text-festive-red";
+    if (score >= 85) return "text-green-700";
+    if (score >= 70) return "text-amber-600";
+    return "text-red-700";
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: "Tử Vi Tết Bính Ngọ 2026",
+      text: `Xem kết quả tử vi năm Bính Ngọ 2026 của ${userData?.name || "tôi"}! Điểm vận mệnh: ${detailedResults.overall.score}/100`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(`${shareData.text}\n${window.location.href}`);
+        toast.success("Đã sao chép link để chia sẻ!");
+      }
+    } catch (error) {
+      if ((error as Error).name !== "AbortError") {
+        toast.error("Không thể chia sẻ. Vui lòng thử lại!");
+      }
+    }
   };
 
   return (
     <FestiveLayout>
-      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8">
+      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 font-sans">
         <div className="max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
           {/* Header */}
           <motion.div
-            className="text-center mb-4 sm:mb-6"
+            className="text-center mb-6"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-festive text-2xl sm:text-3xl md:text-4xl text-festive-gold text-shadow-festive">
+            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-festive-gold drop-shadow-lg">
               Kết Quả Tử Vi
             </h1>
             {userData && (
-              <p className="text-festive-cream mt-2">
+              <p className="text-festive-cream mt-2 font-sans">
                 Xin chào, <span className="font-bold">{userData.name}</span>!
               </p>
             )}
-          </motion.div>
-
-          {/* Mascot */}
-          <motion.div
-            className="w-20 h-20 mx-auto mb-4"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
-            <img src={horseMascot} alt="Mascot" className="w-full h-full object-contain" />
           </motion.div>
 
           {/* Overall score */}
@@ -126,20 +173,21 @@ const ResultPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+            className="mb-6"
           >
-            <ScrollCard title={detailedResults.overall.title} className="mb-6">
+            <ScrollResultCard title={detailedResults.overall.title}>
               <div className="text-center mb-4">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-festive-gold to-festive-gold-dark">
-                  <span className="text-3xl font-bold text-festive-brown">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-festive-gold to-festive-brown border-4 border-festive-brown shadow-lg">
+                  <span className="text-3xl font-bold text-white drop-shadow">
                     {detailedResults.overall.score}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-1">Điểm vận mệnh</p>
+                <p className="text-sm text-festive-brown mt-2 font-sans">Điểm vận mệnh</p>
               </div>
-              <p className="text-foreground text-center leading-relaxed">
+              <p className="text-gray-700 text-center leading-relaxed font-sans">
                 {detailedResults.overall.content}
               </p>
-            </ScrollCard>
+            </ScrollResultCard>
           </motion.div>
 
           {/* Category details */}
@@ -151,27 +199,27 @@ const ResultPage = () => {
               transition={{ delay: 0.3 + index * 0.1 }}
               className="mb-4"
             >
-              <ScrollCard>
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-full bg-parchment-dark/50 flex items-center justify-center flex-shrink-0">
-                    <category.icon className="w-7 h-7 text-festive-brown" />
+              <ScrollResultCard>
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-festive-gold to-festive-brown flex items-center justify-center flex-shrink-0 border-2 border-festive-brown shadow">
+                    <category.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-festive-brown text-lg">
+                      <h3 className="font-bold text-festive-brown text-lg font-sans">
                         {category.title}
                       </h3>
-                      <span className={`font-bold text-lg ${getScoreColor(category.score)}`}>
+                      <span className={`font-bold text-lg ${getScoreColor(category.score)} font-sans`}>
                         {category.score}/100
                       </span>
                     </div>
-                    <p className="text-sm text-foreground mb-2">{category.content}</p>
-                    <p className="text-sm text-festive-green italic">
+                    <p className="text-sm text-gray-700 mb-2 font-sans">{category.content}</p>
+                    <p className="text-sm text-green-700 italic font-sans">
                       💡 {category.advice}
                     </p>
                   </div>
                 </div>
-              </ScrollCard>
+              </ScrollResultCard>
             </motion.div>
           ))}
 
@@ -180,46 +228,54 @@ const ResultPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
+            className="mb-6"
           >
-            <ScrollCard title="Thông Tin May Mắn" className="mb-6">
+            <ScrollResultCard title="Thông Tin May Mắn">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-bold text-festive-brown text-sm mb-1">🔢 Số may mắn</h4>
-                  <p className="text-sm">{detailedResults.luckyInfo.numbers.join(", ")}</p>
+                  <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">🔢 Số may mắn</h4>
+                  <p className="text-sm text-gray-700 font-sans">{detailedResults.luckyInfo.numbers.join(", ")}</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-festive-brown text-sm mb-1">🎨 Màu may mắn</h4>
-                  <p className="text-sm">{detailedResults.luckyInfo.colors.join(", ")}</p>
+                  <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">🎨 Màu may mắn</h4>
+                  <p className="text-sm text-gray-700 font-sans">{detailedResults.luckyInfo.colors.join(", ")}</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-festive-brown text-sm mb-1">🧭 Hướng tốt</h4>
-                  <p className="text-sm">{detailedResults.luckyInfo.directions.join(", ")}</p>
+                  <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">🧭 Hướng tốt</h4>
+                  <p className="text-sm text-gray-700 font-sans">{detailedResults.luckyInfo.directions.join(", ")}</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-festive-brown text-sm mb-1">📅 Tháng đẹp</h4>
-                  <p className="text-sm">{detailedResults.luckyInfo.months.join(", ")}</p>
+                  <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">📅 Tháng đẹp</h4>
+                  <p className="text-sm text-gray-700 font-sans">{detailedResults.luckyInfo.months.join(", ")}</p>
                 </div>
               </div>
-            </ScrollCard>
+            </ScrollResultCard>
           </motion.div>
 
-          {/* Actions */}
+          {/* Actions - Two buttons side by side */}
           <motion.div
-            className="flex flex-col items-center gap-4 pb-8"
+            className="flex gap-3 pb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
           >
-            <ShareButton 
-              text={`Xem kết quả tử vi năm Bính Ngọ 2026 của ${userData?.name || "tôi"}! Điểm vận mệnh: ${detailedResults.overall.score}/100`} 
-            />
-
-            <button
-              onClick={() => navigate("/")}
-              className="text-festive-cream underline"
+            <FestiveButton 
+              onClick={handleShare}
+              icon={Share2}
+              compact
+              className="flex-1"
             >
-              ← Về trang chủ
-            </button>
+              Chia sẻ
+            </FestiveButton>
+
+            <FestiveButton
+              onClick={() => navigate("/")}
+              icon={Home}
+              compact
+              className="flex-1"
+            >
+              Trang chủ
+            </FestiveButton>
           </motion.div>
         </div>
       </div>
