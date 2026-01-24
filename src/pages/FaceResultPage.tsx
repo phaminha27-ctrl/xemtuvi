@@ -188,8 +188,10 @@ const FaceResultPage = () => {
             <FestiveButton
               icon={ArrowRight}
               onClick={() => navigate("/form")}
+              compact
+              variant="gold"
             >
-              Xem Chi Tiết Theo Ngày Sinh
+              Xem tử vi theo ngày
             </FestiveButton>
           </motion.div>
 
