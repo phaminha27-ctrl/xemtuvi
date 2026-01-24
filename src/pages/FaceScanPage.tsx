@@ -1,9 +1,9 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, Sparkles } from "lucide-react";
-import FestiveButton from "@/components/FestiveButton";
+import { Camera } from "lucide-react";
 import IconButton from "@/components/IconButton";
+import CaptureButton from "@/components/CaptureButton";
 import scanBackground from "@/assets/scan-background.jpg";
 
 const FaceScanPage = () => {
@@ -81,7 +81,7 @@ const FaceScanPage = () => {
       style={{ backgroundImage: `url(${scanBackground})` }}
     >
       {/* Top buttons */}
-      <div className="absolute top-6 left-4 right-4 flex justify-between items-start z-10">
+      <div className="absolute top-3 left-4 right-4 flex justify-between items-start z-10">
         {/* Back Button */}
         <IconButton onClick={() => navigate("/")} label="QUAY LẠI">
           <svg 
@@ -113,14 +113,15 @@ const FaceScanPage = () => {
         </IconButton>
       </div>
 
-      {/* Camera Frame - Smaller */}
+      {/* Camera Frame - Slightly squared corners */}
       <motion.div
-        className="relative w-56 h-56 md:w-64 md:h-64 rounded-full overflow-hidden border-8 border-festive-gold shadow-2xl mb-8"
+        className="relative w-52 h-52 md:w-60 md:h-60 overflow-hidden border-8 border-festive-gold shadow-2xl mb-8"
+        style={{ borderRadius: "40%" }}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="absolute inset-0 bg-parchment flex items-center justify-center">
+        <div className="absolute inset-0 bg-parchment flex items-center justify-center" style={{ borderRadius: "35%" }}>
           {!isStreaming && !capturedImage && (
             <div className="text-center p-4">
               <Camera className="w-12 h-12 mx-auto text-festive-brown/50 mb-2" />
@@ -136,6 +137,7 @@ const FaceScanPage = () => {
             playsInline
             muted
             className={`w-full h-full object-cover ${isStreaming ? "block" : "hidden"}`}
+            style={{ borderRadius: "35%" }}
           />
           
           {capturedImage && (
@@ -143,6 +145,7 @@ const FaceScanPage = () => {
               src={capturedImage}
               alt="Captured face"
               className="w-full h-full object-cover"
+              style={{ borderRadius: "35%" }}
             />
           )}
         </div>
@@ -150,7 +153,8 @@ const FaceScanPage = () => {
         {/* Scanning overlay */}
         {isStreaming && (
           <motion.div
-            className="absolute inset-0 border-4 border-festive-gold rounded-full"
+            className="absolute inset-0 border-4 border-festive-gold"
+            style={{ borderRadius: "40%" }}
             animate={{
               boxShadow: [
                 "0 0 0 0 rgba(255, 215, 0, 0.4)",
@@ -177,32 +181,20 @@ const FaceScanPage = () => {
       )}
 
       {/* Action buttons */}
-      <div className="flex flex-col gap-4 w-full max-w-xs">
+      <div className="flex flex-col gap-4 items-center">
         {!isStreaming && !capturedImage && (
-          <FestiveButton icon={Camera} onClick={() => startCamera()}>
-            Mở Camera
-          </FestiveButton>
+          <CaptureButton onClick={() => startCamera()} icon="camera" label="MỞ CAMERA" />
         )}
 
         {isStreaming && (
-          <FestiveButton icon={Sparkles} onClick={capturePhoto}>
-            Chụp Ảnh
-          </FestiveButton>
+          <CaptureButton onClick={capturePhoto} icon="camera" label="CHỤP ẢNH" />
         )}
 
         {capturedImage && (
-          <>
-            <FestiveButton icon={Sparkles} onClick={analyzeFace}>
-              Xem Tử Vi
-            </FestiveButton>
-            <FestiveButton
-              icon={Sparkles}
-              variant="secondary"
-              onClick={retake}
-            >
-              Chụp Lại
-            </FestiveButton>
-          </>
+          <div className="flex flex-col gap-4 items-center">
+            <CaptureButton onClick={analyzeFace} icon="sparkles" label="XEM TỬ VI" />
+            <CaptureButton onClick={retake} icon="camera" label="CHỤP LẠI" />
+          </div>
         )}
       </div>
     </div>
