@@ -21,63 +21,63 @@ const CaptureButton = ({ onClick, icon = "camera", label = "CHỤP ẢNH" }: Cap
     >
       {/* Outer ring with 3D base */}
       <div
-        className="w-[160px] h-[160px] rounded-full flex justify-center items-center relative"
+        className="w-[120px] h-[120px] rounded-full flex justify-center items-center relative"
         style={{
-          border: "5px solid #F5D27B",
+          border: "4px solid #F5D27B",
           background: "linear-gradient(180deg, #E63946, #9B1B1B)",
-          boxShadow: "0px 8px 0px 0px #8B5E34, 0px 12px 20px rgba(0,0,0,0.6)",
+          boxShadow: "0px 6px 0px 0px #8B5E34, 0px 10px 16px rgba(0,0,0,0.6)",
         }}
       >
         {/* 4 Diamond Gems */}
         <div
-          className="absolute w-[16px] h-[16px] rounded-[3px] z-10"
+          className="absolute w-[12px] h-[12px] rounded-[2px] z-10"
           style={{
             backgroundColor: "#00A396",
-            border: "2.5px solid #F5D27B",
-            boxShadow: "2px 2px 0px #8B5E34",
+            border: "2px solid #F5D27B",
+            boxShadow: "1px 1px 0px #8B5E34",
             transform: "rotate(45deg)",
-            top: "-11px",
-            left: "calc(50% - 10px)",
+            top: "-8px",
+            left: "calc(50% - 8px)",
           }}
         />
         <div
-          className="absolute w-[16px] h-[16px] rounded-[3px] z-10"
+          className="absolute w-[12px] h-[12px] rounded-[2px] z-10"
           style={{
             backgroundColor: "#00A396",
-            border: "2.5px solid #F5D27B",
-            boxShadow: "2px 2px 0px #8B5E34",
+            border: "2px solid #F5D27B",
+            boxShadow: "1px 1px 0px #8B5E34",
             transform: "rotate(45deg)",
-            bottom: "-11px",
-            left: "calc(50% - 10px)",
+            bottom: "-8px",
+            left: "calc(50% - 8px)",
           }}
         />
         <div
-          className="absolute w-[16px] h-[16px] rounded-[3px] z-10"
+          className="absolute w-[12px] h-[12px] rounded-[2px] z-10"
           style={{
             backgroundColor: "#00A396",
-            border: "2.5px solid #F5D27B",
-            boxShadow: "2px 2px 0px #8B5E34",
+            border: "2px solid #F5D27B",
+            boxShadow: "1px 1px 0px #8B5E34",
             transform: "rotate(45deg)",
-            left: "-11px",
-            top: "calc(50% - 10px)",
+            left: "-8px",
+            top: "calc(50% - 8px)",
           }}
         />
         <div
-          className="absolute w-[16px] h-[16px] rounded-[3px] z-10"
+          className="absolute w-[12px] h-[12px] rounded-[2px] z-10"
           style={{
             backgroundColor: "#00A396",
-            border: "2.5px solid #F5D27B",
-            boxShadow: "2px 2px 0px #8B5E34",
+            border: "2px solid #F5D27B",
+            boxShadow: "1px 1px 0px #8B5E34",
             transform: "rotate(45deg)",
-            right: "-11px",
-            top: "calc(50% - 10px)",
+            right: "-8px",
+            top: "calc(50% - 8px)",
           }}
         />
 
         {/* Inner capture button */}
         <motion.button
           onClick={onClick}
-          className="w-[140px] h-[140px] rounded-full flex flex-col justify-center items-center relative overflow-hidden outline-none cursor-pointer"
+          className="w-[105px] h-[105px] rounded-full flex flex-col justify-center items-center relative overflow-hidden outline-none cursor-pointer"
           style={{
             border: "2.2px solid #F5D27B",
             backgroundImage: `${wavePattern}, linear-gradient(180deg, #E63946, #9B1B1B)`,
@@ -103,19 +103,19 @@ const CaptureButton = ({ onClick, icon = "camera", label = "CHỤP ẢNH" }: Cap
 
           {/* Icon */}
           <IconComponent
-            className="w-12 h-12 mb-1 relative z-10"
+            className="w-9 h-9 mb-1 relative z-10"
             style={{
               color: "#FFF9C4",
-              filter: "drop-shadow(0px 3px 2px rgba(0,0,0,0.3)) sepia(30%) hue-rotate(5deg)",
+              filter: "drop-shadow(0px 2px 2px rgba(0,0,0,0.3)) sepia(30%) hue-rotate(5deg)",
             }}
           />
 
           {/* Label */}
           <span
-            className="text-[17px] font-black uppercase relative z-10"
+            className="text-[13px] font-black uppercase relative z-10"
             style={{
               color: "#FFF9C4",
-              textShadow: "2px 2px 2px rgba(0, 0, 0, 0.8)",
+              textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)",
             }}
           >
             {label}
