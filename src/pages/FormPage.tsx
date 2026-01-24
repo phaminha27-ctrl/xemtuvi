@@ -112,7 +112,7 @@ const FormPage = () => {
           >
             {/* Title */}
             <h2 
-              className="text-center mb-5 text-2xl font-bold font-charm"
+              className="text-center mb-5 text-2xl font-bold"
               style={{
                 color: "#830000",
               }}
