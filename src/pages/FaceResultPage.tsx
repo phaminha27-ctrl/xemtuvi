@@ -4,6 +4,7 @@ import { Heart, Briefcase, DollarSign, Activity, ArrowRight, Share2, Home } from
 import FestiveLayout from "@/components/FestiveLayout";
 import FestiveButton from "@/components/FestiveButton";
 import { toast } from "sonner";
+import resultBackground from "@/assets/result-background.jpg";
 
 const faceResultData = {
   summary: "Khuôn mặt bạn toát lên khí chất vương giả, năm Bính Ngọ 2026 sẽ là năm hanh thông với nhiều cơ hội phát triển sự nghiệp và tình duyên tốt đẹp.",
@@ -98,8 +99,15 @@ const FaceResultPage = () => {
   };
 
   return (
-    <FestiveLayout>
-      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 font-sans">
+    <div className="relative min-h-screen">
+      {/* Background image */}
+      <img 
+        src={resultBackground} 
+        alt="" 
+        className="fixed inset-0 w-full h-full object-cover"
+      />
+      
+      <div className="relative z-10 min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 font-sans">
         <div className="max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
           {/* Header */}
           <motion.div
@@ -213,7 +221,7 @@ const FaceResultPage = () => {
           </motion.div>
         </div>
       </div>
-    </FestiveLayout>
+    </div>
   );
 };
 
