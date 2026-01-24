@@ -68,20 +68,20 @@ const FestiveButton = ({
       {/* Text group */}
       <div className="flex flex-col text-left z-10">
         <span
-          className="font-extrabold uppercase leading-tight"
+          className="font-extrabold uppercase leading-tight whitespace-nowrap"
           style={{
             color: "#FFF9C4",
-            fontSize: "20px",
+            fontSize: "18px",
             textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
           }}
         >
           XEM TỬ VI
         </span>
         <span
-          className="font-extrabold uppercase leading-tight"
+          className="font-extrabold uppercase leading-tight whitespace-nowrap"
           style={{
             color: "#FFF9C4",
-            fontSize: "24px",
+            fontSize: "20px",
             textShadow: "1px 2px 3px rgba(0, 0, 0, 0.4)",
           }}
         >
