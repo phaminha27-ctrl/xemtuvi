@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Heart, Briefcase, DollarSign, Activity, GraduationCap, Users, Share2, Home } from "lucide-react";
-import FestiveLayout from "@/components/FestiveLayout";
 import FestiveButton from "@/components/FestiveButton";
 import { toast } from "sonner";
+import resultBackground from "@/assets/result-background.jpg";
 
 interface FormData {
   name: string;
@@ -155,8 +155,15 @@ const ResultPage = () => {
   };
 
   return (
-    <FestiveLayout>
-      <div className="min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 font-sans">
+    <div className="relative min-h-screen">
+      {/* Background image */}
+      <img 
+        src={resultBackground} 
+        alt="" 
+        className="fixed inset-0 w-full h-full object-cover"
+      />
+      
+      <div className="relative z-10 min-h-screen px-4 sm:px-6 md:px-8 py-6 sm:py-8 font-sans">
         <div className="max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
           {/* Header */}
           <motion.div
@@ -286,7 +293,7 @@ const ResultPage = () => {
           </motion.div>
         </div>
       </div>
-    </FestiveLayout>
+    </div>
   );
 };
 
