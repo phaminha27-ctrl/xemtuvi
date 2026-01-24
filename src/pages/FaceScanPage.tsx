@@ -113,11 +113,11 @@ const FaceScanPage = () => {
         </IconButton>
       </div>
 
-      {/* Top half - Scan frame centered */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-14">
+      {/* Center area - Scan frame centered vertically */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6">
         {/* Instruction text */}
         <p 
-          className="text-sm font-medium mb-3"
+          className="text-sm font-medium mb-4"
           style={{ 
             color: "#FFF9C4",
             textShadow: "0 2px 4px rgba(0,0,0,0.6)"
@@ -128,37 +128,37 @@ const FaceScanPage = () => {
 
         {/* Camera Frame - Rounded square with corner accents */}
         <motion.div
-          className="relative w-48 h-48 md:w-56 md:h-56"
+          className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Corner borders with glow effect */}
-          <div 
-            className="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 rounded-tl-2xl"
-            style={{ 
-              borderColor: "#F5D27B",
+        {/* Corner borders with glow effect */}
+        <div 
+          className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 rounded-tl-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
               filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
             }} 
-          />
-          <div 
-            className="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 rounded-tr-2xl"
-            style={{ 
-              borderColor: "#F5D27B",
+        />
+        <div 
+          className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 rounded-tr-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
               filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
             }} 
-          />
-          <div 
-            className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 rounded-bl-2xl"
-            style={{ 
-              borderColor: "#F5D27B",
+        />
+        <div 
+          className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 rounded-bl-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
               filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
             }} 
-          />
-          <div 
-            className="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 rounded-br-2xl"
-            style={{ 
-              borderColor: "#F5D27B",
+        />
+        <div 
+          className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 rounded-br-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
               filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
             }} 
           />
