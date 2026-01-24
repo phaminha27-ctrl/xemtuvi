@@ -115,30 +115,57 @@ const FaceScanPage = () => {
 
       {/* Camera Frame - Rounded square with corner accents */}
       <motion.div
-        className="relative w-56 h-56 md:w-64 md:h-64 mt-8 mb-6"
+        className="relative w-48 h-48 md:w-56 md:h-56 mt-16 mb-4"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Corner borders */}
-        <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-festive-gold rounded-tl-3xl" />
-        <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-festive-gold rounded-tr-3xl" />
-        <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-festive-gold rounded-bl-3xl" />
-        <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-festive-gold rounded-br-3xl" />
+        {/* Corner borders with glow effect */}
+        <div 
+          className="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 rounded-tl-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
+            filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
+          }} 
+        />
+        <div 
+          className="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 rounded-tr-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
+            filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
+          }} 
+        />
+        <div 
+          className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 rounded-bl-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
+            filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
+          }} 
+        />
+        <div 
+          className="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 rounded-br-2xl"
+          style={{ 
+            borderColor: "#F5D27B",
+            filter: "drop-shadow(0 0 6px rgba(245, 210, 123, 0.8))"
+          }} 
+        />
 
-        {/* Inner content area */}
-        <div className="absolute inset-2 rounded-2xl overflow-hidden flex items-center justify-center bg-black/20">
+        {/* Inner content area - light fill */}
+        <div 
+          className="absolute inset-2 rounded-xl overflow-hidden flex items-center justify-center"
+          style={{ backgroundColor: "rgba(255, 250, 240, 0.85)" }}
+        >
           {!isStreaming && !capturedImage && (
             <div className="text-center p-4">
-              {/* Face icon */}
+              {/* Face icon - matching border color */}
               <svg 
-                className="w-16 h-16 mx-auto"
+                className="w-14 h-14 mx-auto"
                 viewBox="0 0 24 24"
                 style={{ 
                   fill: "none",
-                  stroke: "#FFF9C4",
-                  strokeWidth: 1.5,
-                  opacity: 0.7
+                  stroke: "#F5D27B",
+                  strokeWidth: 1.8,
+                  filter: "drop-shadow(0 0 4px rgba(245, 210, 123, 0.6))"
                 }}
               >
                 <circle cx="12" cy="8" r="5" />
@@ -167,11 +194,12 @@ const FaceScanPage = () => {
         {/* Scanning overlay */}
         {isStreaming && (
           <motion.div
-            className="absolute inset-2 rounded-2xl border-2 border-festive-gold"
+            className="absolute inset-2 rounded-xl"
+            style={{ border: "2px solid #F5D27B" }}
             animate={{
               boxShadow: [
-                "0 0 0 0 rgba(255, 215, 0, 0.4)",
-                "0 0 0 15px rgba(255, 215, 0, 0)",
+                "0 0 0 0 rgba(245, 210, 123, 0.5)",
+                "0 0 0 12px rgba(245, 210, 123, 0)",
               ],
             }}
             transition={{ duration: 1.5, repeat: Infinity }}
