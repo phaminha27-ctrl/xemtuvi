@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
+import IconButton from "@/components/IconButton";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -37,18 +37,9 @@ const FormPage = () => {
   const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"));
   const years = Array.from({ length: 100 }, (_, i) => String(2026 - i));
   const hours = [
-    "Tý (23h-1h)",
-    "Sửu (1h-3h)",
-    "Dần (3h-5h)",
-    "Mão (5h-7h)",
-    "Thìn (7h-9h)",
-    "Tỵ (9h-11h)",
-    "Ngọ (11h-13h)",
-    "Mùi (13h-15h)",
-    "Thân (15h-17h)",
-    "Dậu (17h-19h)",
-    "Tuất (19h-21h)",
-    "Hợi (21h-23h)",
+    "Tý (23h-1h)", "Sửu (1h-3h)", "Dần (3h-5h)", "Mão (5h-7h)",
+    "Thìn (7h-9h)", "Tỵ (9h-11h)", "Ngọ (11h-13h)", "Mùi (13h-15h)",
+    "Thân (15h-17h)", "Dậu (17h-19h)", "Tuất (19h-21h)", "Hợi (21h-23h)",
     "Không rõ",
   ];
 
@@ -61,45 +52,59 @@ const FormPage = () => {
         className="fixed inset-0 w-full h-full object-cover object-center"
       />
 
+      {/* Back button */}
+      <div className="absolute top-3 left-4 z-20">
+        <IconButton onClick={() => navigate("/")} label="QUAY LẠI">
+          <svg 
+            className="w-7 h-7" 
+            viewBox="0 0 24 24"
+            style={{ 
+              fill: "#FFF9C4",
+              filter: "drop-shadow(0px 2px 2px rgba(0,0,0,0.5))"
+            }}
+          >
+            <path d="M19 11H7.83l4.88-4.88L11 4l-8 8 8 8 1.71-1.71L7.83 13H19v-2z"/>
+          </svg>
+        </IconButton>
+      </div>
+
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col justify-center py-4">
         {/* Form area - centered in the scroll area of background */}
-        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 mt-[28vh] sm:mt-[32vh]">
+        <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 mt-[26vh] sm:mt-[28vh]">
           <motion.div
-            className="w-full max-w-[220px] sm:max-w-[260px] md:max-w-[300px]"
+            className="w-full max-w-[200px] sm:max-w-[220px] md:max-w-[260px]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            {/* Form fields without frame */}
-            <div className="space-y-1.5 sm:space-y-2">
+            {/* Form fields */}
+            <div className="space-y-1">
               {/* Name */}
               <div>
-                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Họ và tên</Label>
+                <span className="text-festive-brown font-semibold text-xs">Họ và tên</span>
                 <Input
-                  placeholder="Nhập họ tên của bạn"
+                  placeholder="Nhập họ tên"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 bg-parchment-light/90 border-festive-brown/40 text-festive-brown placeholder:text-festive-brown/50"
+                  className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown placeholder:text-festive-brown/50"
                 />
               </div>
 
               {/* Birth date */}
               <div>
-                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Ngày sinh (Dương lịch)</Label>
-                <div className="grid grid-cols-3 gap-2 mt-1">
+                <span className="text-festive-brown font-semibold text-xs">Ngày sinh (Dương lịch)</span>
+                <div className="grid grid-cols-3 gap-1">
                   <Select
                     value={formData.birthDay}
                     onValueChange={(value) => setFormData({ ...formData, birthDay: value })}
                   >
-                    <SelectTrigger className="bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
+                    <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                       <SelectValue placeholder="Ngày" />
                     </SelectTrigger>
                     <SelectContent>
                       {days.map((day) => (
-                        <SelectItem key={day} value={day}>
-                          {day}
-                        </SelectItem>
+                        <SelectItem key={day} value={day}>{day}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -108,14 +113,12 @@ const FormPage = () => {
                     value={formData.birthMonth}
                     onValueChange={(value) => setFormData({ ...formData, birthMonth: value })}
                   >
-                    <SelectTrigger className="bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
+                    <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                       <SelectValue placeholder="Tháng" />
                     </SelectTrigger>
                     <SelectContent>
                       {months.map((month) => (
-                        <SelectItem key={month} value={month}>
-                          Tháng {month}
-                        </SelectItem>
+                        <SelectItem key={month} value={month}>Tháng {month}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -124,14 +127,12 @@ const FormPage = () => {
                     value={formData.birthYear}
                     onValueChange={(value) => setFormData({ ...formData, birthYear: value })}
                   >
-                    <SelectTrigger className="bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
+                    <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                       <SelectValue placeholder="Năm" />
                     </SelectTrigger>
                     <SelectContent>
                       {years.map((year) => (
-                        <SelectItem key={year} value={year}>
-                          {year}
-                        </SelectItem>
+                        <SelectItem key={year} value={year}>{year}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -140,12 +141,12 @@ const FormPage = () => {
 
               {/* Gender */}
               <div>
-                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Giới tính</Label>
+                <span className="text-festive-brown font-semibold text-xs">Giới tính</span>
                 <Select
                   value={formData.gender}
                   onValueChange={(value) => setFormData({ ...formData, gender: value })}
                 >
-                  <SelectTrigger className="mt-1 bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
+                  <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                     <SelectValue placeholder="Chọn giới tính" />
                   </SelectTrigger>
                   <SelectContent>
@@ -157,26 +158,24 @@ const FormPage = () => {
 
               {/* Birth hour */}
               <div>
-                <Label className="text-festive-brown font-semibold text-sm sm:text-base">Giờ sinh (tùy chọn)</Label>
+                <span className="text-festive-brown font-semibold text-xs">Giờ sinh (tùy chọn)</span>
                 <Select
                   value={formData.birthHour}
                   onValueChange={(value) => setFormData({ ...formData, birthHour: value })}
                 >
-                  <SelectTrigger className="mt-1 bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
+                  <SelectTrigger className="h-7 text-xs bg-parchment-light/90 border-festive-brown/40 text-festive-brown">
                     <SelectValue placeholder="Chọn giờ sinh" />
                   </SelectTrigger>
                   <SelectContent>
                     {hours.map((hour) => (
-                      <SelectItem key={hour} value={hour}>
-                        {hour}
-                      </SelectItem>
+                      <SelectItem key={hour} value={hour}>{hour}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Submit button */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <FestiveButton
                   icon={Sparkles}
                   onClick={handleSubmit}
@@ -185,13 +184,6 @@ const FormPage = () => {
                   Xem Tử Vi
                 </FestiveButton>
               </div>
-
-              <button
-                onClick={() => navigate("/")}
-                className="w-full text-center text-festive-brown font-medium underline text-sm sm:text-base"
-              >
-                ← Quay lại trang chủ
-              </button>
             </div>
           </motion.div>
         </div>
