@@ -1,32 +1,17 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import FestiveLayout from "@/components/FestiveLayout";
 import loadingMascot from "@/assets/loading-mascot.png";
-
-const loadingMessages = [
-  "Đang phân tích vận mệnh...",
-  "Xem xét ngũ hành...",
-  "Tính toán lá số tử vi...",
-  "Dự đoán tài lộc...",
-  "Phân tích tình duyên...",
-  "Hoàn tất kết quả...",
-];
+import formBackground from "@/assets/form-background.jpg";
 
 const LoadingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [messageIndex, setMessageIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
   const scanType = location.state?.type || "form";
 
   useEffect(() => {
-    // Update message every 800ms
-    const messageInterval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % loadingMessages.length);
-    }, 800);
-
     // Update progress
     const progressInterval = setInterval(() => {
       setProgress((prev) => Math.min(prev + 2, 100));
@@ -42,49 +27,61 @@ const LoadingPage = () => {
     }, 5000);
 
     return () => {
-      clearInterval(messageInterval);
       clearInterval(progressInterval);
       clearTimeout(timeout);
     };
   }, [navigate, scanType]);
 
   return (
-    <FestiveLayout>
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8">
-        {/* Loading mascot with glow effect */}
+    <div className="fixed inset-0 z-50">
+      {/* Background image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${formBackground})` }}
+      />
+      
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/60" />
+      
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+        {/* Loading mascot with floating animation */}
         <motion.div 
-          className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 mb-6 sm:mb-8"
+          className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 mb-8"
           animate={{ 
-            rotate: [0, 360],
-            scale: [1, 1.05, 1]
+            y: [0, -15, 0],
+            scale: [1, 1.02, 1]
           }}
           transition={{ 
-            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+            y: { duration: 2, repeat: Infinity, ease: "easeInOut" },
             scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
           }}
         >
           <img
             src={loadingMascot}
             alt="Loading mascot"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain drop-shadow-2xl"
           />
         </motion.div>
 
         {/* Loading text */}
-        <motion.p
-          key={messageIndex}
-          className="text-festive-cream text-lg sm:text-xl md:text-2xl font-medium text-center mb-4 sm:mb-6 px-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-        >
-          {loadingMessages[messageIndex]}
-        </motion.p>
+        <div className="text-center mb-6">
+          <motion.h2
+            className="text-festive-gold text-2xl sm:text-3xl font-bold mb-2"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            ĐANG LUẬN GIẢI
+          </motion.h2>
+          <p className="text-festive-cream text-base sm:text-lg">
+            Xin chờ một chút...
+          </p>
+        </div>
 
-        {/* Progress bar */}
-        <div className="w-56 sm:w-64 md:w-80 h-3 sm:h-4 bg-parchment rounded-full overflow-hidden border-2 border-festive-gold">
+        {/* Progress bar - red to yellow gradient */}
+        <div className="w-64 sm:w-72 md:w-80 h-3 bg-black/40 rounded-full overflow-hidden border border-festive-gold/50">
           <motion.div
-            className="h-full bg-gradient-to-r from-festive-red via-festive-gold to-festive-green"
+            className="h-full bg-gradient-to-r from-festive-red to-festive-gold"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.1 }}
@@ -92,30 +89,9 @@ const LoadingPage = () => {
         </div>
 
         {/* Percentage */}
-        <p className="text-festive-gold font-bold text-lg mt-2">{progress}%</p>
-
-        {/* Decorative sparkles */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-festive-gold rounded-full"
-            style={{
-              top: `${20 + Math.random() * 60}%`,
-              left: `${10 + Math.random() * 80}%`,
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-          />
-        ))}
+        <p className="text-festive-gold font-bold text-sm mt-2">{progress}%</p>
       </div>
-    </FestiveLayout>
+    </div>
   );
 };
 
