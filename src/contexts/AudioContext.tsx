@@ -83,11 +83,14 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [settings.bgMusicEnabled, bgMusicStarted]);
 
   const startBgMusic = useCallback(() => {
-    if (bgMusicRef.current && settings.bgMusicEnabled && !bgMusicStarted) {
-      bgMusicRef.current.play().catch(() => {});
+    if (bgMusicRef.current && !bgMusicStarted) {
       setBgMusicStarted(true);
+      if (settings.bgMusicEnabled) {
+        bgMusicRef.current.volume = settings.bgMusicVolume;
+        bgMusicRef.current.play().catch(() => {});
+      }
     }
-  }, [settings.bgMusicEnabled, bgMusicStarted]);
+  }, [settings.bgMusicEnabled, settings.bgMusicVolume, bgMusicStarted]);
 
   const playClickSound = useCallback(() => {
     if (settings.clickSoundEnabled) {
