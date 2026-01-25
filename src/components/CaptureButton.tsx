@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Camera, Sparkles } from "lucide-react";
+import buttonClickSound from "@/assets/button-click.mp3";
 
 interface CaptureButtonProps {
   onClick: () => void;
@@ -76,7 +77,12 @@ const CaptureButton = ({ onClick, icon = "camera", label = "CHỤP ẢNH" }: Cap
 
         {/* Inner capture button */}
         <motion.button
-          onClick={onClick}
+          onClick={() => {
+            const audio = new Audio(buttonClickSound);
+            audio.volume = 0.5;
+            audio.play().catch(() => {});
+            onClick();
+          }}
           className="w-[105px] h-[105px] rounded-full flex flex-col justify-center items-center relative overflow-hidden outline-none cursor-pointer"
           style={{
             border: "2.2px solid #F5D27B",
