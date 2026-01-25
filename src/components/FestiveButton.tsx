@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import { LucideIcon } from "lucide-react";
+import buttonClickSound from "@/assets/button-click.mp3";
 
 interface FestiveButtonProps {
   children: ReactNode;
@@ -48,7 +49,12 @@ const FestiveButton = ({
         backgroundRepeat: "repeat",
         boxShadow: "0px 6px 0px 0px #8B5E34",
       }}
-      onClick={onClick}
+      onClick={() => {
+        const audio = new Audio(buttonClickSound);
+        audio.volume = 0.5;
+        audio.play().catch(() => {});
+        onClick?.();
+      }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98, y: 3, boxShadow: "0px 3px 0px 0px #8B5E34" }}
       initial={{ opacity: 0, y: 20 }}
