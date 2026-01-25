@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { ReactNode, useCallback } from "react";
+import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
-import buttonClickSound from "@/assets/button-click.mp3";
+import { useAudio } from "@/contexts/AudioContext";
 
 interface FestiveButtonProps {
   children: ReactNode;
@@ -20,6 +20,7 @@ const FestiveButton = ({
   compact = false,
   className = "",
 }: FestiveButtonProps) => {
+  const { playClickSound, startBgMusic } = useAudio();
   // Wave pattern SVG as data URI
   const wavePattern = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1' stroke-opacity='0.2'%3E%3Cpath d='M0 20 A20 20 0 0 1 40 20'/%3E%3Cpath d='M5 20 A15 15 0 0 1 35 20'/%3E%3Cpath d='M10 20 A10 10 0 0 1 30 20'/%3E%3Cpath d='M15 20 A5 5 0 0 1 25 20'/%3E%3C/g%3E%3C/svg%3E")`;
 
@@ -50,9 +51,8 @@ const FestiveButton = ({
         boxShadow: "0px 6px 0px 0px #8B5E34",
       }}
       onClick={() => {
-        const audio = new Audio(buttonClickSound);
-        audio.volume = 0.5;
-        audio.play().catch(() => {});
+        playClickSound();
+        startBgMusic();
         onClick?.();
       }}
       whileHover={{ scale: 1.02 }}
