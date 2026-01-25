@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import buttonClickSound from "@/assets/button-click.mp3";
 
 interface IconButtonProps {
   onClick: () => void;
@@ -17,7 +18,12 @@ const IconButton = ({ onClick, label, children }: IconButtonProps) => {
       transition={{ duration: 0.3 }}
     >
       <motion.button
-        onClick={onClick}
+        onClick={() => {
+          const audio = new Audio(buttonClickSound);
+          audio.volume = 0.5;
+          audio.play().catch(() => {});
+          onClick();
+        }}
         className="relative w-[70px] h-[50px] rounded-[20px] cursor-pointer flex justify-center items-center outline-none"
         style={{
           border: "3px solid #F5D27B",
