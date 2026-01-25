@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, Calendar } from "lucide-react";
+import { Camera, Calendar, Settings } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
+import IconButton from "@/components/IconButton";
+import SettingsModal from "@/components/SettingsModal";
 import homeBackground from "@/assets/home-background.png";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -16,6 +20,19 @@ const HomePage = () => {
         className="fixed inset-0 w-full h-full object-cover object-center"
         aria-hidden="true"
       />
+
+      {/* Settings Button - Top Right */}
+      <div className="absolute top-3 right-4 z-20">
+        <IconButton onClick={() => setIsSettingsOpen(true)} label="CÀI ĐẶT">
+          <Settings 
+            className="w-7 h-7" 
+            style={{ 
+              color: "#FFF9C4",
+              filter: "drop-shadow(0px 2px 2px rgba(0,0,0,0.5))"
+            }}
+          />
+        </IconButton>
+      </div>
       
       {/* Top half - empty for background */}
       <div className="flex-1 relative z-10" />
@@ -53,6 +70,9 @@ const HomePage = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );
 };
