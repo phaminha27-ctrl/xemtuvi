@@ -72,10 +72,11 @@ const HomePage = () => {
           >
             <FestiveButton
               icon={Hash}
+              variant="orange"
               onClick={() => navigate("/numerology")}
               className="w-full"
             >
-              Thần Số Học
+              Xem Thần Số Học
             </FestiveButton>
           </motion.div>
 
@@ -86,11 +87,11 @@ const HomePage = () => {
           >
             <FestiveButton
               icon={Sparkles}
-              variant="secondary"
+              variant="purple"
               onClick={() => navigate("/tarot")}
               className="w-full"
             >
-              Bói Bài Tarot
+              Xem Tarot
             </FestiveButton>
           </motion.div>
         </div>
