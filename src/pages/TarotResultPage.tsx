@@ -1,73 +1,18 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Share2, Home, Sparkles, Loader2 } from "lucide-react";
+import { Share2, Home, Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import { toast } from "sonner";
 import resultBackground from "@/assets/result-background.jpg";
 import { TarotCard, getCardImageUrl } from "@/hooks/useTarotCards";
-import { supabase } from "@/integrations/supabase/client";
+import { 
+  getInterpretation, 
+  getAdvice, 
+  synthesizeReading,
+  SynthesisResult 
+} from "@/services/tarot-logic";
 
-const categoryNames: { [key: string]: string } = {
-  love: "Tình Yêu",
-  career: "Sự Nghiệp",
-  finance: "Tài Chính",
-  family: "Gia Đình",
-  health: "Sức Khỏe",
-};
-
-const categoryContext: { [key: string]: string } = {
-  love: "Tình yêu",
-  career: "Sự nghiệp",
-  finance: "Tài chính",
-  family: "Gia đình",
-  health: "Sức khỏe",
-};
-
-const cardPositionLabels = ["Quá Khứ", "Hiện Tại", "Tương Lai"];
-const cardIcons = ["🌙", "☀️", "⭐"];
-
-// Translate tarot card meanings using AI
-const translateTarotMeanings = async (
-  cards: TarotCard[],
-  category: string
-): Promise<string[]> => {
-  try {
-    const { data, error } = await supabase.functions.invoke("translate-tarot", {
-      body: {
-        cards: cards.map((card, index) => ({
-          name: card.name,
-          meaning_up: card.meaning_up,
-          meaning_rev: card.meaning_rev,
-          isReversed: card.isReversed || false,
-          position: cardPositionLabels[index],
-          category: categoryContext[category] || "Cuộc sống",
-        })),
-      },
-    });
-
-    if (error) {
-      console.error("Translation error:", error);
-      throw error;
-    }
-
-    const interpretations = data.interpretations || [];
-    return cards.map((_, index) => {
-      const found = interpretations.find((i: { index: number; interpretation: string }) => i.index === index);
-      return found?.interpretation || "";
-    });
-  } catch (error) {
-    console.error("Failed to translate tarot meanings:", error);
-    throw error;
-  }
-};
-
-// Fallback interpretation
-const getFallbackInterpretation = (card: TarotCard, category: string, position: string): string => {
-  const meaning = card.isReversed ? card.meaning_rev : card.meaning_up;
-  const reversedNote = card.isReversed ? " (Lá ngược)" : "";
-  return `${position}: Lá ${card.name}${reversedNote} mang thông điệp: "${meaning}".`;
-};
 
 const ScrollResultCard = ({ 
   children, 
@@ -103,9 +48,7 @@ const TarotResultPage = () => {
   const [cards, setCards] = useState<TarotCard[]>([]);
   const [category, setCategory] = useState("love");
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
-  const [aiInterpretations, setAiInterpretations] = useState<string[]>([]);
-  const [isLoadingAi, setIsLoadingAi] = useState(false);
-  const [aiError, setAiError] = useState(false);
+  const [synthesis, setSynthesis] = useState<SynthesisResult | null>(null);
 
   useEffect(() => {
     const storedCards = sessionStorage.getItem("tarotCards");
@@ -123,21 +66,13 @@ const TarotResultPage = () => {
       setCategory(parsedCategory);
     }
 
-    // Call AI to translate meanings
-    if (parsedCards.length > 0) {
-      setIsLoadingAi(true);
-      setAiError(false);
-      translateTarotMeanings(parsedCards, parsedCategory)
-        .then((interpretations) => {
-          setAiInterpretations(interpretations);
-          setIsLoadingAi(false);
-        })
-        .catch((error) => {
-          console.error("AI translation failed:", error);
-          setAiError(true);
-          setIsLoadingAi(false);
-          toast.error("Không thể kết nối AI. Hiển thị ý nghĩa gốc.");
-        });
+    // Synthesize reading locally
+    if (parsedCards.length >= 3) {
+      const result = synthesizeReading(
+        parsedCards.map(c => ({ name: c.name, isReversed: c.isReversed })),
+        parsedCategory
+      );
+      setSynthesis(result);
     }
   }, []);
 
@@ -164,14 +99,6 @@ const TarotResultPage = () => {
 
   const handleImageError = (nameShort: string) => {
     setImageErrors(prev => new Set(prev).add(nameShort));
-  };
-
-  // Get interpretation for a card (AI or fallback)
-  const getInterpretation = (card: TarotCard, index: number): string => {
-    if (aiInterpretations[index]) {
-      return aiInterpretations[index];
-    }
-    return getFallbackInterpretation(card, category, cardPositionLabels[index]);
   };
 
   return (
@@ -240,24 +167,8 @@ const TarotResultPage = () => {
             </ScrollResultCard>
           </motion.div>
 
-          {/* AI Loading Indicator */}
-          {isLoadingAi && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-4"
-            >
-              <ScrollResultCard>
-                <div className="flex items-center justify-center gap-3 py-4">
-                  <Loader2 className="w-6 h-6 text-festive-gold animate-spin" />
-                  <p className="text-festive-brown font-sans">Đang phân tích bài Tarot với AI...</p>
-                </div>
-              </ScrollResultCard>
-            </motion.div>
-          )}
-
-          {/* Overall Interpretation */}
-          {!isLoadingAi && (
+          {/* Overall Interpretation with Synthesis */}
+          {synthesis && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -265,24 +176,31 @@ const TarotResultPage = () => {
               className="mb-4"
             >
               <ScrollResultCard title="Luận Giải Tổng Quan">
-                <div className="flex items-start gap-3 mb-4">
+                <div className="flex items-start gap-3 mb-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-festive-red to-festive-brown flex items-center justify-center flex-shrink-0 border-2 border-festive-gold/30 shadow-lg">
                     <Sparkles className="w-6 h-6 text-festive-cream" />
                   </div>
-                  <p className="text-sm text-festive-brown font-sans leading-relaxed">
-                    Với bộ ba lá bài {cards.map(c => c.name).join(", ")}, 
-                    tổng quan về {categoryNames[category].toLowerCase()} của bạn cho thấy một hành trình 
-                    từ quá khứ đến tương lai đầy ý nghĩa. Mỗi lá bài mang thông điệp riêng, 
-                    kết hợp lại sẽ vẽ nên bức tranh toàn cảnh cho lĩnh vực này.
-                  </p>
+                  <div>
+                    <p className="text-sm text-festive-brown font-sans leading-relaxed mb-2">
+                      {synthesis.overview}
+                    </p>
+                    <p className="text-xs text-festive-brown/70 font-sans">
+                      Năng lượng tổng thể: <span className="font-semibold text-festive-red">{synthesis.vibeDescriptor}</span>
+                    </p>
+                  </div>
                 </div>
+                <p className="text-sm text-festive-brown/80 font-sans italic border-t border-festive-brown/20 pt-3">
+                  💡 {synthesis.generalAdvice}
+                </p>
               </ScrollResultCard>
             </motion.div>
           )}
 
           {/* Individual Card Interpretations */}
-          {!isLoadingAi && cards.map((card, index) => {
+          {cards.map((card, index) => {
             const hasImageError = imageErrors.has(card.name_short);
+            const interpretation = getInterpretation(card.name, card.isReversed || false, cardPositionLabels[index], category);
+            const advice = getAdvice(card.name, card.isReversed || false);
             return (
               <motion.div
                 key={card.name_short}
@@ -326,8 +244,13 @@ const TarotResultPage = () => {
                         {card.name}
                       </h3>
                       <p className="text-sm text-festive-brown/80 font-sans mt-2 leading-relaxed">
-                        {getInterpretation(card, index)}
+                        {interpretation}
                       </p>
+                      {advice && (
+                        <p className="text-xs text-festive-red font-sans mt-2 italic">
+                          👉 {advice}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </ScrollResultCard>
@@ -336,22 +259,20 @@ const TarotResultPage = () => {
           })}
 
           {/* Advice */}
-          {!isLoadingAi && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              className="mb-6"
-            >
-              <ScrollResultCard title="Lời Khuyên">
-                <p className="text-sm text-festive-brown text-center leading-relaxed font-sans">
-                  Hãy nhớ rằng Tarot chỉ là công cụ hướng dẫn, không phải định mệnh cố định. 
-                  Bạn có quyền tự do lựa chọn và thay đổi cuộc sống của mình. 
-                  Hãy lấy những thông điệp này làm nguồn cảm hứng để hành động tích cực! 🌟
-                </p>
-              </ScrollResultCard>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="mb-6"
+          >
+            <ScrollResultCard title="Lưu Ý">
+              <p className="text-sm text-festive-brown text-center leading-relaxed font-sans">
+                Tarot chỉ là công cụ tham khảo, không phải định mệnh cố định. 
+                Bạn có quyền tự do lựa chọn và thay đổi cuộc sống của mình. 
+                Hãy lấy những thông điệp này làm nguồn cảm hứng để hành động! 🌟
+              </p>
+            </ScrollResultCard>
+          </motion.div>
 
           {/* Actions */}
           <motion.div
