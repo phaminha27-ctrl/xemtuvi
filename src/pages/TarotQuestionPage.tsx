@@ -35,12 +35,14 @@ const TarotQuestionPage = () => {
   }, []);
 
   const handleContinue = () => {
+    if (!question.trim()) {
+      return; // Don't proceed if question is empty
+    }
+    
     playClickSound();
     startBgMusic();
     
-    // Store question (default to general reading if empty)
-    sessionStorage.setItem("tarotQuestion", question.trim() || "Xem tổng quan cuộc sống");
-    
+    sessionStorage.setItem("tarotQuestion", question.trim());
     navigate("/tarot/table");
   };
 
@@ -111,10 +113,15 @@ const TarotQuestionPage = () => {
             onClick={handleContinue}
             compact
             variant="purple"
-            className="w-full"
+            className={`w-full ${!question.trim() ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Xem Bài
           </FestiveButton>
+          {!question.trim() && (
+            <p className="text-festive-cream/70 text-xs text-center mt-2">
+              Vui lòng nhập câu hỏi để tiếp tục
+            </p>
+          )}
         </motion.div>
       </div>
     </div>

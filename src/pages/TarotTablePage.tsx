@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, RotateCcw } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
-import formBackground from "@/assets/form-background.jpg";
+import tarotBackground from "@/assets/tarot-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTarotCards, shuffleCards, getCardImageUrl, TarotCard } from "@/hooks/useTarotCards";
 
@@ -111,7 +111,7 @@ const TarotTablePage = () => {
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        <img src={formBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
+        <img src={tarotBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 min-h-screen flex items-center justify-center">
           <motion.div
@@ -129,7 +129,7 @@ const TarotTablePage = () => {
   if (error) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        <img src={formBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
+        <img src={tarotBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
           <p className="text-festive-cream text-center mb-4">Không thể tải bộ bài Tarot</p>
@@ -144,7 +144,7 @@ const TarotTablePage = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background */}
-      <img src={formBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
+      <img src={tarotBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-black/60" />
 
       {/* Back button */}
