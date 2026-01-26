@@ -41,7 +41,7 @@ const TarotQuestionPage = () => {
     // Store question (default to general reading if empty)
     sessionStorage.setItem("tarotQuestion", question.trim() || "Xem tổng quan cuộc sống");
     
-    navigate("/tarot/shuffle");
+    navigate("/tarot/table");
   };
 
   return (
