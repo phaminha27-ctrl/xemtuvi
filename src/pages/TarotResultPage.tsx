@@ -150,12 +150,12 @@ const TarotResultPage = () => {
                   return (
                     <div key={card.name_short} className="text-center">
                       <div className="w-16 h-24 rounded-lg border-2 border-festive-gold mb-2 mx-auto shadow-lg overflow-hidden">
-                        {!hasImageError ? (
-                          <img
-                            src={getCardImageUrl(card.name_short)}
-                            alt={card.name}
-                            className="w-full h-full object-cover"
-                            onError={() => handleImageError(card.name_short)}
+                      {!hasImageError ? (
+                        <img
+                          src={getCardImageUrl(card)}
+                          alt={card.name}
+                          className="w-full h-full object-cover"
+                          onError={() => handleImageError(card.name_short)}
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-purple-600 to-indigo-800 flex items-center justify-center">
@@ -210,7 +210,7 @@ const TarotResultPage = () => {
                     <div className="w-14 h-20 rounded-lg border-2 border-festive-gold flex-shrink-0 shadow-lg overflow-hidden">
                       {!hasImageError ? (
                         <img
-                          src={getCardImageUrl(card.name_short)}
+                          src={getCardImageUrl(card)}
                           alt={card.name}
                           className="w-full h-full object-cover"
                           onError={() => handleImageError(card.name_short)}

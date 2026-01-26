@@ -15,6 +15,11 @@ export interface TarotCard {
 
 const IMAGE_BASE_URL = "https://cdn.jsdelivr.net/gh/metabismuth/tarot-json/images";
 
+// Normalize card name for image URL
+const normalizeName = (name: string): string => {
+  return name.toLowerCase().replace(/ /g, "_").replace(/-/g, "_");
+};
+
 // Vietnamese name translations for Major Arcana
 const majorArcanaVi: { [key: string]: string } = {
   "The Fool": "Kẻ Ngốc",
@@ -77,10 +82,20 @@ export const shuffleCards = <T>(array: T[]): T[] => {
 };
 
 // Get image URL for a card
-export const getCardImageUrl = (nameShort: string): string => {
-  // Convert name_short to image filename
-  // Examples: ar01 -> ar01.jpg, cu02 -> cu02.jpg
-  return `${IMAGE_BASE_URL}/${nameShort}.jpg`;
+export const getCardImageUrl = (card: TarotCard): string => {
+  if (card.type === "major") {
+    return `${IMAGE_BASE_URL}/major/${normalizeName(card.name)}.png`;
+  }
+  // Minor arcana - extract suit from name_short
+  const suitMap: { [key: string]: string } = {
+    "wa": "wands",
+    "cu": "cups",
+    "sw": "swords",
+    "pe": "pentacles"
+  };
+  const suitPrefix = card.name_short.substring(0, 2);
+  const suit = suitMap[suitPrefix] || "wands";
+  return `${IMAGE_BASE_URL}/minor/${suit}/${normalizeName(card.name)}.png`;
 };
 
 // Get Vietnamese name for a card
