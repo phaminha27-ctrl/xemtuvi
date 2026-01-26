@@ -1,0 +1,4 @@
+project_id = "zyeomomegjsufhnrjbgn"
+
+[functions.translate-tarot]
+verify_jwt = false
