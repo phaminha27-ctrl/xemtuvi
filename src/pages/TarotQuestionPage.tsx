@@ -50,7 +50,7 @@ const TarotQuestionPage = () => {
       </div>
 
       {/* Content - Centered tarot men with form */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-16">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-16">
         <motion.div
           className="relative w-full max-w-[320px]"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -65,7 +65,7 @@ const TarotQuestionPage = () => {
           />
           
           {/* Form overlay positioned on white area */}
-          <div className="absolute left-[12%] right-[12%] top-[38%] bottom-[8%] flex flex-col p-3">
+          <div className="absolute left-[10.5%] right-[10.5%] top-[36%] bottom-[5.5%] flex flex-col p-2">
             <Textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
@@ -73,22 +73,28 @@ const TarotQuestionPage = () => {
               className="flex-1 bg-transparent border-none text-foreground/80 placeholder:text-muted-foreground/60 resize-none focus:ring-0 focus-visible:ring-0 text-base leading-relaxed"
               maxLength={300}
             />
-            
-            <div className="mt-2">
-              <p className="text-muted-foreground text-xs text-right mb-2">
-                {question.length}/300
-              </p>
-              <FestiveButton
-                icon={Sparkles}
-                onClick={handleContinue}
-                compact
-                variant="purple"
-                className="w-full"
-              >
-                Xem Bài
-              </FestiveButton>
-            </div>
+            <p className="text-muted-foreground text-xs text-right mt-1">
+              {question.length}/300
+            </p>
           </div>
+        </motion.div>
+        
+        {/* Button separated below image */}
+        <motion.div
+          className="w-full max-w-[320px] mt-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <FestiveButton
+            icon={Sparkles}
+            onClick={handleContinue}
+            compact
+            variant="purple"
+            className="w-full"
+          >
+            Xem Bài
+          </FestiveButton>
         </motion.div>
       </div>
     </div>
