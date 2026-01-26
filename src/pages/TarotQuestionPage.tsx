@@ -1,18 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@/components/IconButton";
 import FestiveButton from "@/components/FestiveButton";
 import { Textarea } from "@/components/ui/textarea";
 import tarotBackground from "@/assets/tarot-background.jpg";
-import tarotMen from "@/assets/tarot-men.png";
 import { useAudio } from "@/contexts/AudioContext";
 import { Sparkles } from "lucide-react";
+
+// Import all character form images
+import tarotMen from "@/assets/tarot-men.png";
+import tarotHa from "@/assets/tarot-ha.png";
+import tarotTuan from "@/assets/tarot-tuan.png";
+import tarotLy from "@/assets/tarot-ly.png";
+
+const characterImages: Record<string, string> = {
+  "tarot-men": tarotMen,
+  "tarot-ha": tarotHa,
+  "tarot-tuan": tarotTuan,
+  "tarot-ly": tarotLy,
+};
 
 const TarotQuestionPage = () => {
   const navigate = useNavigate();
   const { playClickSound, startBgMusic } = useAudio();
   const [question, setQuestion] = useState("");
+  const [characterImage, setCharacterImage] = useState(tarotMen);
+
+  useEffect(() => {
+    const selectedCharacter = sessionStorage.getItem("tarotCharacter");
+    if (selectedCharacter && characterImages[selectedCharacter]) {
+      setCharacterImage(characterImages[selectedCharacter]);
+    }
+  }, []);
 
   const handleContinue = () => {
     playClickSound();
@@ -35,7 +55,7 @@ const TarotQuestionPage = () => {
 
       {/* Back button */}
       <div className="absolute top-3 left-4 z-20">
-        <IconButton onClick={() => navigate("/")} label="QUAY LẠI">
+        <IconButton onClick={() => navigate("/tarot")} label="QUAY LẠI">
           <svg 
             className="w-7 h-7" 
             viewBox="0 0 24 24"
@@ -57,9 +77,9 @@ const TarotQuestionPage = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Tarot men image */}
+          {/* Selected character image */}
           <img
-            src={tarotMen}
+            src={characterImage}
             alt="Tarot Reader"
             className="w-full h-auto"
           />

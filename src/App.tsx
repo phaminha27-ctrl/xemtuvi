@@ -12,6 +12,7 @@ import FormPage from "./pages/FormPage";
 import ResultPage from "./pages/ResultPage";
 import NumerologyFormPage from "./pages/NumerologyFormPage";
 import NumerologyResultPage from "./pages/NumerologyResultPage";
+import TarotCharacterSelectPage from "./pages/TarotCharacterSelectPage";
 import TarotQuestionPage from "./pages/TarotQuestionPage";
 import TarotShufflePage from "./pages/TarotShufflePage";
 import TarotDealPage from "./pages/TarotDealPage";
@@ -36,7 +37,8 @@ const App = () => (
             <Route path="/result" element={<ResultPage />} />
             <Route path="/numerology" element={<NumerologyFormPage />} />
             <Route path="/numerology/result" element={<NumerologyResultPage />} />
-            <Route path="/tarot" element={<TarotQuestionPage />} />
+            <Route path="/tarot" element={<TarotCharacterSelectPage />} />
+            <Route path="/tarot/question" element={<TarotQuestionPage />} />
             <Route path="/tarot/shuffle" element={<TarotShufflePage />} />
             <Route path="/tarot/deal" element={<TarotDealPage />} />
             <Route path="/tarot/result" element={<TarotResultPage />} />
