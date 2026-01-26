@@ -86,29 +86,10 @@ export const shuffleCards = <T>(array: T[]): T[] => {
 // Get image URL for a card
 export const getCardImageUrl = (card: TarotCard): string => {
   const base = IMAGE_BASE_URL;
-  
-  // Check if Major Arcana (using arcana field or fallback to type)
-  const isMajor = card.arcana === "Major Arcana" || card.type === "major";
-  
-  if (isMajor) {
+  if (card.arcana === "Major Arcana") {
     return `${base}/major/${normalizeName(card.name)}.png`;
   }
-  
-  // Minor arcana - use card.suit or extract from name_short
-  let suit = card.suit;
-  if (!suit) {
-    // Fallback: extract suit from name_short (e.g., "wapa" -> "wands")
-    const suitMap: { [key: string]: string } = {
-      "wa": "wands",
-      "cu": "cups",
-      "sw": "swords",
-      "pe": "pentacles"
-    };
-    const suitPrefix = card.name_short?.substring(0, 2) || "";
-    suit = suitMap[suitPrefix] || "wands";
-  }
-  
-  return `${base}/minor/${suit.toLowerCase()}/${normalizeName(card.name)}.png`;
+  return `${base}/minor/${card.suit}/${normalizeName(card.name)}.png`;
 };
 
 // Get Vietnamese name for a card
