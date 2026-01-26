@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Eye, RotateCcw } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
+import IconButton from "@/components/IconButton";
 import formBackground from "@/assets/form-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTarotCards, shuffleCards, getCardImageUrl, TarotCard } from "@/hooks/useTarotCards";
@@ -146,6 +147,22 @@ const TarotTablePage = () => {
       <img src={formBackground} alt="Background" className="fixed inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-black/60" />
 
+      {/* Back button */}
+      <div className="absolute top-3 left-4 z-20">
+        <IconButton onClick={() => navigate("/tarot/question")} label="QUAY LẠI">
+          <svg 
+            className="w-7 h-7" 
+            viewBox="0 0 24 24"
+            style={{ 
+              fill: "#FFF9C4",
+              filter: "drop-shadow(0px 2px 2px rgba(0,0,0,0.5))"
+            }}
+          >
+            <path d="M19 11H7.83l4.88-4.88L11 4l-8 8 8 8 1.71-1.71L7.83 13H19v-2z"/>
+          </svg>
+        </IconButton>
+      </div>
+
       {/* 3D Table perspective container */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4"
         style={{ perspective: "1000px" }}
@@ -166,10 +183,10 @@ const TarotTablePage = () => {
 
         {/* 3D Table surface */}
         <motion.div
-          className="relative w-full max-w-md h-72 sm:h-80 rounded-3xl"
+          className="relative w-full max-w-md h-72 sm:h-80 rounded-3xl overflow-hidden"
           style={{
-            background: "radial-gradient(ellipse at center, #2D1B4E 0%, #1A0F2E 70%, #0D0618 100%)",
-            boxShadow: "0 30px 60px rgba(0,0,0,0.5), inset 0 2px 10px rgba(245, 210, 123, 0.1)",
+            background: "radial-gradient(ellipse at center, #3D2B5E 0%, #2A1F4E 40%, #1A0F2E 70%, #0D0618 100%)",
+            boxShadow: "0 30px 60px rgba(0,0,0,0.5), inset 0 2px 10px rgba(245, 210, 123, 0.15)",
             transformStyle: "preserve-3d",
             transform: "rotateX(15deg)",
           }}
@@ -178,10 +195,45 @@ const TarotTablePage = () => {
           <div 
             className="absolute inset-0 rounded-3xl pointer-events-none"
             style={{
-              border: "2px solid rgba(245, 210, 123, 0.3)",
-              boxShadow: "inset 0 0 30px rgba(245, 210, 123, 0.1)",
+              border: "3px solid rgba(245, 210, 123, 0.4)",
+              boxShadow: "inset 0 0 40px rgba(245, 210, 123, 0.1), 0 0 20px rgba(245, 210, 123, 0.2)",
             }}
           />
+
+          {/* Decorative corner ornaments */}
+          <div className="absolute top-3 left-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
+          <div className="absolute top-3 right-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
+          <div className="absolute bottom-3 left-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
+          <div className="absolute bottom-3 right-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
+
+          {/* Center mystical symbol */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <motion.div
+              className="text-festive-gold/10 text-7xl sm:text-8xl"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            >
+              ✦
+            </motion.div>
+          </div>
+
+          {/* Decorative circles */}
+          <div 
+            className="absolute inset-8 rounded-full pointer-events-none"
+            style={{
+              border: "1px solid rgba(245, 210, 123, 0.15)",
+            }}
+          />
+          <div 
+            className="absolute inset-16 rounded-full pointer-events-none"
+            style={{
+              border: "1px dashed rgba(245, 210, 123, 0.1)",
+            }}
+          />
+
+          {/* Subtle zodiac-like decorations on edges */}
+          <div className="absolute top-1/2 left-4 -translate-y-1/2 text-festive-gold/20 text-lg pointer-events-none">☽</div>
+          <div className="absolute top-1/2 right-4 -translate-y-1/2 text-festive-gold/20 text-lg pointer-events-none">☀</div>
 
           {/* Drawn cards in arc formation */}
           <AnimatePresence>
