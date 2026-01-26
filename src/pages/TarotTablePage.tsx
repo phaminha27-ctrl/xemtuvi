@@ -185,8 +185,8 @@ const TarotTablePage = () => {
         <motion.div
           className="relative w-full max-w-md h-72 sm:h-80 rounded-3xl overflow-hidden"
           style={{
-            background: "radial-gradient(ellipse at center, #3D2B5E 0%, #2A1F4E 40%, #1A0F2E 70%, #0D0618 100%)",
-            boxShadow: "0 30px 60px rgba(0,0,0,0.5), inset 0 2px 10px rgba(245, 210, 123, 0.15)",
+            background: "radial-gradient(ellipse at center, #5D3D8E 0%, #4A2D7E 30%, #3A1F5E 60%, #2A0F3E 100%)",
+            boxShadow: "0 30px 60px rgba(0,0,0,0.6), inset 0 4px 20px rgba(245, 210, 123, 0.25), 0 0 40px rgba(90, 50, 150, 0.4)",
             transformStyle: "preserve-3d",
             transform: "rotateX(15deg)",
           }}
@@ -195,21 +195,21 @@ const TarotTablePage = () => {
           <div 
             className="absolute inset-0 rounded-3xl pointer-events-none"
             style={{
-              border: "3px solid rgba(245, 210, 123, 0.4)",
-              boxShadow: "inset 0 0 40px rgba(245, 210, 123, 0.1), 0 0 20px rgba(245, 210, 123, 0.2)",
+              border: "4px solid rgba(245, 210, 123, 0.7)",
+              boxShadow: "inset 0 0 50px rgba(245, 210, 123, 0.2), 0 0 30px rgba(245, 210, 123, 0.3)",
             }}
           />
 
           {/* Decorative corner ornaments */}
-          <div className="absolute top-3 left-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
-          <div className="absolute top-3 right-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
-          <div className="absolute bottom-3 left-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
-          <div className="absolute bottom-3 right-3 text-festive-gold/40 text-2xl pointer-events-none">✧</div>
+          <div className="absolute top-3 left-3 text-festive-gold/70 text-2xl pointer-events-none drop-shadow-lg">✧</div>
+          <div className="absolute top-3 right-3 text-festive-gold/70 text-2xl pointer-events-none drop-shadow-lg">✧</div>
+          <div className="absolute bottom-3 left-3 text-festive-gold/70 text-2xl pointer-events-none drop-shadow-lg">✧</div>
+          <div className="absolute bottom-3 right-3 text-festive-gold/70 text-2xl pointer-events-none drop-shadow-lg">✧</div>
 
           {/* Center mystical symbol */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <motion.div
-              className="text-festive-gold/10 text-7xl sm:text-8xl"
+              className="text-festive-gold/25 text-7xl sm:text-8xl drop-shadow-lg"
               animate={{ rotate: 360 }}
               transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
             >
@@ -221,19 +221,19 @@ const TarotTablePage = () => {
           <div 
             className="absolute inset-8 rounded-full pointer-events-none"
             style={{
-              border: "1px solid rgba(245, 210, 123, 0.15)",
+              border: "2px solid rgba(245, 210, 123, 0.35)",
             }}
           />
           <div 
             className="absolute inset-16 rounded-full pointer-events-none"
             style={{
-              border: "1px dashed rgba(245, 210, 123, 0.1)",
+              border: "1px dashed rgba(245, 210, 123, 0.25)",
             }}
           />
 
           {/* Subtle zodiac-like decorations on edges */}
-          <div className="absolute top-1/2 left-4 -translate-y-1/2 text-festive-gold/20 text-lg pointer-events-none">☽</div>
-          <div className="absolute top-1/2 right-4 -translate-y-1/2 text-festive-gold/20 text-lg pointer-events-none">☀</div>
+          <div className="absolute top-1/2 left-4 -translate-y-1/2 text-festive-gold/50 text-xl pointer-events-none drop-shadow">☽</div>
+          <div className="absolute top-1/2 right-4 -translate-y-1/2 text-festive-gold/50 text-xl pointer-events-none drop-shadow">☀</div>
 
           {/* Drawn cards in arc formation */}
           <AnimatePresence>
