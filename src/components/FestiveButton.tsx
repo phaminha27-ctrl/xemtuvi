@@ -7,7 +7,7 @@ interface FestiveButtonProps {
   children: ReactNode;
   onClick?: () => void;
   icon?: LucideIcon;
-  variant?: "primary" | "secondary" | "gold";
+  variant?: "primary" | "secondary" | "gold" | "orange" | "purple";
   compact?: boolean;
   className?: string;
 }
@@ -28,12 +28,16 @@ const FestiveButton = ({
     primary: "linear-gradient(180deg, #00A396 0%, #007D75 100%)",
     secondary: "linear-gradient(180deg, #C92A2A 0%, #A61E1E 100%)",
     gold: "linear-gradient(180deg, #F5D27B 0%, #C49A45 100%)",
+    orange: "linear-gradient(180deg, #E07020 0%, #B85518 100%)",
+    purple: "linear-gradient(180deg, #7B4BAF 0%, #5E3A8C 100%)",
   };
 
   const textColors = {
     primary: "#FFF9C4",
     secondary: "#FFF9C4",
     gold: "#5d3e21",
+    orange: "#FFF9C4",
+    purple: "#FFF9C4",
   };
 
   return (
