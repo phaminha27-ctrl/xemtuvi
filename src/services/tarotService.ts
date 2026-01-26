@@ -28,7 +28,7 @@ const majorArcanaImages: Record<string, string> = {
   "The Empress": `${WIKIMEDIA_BASE}/d/d2/RWS_Tarot_03_Empress.jpg`,
   "The Emperor": `${WIKIMEDIA_BASE}/c/c3/RWS_Tarot_04_Emperor.jpg`,
   "The Hierophant": `${WIKIMEDIA_BASE}/8/8d/RWS_Tarot_05_Hierophant.jpg`,
-  "The Lovers": `${WIKIMEDIA_BASE}/3/3a/RWS_Tarot_06_Lovers.jpg`,
+  "The Lovers": `${WIKIMEDIA_BASE}/d/d7/RWS_Tarot_06_Lovers.jpg`,
   "The Chariot": `${WIKIMEDIA_BASE}/9/9b/RWS_Tarot_07_Chariot.jpg`,
   "Strength": `${WIKIMEDIA_BASE}/f/f5/RWS_Tarot_08_Strength.jpg`,
   "The Hermit": `${WIKIMEDIA_BASE}/4/4d/RWS_Tarot_09_Hermit.jpg`,
