@@ -21,6 +21,8 @@ const LoadingPage = () => {
     const timeout = setTimeout(() => {
       if (scanType === "face") {
         navigate("/face-result");
+      } else if (scanType === "numerology") {
+        navigate("/numerology/result");
       } else {
         navigate("/result");
       }

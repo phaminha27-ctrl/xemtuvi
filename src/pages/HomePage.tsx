@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, Calendar, Settings } from "lucide-react";
+import { Camera, Calendar, Settings, Hash, Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
 import SettingsModal from "@/components/SettingsModal";
@@ -13,7 +13,6 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Background Image - Responsive */}
       <img
         src={homeBackground}
         alt=""
@@ -21,7 +20,6 @@ const HomePage = () => {
         aria-hidden="true"
       />
 
-      {/* Settings Button - Top Right */}
       <div className="absolute top-3 right-4 z-20">
         <IconButton onClick={() => setIsSettingsOpen(true)} label="CÀI ĐẶT">
           <Settings 
@@ -34,12 +32,10 @@ const HomePage = () => {
         </IconButton>
       </div>
       
-      {/* Top half - empty for background */}
       <div className="flex-1 relative z-10" />
       
-      {/* Bottom half - buttons centered */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 relative z-10">
-        <div className="flex flex-col gap-4 w-full max-w-xs sm:max-w-sm md:max-w-md">
+        <div className="flex flex-col gap-3 w-full max-w-xs sm:max-w-sm md:max-w-md">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,7 +53,7 @@ const HomePage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             <FestiveButton
               icon={Calendar}
@@ -68,10 +64,38 @@ const HomePage = () => {
               Theo Ngày Sinh
             </FestiveButton>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <FestiveButton
+              icon={Hash}
+              onClick={() => navigate("/numerology")}
+              className="w-full"
+            >
+              Thần Số Học
+            </FestiveButton>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <FestiveButton
+              icon={Sparkles}
+              variant="secondary"
+              onClick={() => navigate("/tarot")}
+              className="w-full"
+            >
+              Bói Bài Tarot
+            </FestiveButton>
+          </motion.div>
         </div>
       </div>
 
-      {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );
