@@ -5,7 +5,7 @@ import { Sparkles } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import FestiveButton from "@/components/FestiveButton";
 import { Textarea } from "@/components/ui/textarea";
-import formBackground from "@/assets/form-background.jpg";
+import tarotBackground from "@/assets/tarot-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
 
 const TarotQuestionPage = () => {
@@ -27,7 +27,7 @@ const TarotQuestionPage = () => {
     <div className="min-h-screen relative overflow-hidden">
       {/* Background image */}
       <img
-        src={formBackground}
+        src={tarotBackground}
         alt="Background"
         className="fixed inset-0 w-full h-full object-cover object-center"
       />
