@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import FestiveButton from "@/components/FestiveButton";
 import { Textarea } from "@/components/ui/textarea";
 import tarotBackground from "@/assets/tarot-background.jpg";
+import tarotMen from "@/assets/tarot-men.png";
 import { useAudio } from "@/contexts/AudioContext";
+import { Sparkles } from "lucide-react";
 
 const TarotQuestionPage = () => {
   const navigate = useNavigate();
@@ -32,9 +33,6 @@ const TarotQuestionPage = () => {
         className="fixed inset-0 w-full h-full object-cover object-center"
       />
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
-
       {/* Back button */}
       <div className="absolute top-3 left-4 z-20">
         <IconButton onClick={() => navigate("/")} label="QUAY LẠI">
@@ -51,75 +49,47 @@ const TarotQuestionPage = () => {
         </IconButton>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-16">
+      {/* Content - Centered tarot men with form */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-16">
         <motion.div
-          className="w-20 h-20 mb-6 rounded-full bg-gradient-to-br from-festive-gold to-festive-brown flex items-center justify-center border-4 border-festive-gold/50 shadow-2xl"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", delay: 0.2 }}
+          className="relative w-full max-w-[320px]"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <Sparkles className="w-10 h-10 text-festive-cream" />
-        </motion.div>
-
-        <motion.h1
-          className="text-festive-gold text-2xl sm:text-3xl font-bold text-center mb-2 drop-shadow-lg"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          Bói Bài Tarot
-        </motion.h1>
-        <motion.p
-          className="text-festive-cream text-sm mb-8 text-center max-w-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          Hãy tập trung suy nghĩ về điều bạn muốn hỏi
-        </motion.p>
-
-        <div className="w-full max-w-sm space-y-6">
-          {/* Question input */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <label className="block text-festive-gold text-sm font-semibold mb-2">
-              Câu hỏi của bạn
-            </label>
+          {/* Tarot men image */}
+          <img
+            src={tarotMen}
+            alt="Tarot Reader"
+            className="w-full h-auto"
+          />
+          
+          {/* Form overlay positioned on white area */}
+          <div className="absolute left-[12%] right-[12%] top-[38%] bottom-[8%] flex flex-col p-3">
             <Textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ví dụ: Tình hình công việc sắp tới như thế nào? Mối quan hệ của tôi sẽ đi về đâu?..."
-              className="bg-black/30 border-festive-gold/50 text-festive-cream placeholder:text-festive-cream/40 min-h-[120px] resize-none focus:border-festive-gold text-base"
+              placeholder="Nhập câu hỏi của bạn..."
+              className="flex-1 bg-transparent border-none text-foreground/80 placeholder:text-muted-foreground/60 resize-none focus:ring-0 focus-visible:ring-0 text-base leading-relaxed"
               maxLength={300}
             />
-            <p className="text-festive-cream/50 text-xs mt-1 text-right">
-              {question.length}/300
-            </p>
-            <p className="text-festive-cream/60 text-xs mt-2 text-center italic">
-              Bạn có thể để trống để xem tổng quan cuộc sống
-            </p>
-          </motion.div>
-
-          {/* Continue button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="pt-4"
-          >
-            <FestiveButton
-              icon={Sparkles}
-              onClick={handleContinue}
-              compact
-              className="w-full"
-            >
-              Xem Bài
-            </FestiveButton>
-          </motion.div>
-        </div>
+            
+            <div className="mt-2">
+              <p className="text-muted-foreground text-xs text-right mb-2">
+                {question.length}/300
+              </p>
+              <FestiveButton
+                icon={Sparkles}
+                onClick={handleContinue}
+                compact
+                variant="purple"
+                className="w-full"
+              >
+                Xem Bài
+              </FestiveButton>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
