@@ -1,18 +1,24 @@
 import { motion } from "framer-motion";
-import { Camera, Sparkles } from "lucide-react";
+import { Camera, Sparkles, Upload } from "lucide-react";
 import { useAudio } from "@/contexts/AudioContext";
 
 interface CaptureButtonProps {
   onClick: () => void;
-  icon?: "camera" | "sparkles";
+  icon?: "camera" | "sparkles" | "upload";
   label?: string;
 }
 
 const wavePattern = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1' stroke-opacity='0.15'%3E%3Cpath d='M0 20 A20 20 0 0 1 40 20'/%3E%3Cpath d='M5 20 A15 15 0 0 1 35 20'/%3E%3Cpath d='M10 20 A10 10 0 0 1 30 20'/%3E%3Cpath d='M15 20 A5 5 0 0 1 25 20'/%3E%3C/g%3E%3C/svg%3E")`;
 
+const iconMap = {
+  camera: Camera,
+  sparkles: Sparkles,
+  upload: Upload,
+};
+
 const CaptureButton = ({ onClick, icon = "camera", label = "CHỤP ẢNH" }: CaptureButtonProps) => {
   const { playClickSound, startBgMusic } = useAudio();
-  const IconComponent = icon === "camera" ? Camera : Sparkles;
+  const IconComponent = iconMap[icon];
   
   return (
     <motion.div
