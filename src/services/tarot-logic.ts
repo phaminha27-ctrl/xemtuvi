@@ -1,26 +1,17 @@
 // Vietnamese Tarot Logic - The Intelligent Tarot Engine
-// 78 Card Data with Meaning_Matrix (6 categories) + Keywords + Vibe scoring
-
-export type CategoryType = 'love' | 'career' | 'finance' | 'self' | 'health' | 'family';
-
-export interface MeaningMatrix {
-  love: string;
-  career: string;
-  finance: string;
-  self: string;
-  health: string;
-  family: string;
-}
+// 78 Card Data with general meanings + Keywords + Vibe scoring
 
 export interface CardData {
-  name_vi: string;        // Vietnamese name (e.g., "Pháp Sư", "Bốn Cốc")
+  name_vi: string;
   vibe: number;           // +1 = Positive, 0 = Neutral, -1 = Negative
-  meaning_matrix_up: MeaningMatrix;
-  meaning_matrix_rev: MeaningMatrix;
-  keywords_up: string[];  // 3-5 action keywords for upright
-  keywords_rev: string[]; // 3-5 action keywords for reversed
-  summary_up: string;     // Short summary for synthesis
-  summary_rev: string;    // Short summary for synthesis (reversed)
+  meaning_up: string;     // General meaning upright
+  meaning_rev: string;    // General meaning reversed
+  keywords_up: string[];
+  keywords_rev: string[];
+  summary_up: string;
+  summary_rev: string;
+  why_appear_up: string;  // Why this card appears (upright)
+  why_appear_rev: string; // Why this card appears (reversed)
 }
 
 // ============= MAJOR ARCANA (22 cards) =============
@@ -28,530 +19,266 @@ const majorArcana: Record<string, CardData> = {
   "The Fool": {
     name_vi: "Gã Khờ",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Một mối quan hệ mới đang bắt đầu hoặc bạn cần mạo hiểm hơn trong tình yêu. Đừng sợ bước ra khỏi vùng an toàn.",
-      career: "Cơ hội mới xuất hiện, có thể là công việc mới hoặc dự án thú vị. Tin vào bản năng và dám thử.",
-      finance: "Đừng quá lo lắng về tiền bạc lúc này. Đôi khi cần đầu tư mạo hiểm để có kết quả.",
-      self: "Bạn đang sẵn sàng cho hành trình khám phá bản thân mới. Hãy cởi mở và tò mò.",
-      health: "Thử một chế độ tập luyện hoặc ăn uống mới. Đừng sợ thay đổi thói quen.",
-      family: "Sẵn sàng làm quen với thành viên mới hoặc bắt đầu chương mới trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Bạn đang do dự, không dám mở lòng hoặc đang hành động thiếu suy nghĩ trong tình cảm.",
-      career: "Cẩn thận với những quyết định vội vàng. Đừng nhảy việc khi chưa chuẩn bị kỹ.",
-      finance: "Đang liều lĩnh quá mức với tiền bạc hoặc ngược lại - quá sợ rủi ro.",
-      self: "Thiếu định hướng, lạc lõng hoặc đang hành động ngẫu hứng mà không suy nghĩ.",
-      health: "Cẩn thận với những thử nghiệm mạo hiểm. Đừng bỏ qua các dấu hiệu cảnh báo.",
-      family: "Đang hành động thiếu trách nhiệm hoặc không nghĩ đến gia đình."
-    },
-    keywords_up: ["bắt đầu", "mạo hiểm", "tin tưởng", "tự do", "lạc quan"],
-    keywords_rev: ["dừng lại", "suy nghĩ kỹ", "lập kế hoạch", "cẩn thận"],
-    summary_up: "sẵn sàng bắt đầu điều mới với năng lượng tích cực",
-    summary_rev: "do dự hoặc hành động thiếu suy nghĩ"
+    meaning_up: "Đây là lúc bạn sẵn sàng bắt đầu điều gì đó mới mẻ. Bạn có năng lượng tích cực và sự tò mò để khám phá những cơ hội chưa biết. Đừng lo lắng quá nhiều về kết quả - hãy cứ bước đi.",
+    meaning_rev: "Bạn đang do dự, sợ rủi ro hoặc hành động thiếu suy nghĩ. Có thể bạn đang bỏ lỡ cơ hội vì quá thận trọng, hoặc ngược lại - quá liều lĩnh mà không cân nhắc hậu quả.",
+    keywords_up: ["bắt đầu", "mạo hiểm", "tin tưởng", "tự do"],
+    keywords_rev: ["dừng lại", "suy nghĩ kỹ", "lập kế hoạch"],
+    summary_up: "sẵn sàng bắt đầu điều mới",
+    summary_rev: "do dự hoặc hành động thiếu suy nghĩ",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang ở ngưỡng cửa của một hành trình mới. Vũ trụ đang khuyến khích bạn tin vào bản năng và dám bước ra khỏi vùng an toàn.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn cần cẩn thận hơn. Có thể bạn đang quá vội vàng hoặc ngược lại - quá sợ hãi để hành động."
   },
   "The Magician": {
     name_vi: "Pháp Sư",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Bạn có khả năng tạo ra mối quan hệ mình muốn. Chủ động và tự tin trong tình yêu.",
-      career: "Đủ kỹ năng và nguồn lực để thành công. Tập trung và hành động quyết đoán.",
-      finance: "Có khả năng tạo ra tiền từ nhiều nguồn. Sử dụng tài năng để kiếm thêm thu nhập.",
-      self: "Bạn có tiềm năng lớn. Tin vào khả năng của mình và biến ý tưởng thành hiện thực.",
-      health: "Có đủ ý chí để thay đổi thói quen. Tập trung vào mục tiêu sức khỏe.",
-      family: "Có thể giúp đỡ và dẫn dắt gia đình. Kỹ năng giao tiếp tốt."
-    },
-    meaning_matrix_rev: {
-      love: "Đang lãng phí tiềm năng trong tình yêu hoặc không thành thật với người khác.",
-      career: "Thiếu tập trung, phân tán năng lượng hoặc chưa phát huy hết khả năng.",
-      finance: "Đang sử dụng tiền không hiệu quả hoặc bỏ lỡ cơ hội kiếm tiền.",
-      self: "Chưa tin vào bản thân hoặc đang lãng phí tài năng vào việc vô ích.",
-      health: "Thiếu ý chí để duy trì thói quen tốt. Dễ bỏ cuộc.",
-      family: "Không tận dụng được khả năng để giúp đỡ gia đình."
-    },
-    keywords_up: ["hành động", "tập trung", "sáng tạo", "tự tin", "thực hiện"],
-    keywords_rev: ["xem lại", "tập trung", "dừng phân tán", "trung thực"],
-    summary_up: "có đủ khả năng để đạt được mục tiêu",
-    summary_rev: "đang lãng phí tiềm năng hoặc thiếu tập trung"
+    meaning_up: "Bạn có đủ kỹ năng và nguồn lực để đạt được mục tiêu. Đây là thời điểm tốt để biến ý tưởng thành hiện thực. Tập trung vào những gì bạn muốn và hành động.",
+    meaning_rev: "Bạn đang lãng phí tiềm năng hoặc sử dụng khả năng sai mục đích. Có thể thiếu tập trung, thiếu kế hoạch, hoặc đang cố gắng lừa dối ai đó.",
+    keywords_up: ["hành động", "tập trung", "sáng tạo", "tự tin"],
+    keywords_rev: ["xem lại", "tập trung", "trung thực"],
+    summary_up: "có đủ khả năng để đạt mục tiêu",
+    summary_rev: "đang lãng phí tiềm năng",
+    why_appear_up: "Lá bài này xuất hiện để nhắc nhở bạn rằng bạn có đủ mọi thứ cần thiết. Hãy tin vào khả năng của mình và bắt tay vào thực hiện.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang không phát huy hết tiềm năng. Cần xem lại cách bạn đang sử dụng thời gian và năng lượng."
   },
   "The High Priestess": {
     name_vi: "Nữ Tư Tế",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tin vào trực giác về mối quan hệ. Có điều đối phương chưa nói hết, hãy quan sát.",
-      career: "Lắng nghe linh cảm về công việc. Đừng vội quyết định, chờ thêm thông tin.",
-      finance: "Có điều chưa rõ ràng về tiền bạc. Đừng đầu tư khi chưa hiểu rõ.",
-      self: "Kết nối với nội tâm, dành thời gian yên tĩnh để hiểu mình hơn.",
-      health: "Lắng nghe cơ thể. Có thể cần kiểm tra sức khỏe định kỳ.",
-      family: "Có bí mật trong gia đình hoặc điều chưa được nói ra."
-    },
-    meaning_matrix_rev: {
-      love: "Đang phớt lờ trực giác hoặc không thành thật với cảm xúc của mình.",
-      career: "Bỏ qua dấu hiệu quan trọng trong công việc. Không tin vào linh cảm.",
-      finance: "Quyết định tài chính thiếu cân nhắc. Bỏ qua những cảnh báo.",
-      self: "Mất kết nối với bản thân, không hiểu mình muốn gì.",
-      health: "Phớt lờ tín hiệu từ cơ thể. Cần chú ý hơn.",
-      family: "Đang giấu giếm hoặc không chia sẻ với gia đình."
-    },
-    keywords_up: ["lắng nghe", "chờ đợi", "quan sát", "suy ngẫm"],
-    keywords_rev: ["đối mặt", "thành thật", "mở lòng", "kết nối"],
-    summary_up: "cần lắng nghe trực giác và chờ đợi",
-    summary_rev: "đang phớt lờ cảm xúc thật của mình"
+    meaning_up: "Hãy tin vào trực giác của mình. Có những điều bạn cảm nhận được nhưng chưa thể giải thích. Đây là lúc lắng nghe nội tâm thay vì chỉ dựa vào logic.",
+    meaning_rev: "Bạn đang bỏ qua trực giác hoặc không kết nối được với cảm xúc thật của mình. Có thể đang che giấu điều gì đó hoặc không thành thật với bản thân.",
+    keywords_up: ["lắng nghe", "chờ đợi", "quan sát"],
+    keywords_rev: ["đối mặt", "thành thật", "mở lòng"],
+    summary_up: "cần lắng nghe trực giác",
+    summary_rev: "đang phớt lờ cảm xúc thật",
+    why_appear_up: "Lá bài này xuất hiện vì có điều gì đó bạn cần nhìn sâu hơn. Câu trả lời nằm bên trong bạn - hãy dành thời gian lắng nghe.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang tự lừa dối mình. Hãy dũng cảm đối mặt với những gì bạn đang cố tránh né."
   },
   "The Empress": {
     name_vi: "Hoàng Hậu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tình yêu đang nở rộ, có thể là khởi đầu mối quan hệ mới hoặc giai đoạn ngọt ngào.",
-      career: "Dự án đang phát triển tốt. Sáng tạo và nuôi dưỡng ý tưởng.",
-      finance: "Giai đoạn sung túc, tiền bạc dồi dào. Có thể nhận được quà hoặc bonus.",
-      self: "Yêu thương bản thân, chăm sóc bản thân tốt hơn.",
-      health: "Sức khỏe tốt, có thể liên quan đến thai sản hoặc sinh sản.",
-      family: "Gia đình hòa thuận, có thể đón thêm thành viên mới."
-    },
-    meaning_matrix_rev: {
-      love: "Thiếu sự chăm sóc trong mối quan hệ hoặc quá phụ thuộc.",
-      career: "Dự án bị đình trệ, thiếu sáng tạo hoặc quá kiệt sức.",
-      finance: "Chi tiêu quá tay hoặc cạn kiệt tài chính.",
-      self: "Không chăm sóc bản thân đủ, kiệt sức hoặc tự ti.",
-      health: "Cần chú ý đến sức khỏe sinh sản hoặc dinh dưỡng.",
-      family: "Căng thẳng trong gia đình, thiếu sự quan tâm lẫn nhau."
-    },
-    keywords_up: ["nuôi dưỡng", "sáng tạo", "phát triển", "tận hưởng"],
-    keywords_rev: ["tự chăm sóc", "nghỉ ngơi", "cân bằng", "buông bỏ"],
-    summary_up: "giai đoạn sung túc và phát triển",
-    summary_rev: "cần chăm sóc bản thân và nghỉ ngơi"
+    meaning_up: "Đây là giai đoạn sung túc, sáng tạo và nuôi dưỡng. Bạn có khả năng chăm sóc người khác và tạo ra những điều đẹp đẽ. Cuộc sống đang thuận lợi.",
+    meaning_rev: "Bạn đang thiếu sự chăm sóc bản thân hoặc phụ thuộc quá nhiều vào người khác. Có thể cảm thấy cạn kiệt năng lượng.",
+    keywords_up: ["nuôi dưỡng", "sáng tạo", "tận hưởng"],
+    keywords_rev: ["tự chăm sóc", "nghỉ ngơi", "buông bỏ"],
+    summary_up: "giai đoạn sung túc và sáng tạo",
+    summary_rev: "cần chăm sóc bản thân",
+    why_appear_up: "Lá bài này xuất hiện để nhắc bạn tận hưởng những gì đang có. Đây là thời điểm để sáng tạo và chia sẻ.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang cho đi quá nhiều mà quên chăm sóc bản thân. Hãy ưu tiên sức khỏe và hạnh phúc của chính mình."
   },
   "The Emperor": {
     name_vi: "Hoàng Đế",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Cần sự ổn định và cam kết trong mối quan hệ. Người đàn ông có ảnh hưởng.",
-      career: "Thời điểm để lãnh đạo và thiết lập quy tắc. Kỷ luật dẫn đến thành công.",
-      finance: "Quản lý tiền bạc có hệ thống. Đầu tư an toàn và dài hạn.",
-      self: "Cần kỷ luật và tự chủ. Đặt mục tiêu rõ ràng và tuân thủ.",
-      health: "Duy trì thói quen tập luyện đều đặn. Kỷ luật trong ăn uống.",
-      family: "Vai trò người trụ cột, bảo vệ và cung cấp cho gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá kiểm soát hoặc cứng nhắc trong tình yêu. Thiếu linh hoạt.",
-      career: "Lạm dụng quyền lực hoặc thiếu khả năng lãnh đạo.",
-      finance: "Quản lý tiền bạc quá chặt hoặc quá lỏng lẻo.",
-      self: "Thiếu kỷ luật hoặc quá nghiêm khắc với bản thân.",
-      health: "Căng thẳng do áp lực. Cần thư giãn hơn.",
-      family: "Độc đoán hoặc thiếu trách nhiệm với gia đình."
-    },
-    keywords_up: ["tổ chức", "kỷ luật", "lãnh đạo", "cam kết"],
-    keywords_rev: ["linh hoạt", "lắng nghe", "buông bỏ kiểm soát", "cân bằng"],
-    summary_up: "cần kỷ luật và tổ chức để thành công",
-    summary_rev: "đang quá cứng nhắc hoặc thiếu kiểm soát"
+    meaning_up: "Bạn cần sự ổn định, kỷ luật và tổ chức. Đây là lúc đặt ra quy tắc rõ ràng và tuân theo kế hoạch. Lãnh đạo bằng sự công bằng và lý trí.",
+    meaning_rev: "Bạn đang quá cứng nhắc hoặc thiếu kiểm soát. Có thể đang lạm dụng quyền lực hoặc ngược lại - thiếu kỷ luật.",
+    keywords_up: ["tổ chức", "kỷ luật", "lãnh đạo"],
+    keywords_rev: ["linh hoạt", "lắng nghe", "cân bằng"],
+    summary_up: "cần kỷ luật và tổ chức",
+    summary_rev: "quá cứng nhắc hoặc thiếu kiểm soát",
+    why_appear_up: "Lá bài này xuất hiện vì bạn cần thiết lập cấu trúc và kỷ luật trong cuộc sống. Đã đến lúc hành động có kế hoạch.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang quá kiểm soát hoặc thiếu trách nhiệm. Cần tìm sự cân bằng."
   },
   "The Hierophant": {
     name_vi: "Giáo Hoàng",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Mối quan hệ truyền thống, có thể liên quan đến hôn nhân hoặc cam kết chính thức.",
-      career: "Học hỏi từ mentor, tuân theo quy trình đã được chứng minh.",
-      finance: "Đầu tư an toàn, theo lời khuyên của chuyên gia.",
-      self: "Tìm kiếm ý nghĩa cuộc sống, học hỏi từ những người đi trước.",
-      health: "Theo phương pháp điều trị truyền thống, nghe lời bác sĩ.",
-      family: "Giữ gìn truyền thống gia đình, kết nối với thế hệ trước."
-    },
-    meaning_matrix_rev: {
-      love: "Thách thức những kỳ vọng truyền thống, muốn tự do hơn.",
-      career: "Không hài lòng với hệ thống, muốn làm theo cách riêng.",
-      finance: "Thử phương pháp đầu tư phi truyền thống.",
-      self: "Tìm con đường riêng, không theo số đông.",
-      health: "Thử liệu pháp thay thế hoặc phương pháp mới.",
-      family: "Phá vỡ truyền thống gia đình, xung đột thế hệ."
-    },
-    keywords_up: ["học hỏi", "tuân theo", "kết nối", "truyền thống"],
-    keywords_rev: ["độc lập", "thử nghiệm", "tự quyết", "đổi mới"],
+    meaning_up: "Đây là lúc học hỏi từ người có kinh nghiệm hoặc tuân theo những giá trị đã được kiểm chứng. Tìm kiếm sự hướng dẫn từ mentor hoặc truyền thống.",
+    meaning_rev: "Bạn đang thách thức những quy tắc cũ hoặc cảm thấy bị gò bó. Có thể cần tìm con đường riêng thay vì làm theo số đông.",
+    keywords_up: ["học hỏi", "tuân theo", "truyền thống"],
+    keywords_rev: ["độc lập", "thử nghiệm", "đổi mới"],
     summary_up: "cần học hỏi từ người có kinh nghiệm",
-    summary_rev: "đang muốn tìm con đường riêng"
+    summary_rev: "đang muốn tìm con đường riêng",
+    why_appear_up: "Lá bài này xuất hiện vì bạn cần sự hướng dẫn. Hãy tìm kiếm những người đi trước hoặc những kiến thức đã được kiểm chứng.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang cảm thấy bị trói buộc bởi kỳ vọng. Đôi khi phá vỡ quy tắc là cần thiết để phát triển."
   },
   "The Lovers": {
     name_vi: "Người Yêu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Mối quan hệ sâu sắc, tình yêu đích thực hoặc lựa chọn quan trọng về tình cảm.",
-      career: "Hợp tác tốt đẹp, quyết định quan trọng về nghề nghiệp.",
-      finance: "Cần cân nhắc kỹ trước khi chi tiêu lớn. Lựa chọn tài chính quan trọng.",
-      self: "Hiểu rõ giá trị của mình, lựa chọn sống theo đúng bản thân.",
-      health: "Cân bằng giữa thể chất và tinh thần. Lựa chọn lối sống lành mạnh.",
-      family: "Hòa hợp gia đình, có thể có quyết định lớn liên quan đến gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Xung đột trong mối quan hệ, khó đưa ra lựa chọn hoặc không trung thực.",
-      career: "Mâu thuẫn với đồng nghiệp, khó quyết định hướng đi.",
-      finance: "Quyết định tài chính sai lầm hoặc đang phân vân.",
-      self: "Mất kết nối với giá trị bản thân, sống không đúng với mình.",
-      health: "Mất cân bằng, cần xem lại lối sống.",
-      family: "Bất đồng trong gia đình, cần giải quyết xung đột."
-    },
-    keywords_up: ["lựa chọn", "cam kết", "kết nối", "đồng điệu"],
-    keywords_rev: ["trò chuyện", "giải quyết", "thành thật", "cân nhắc"],
-    summary_up: "đang có kết nối sâu sắc hoặc lựa chọn quan trọng",
-    summary_rev: "đang gặp xung đột hoặc khó quyết định"
+    meaning_up: "Đây là về sự kết nối sâu sắc và những lựa chọn quan trọng. Có thể liên quan đến tình yêu, nhưng cũng là về việc quyết định điều gì thực sự có ý nghĩa với bạn.",
+    meaning_rev: "Bạn đang đối mặt với xung đột hoặc khó đưa ra quyết định quan trọng. Có thể đang không trung thực với chính mình.",
+    keywords_up: ["lựa chọn", "kết nối", "đồng điệu"],
+    keywords_rev: ["trò chuyện", "giải quyết", "thành thật"],
+    summary_up: "kết nối sâu sắc hoặc lựa chọn quan trọng",
+    summary_rev: "đang gặp xung đột hoặc khó quyết định",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang đứng trước một quyết định quan trọng. Hãy chọn theo trái tim và giá trị của mình.",
+    why_appear_rev: "Lá bài này xuất hiện để chỉ ra sự mâu thuẫn trong bạn. Cần đối mặt thành thật với những gì bạn thực sự muốn."
   },
   "The Chariot": {
     name_vi: "Chiến Xa",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Quyết tâm theo đuổi tình yêu, vượt qua trở ngại để đến với nhau.",
-      career: "Tiến về phía trước mạnh mẽ, vượt qua thử thách để thành công.",
-      finance: "Kiếm tiền bằng nỗ lực và quyết tâm. Có thể có tiến bộ tài chính.",
-      self: "Tự tin và có động lực mạnh mẽ. Kiểm soát được cuộc sống.",
-      health: "Ý chí mạnh mẽ để cải thiện sức khỏe. Có thể hoàn thành mục tiêu.",
-      family: "Bảo vệ gia đình, vượt qua khó khăn cùng nhau."
-    },
-    meaning_matrix_rev: {
-      love: "Mất kiểm soát trong tình yêu, quá hung hăng hoặc thiếu quyết tâm.",
-      career: "Mất phương hướng, thiếu động lực hoặc bị cản trở.",
-      finance: "Nỗ lực không đi đến đâu, tiền bạc bị đình trệ.",
-      self: "Thiếu tự tin, mất kiểm soát cảm xúc.",
-      health: "Thiếu ý chí để duy trì thói quen tốt.",
-      family: "Xung đột trong việc bảo vệ gia đình."
-    },
-    keywords_up: ["tiến lên", "quyết tâm", "kiểm soát", "chiến thắng"],
-    keywords_rev: ["dừng lại", "xem lại hướng đi", "bình tĩnh", "tập trung"],
-    summary_up: "có quyết tâm mạnh mẽ để vượt qua thử thách",
-    summary_rev: "đang mất phương hướng hoặc thiếu động lực"
+    meaning_up: "Bạn có động lực mạnh mẽ và quyết tâm để vượt qua thử thách. Đây là lúc tiến về phía trước với sự tự tin.",
+    meaning_rev: "Bạn đang mất phương hướng hoặc thiếu động lực. Có thể đang cố kiểm soát mọi thứ quá mức.",
+    keywords_up: ["tiến lên", "quyết tâm", "chiến thắng"],
+    keywords_rev: ["dừng lại", "xem lại hướng đi", "bình tĩnh"],
+    summary_up: "có quyết tâm vượt qua thử thách",
+    summary_rev: "mất phương hướng hoặc thiếu động lực",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định bạn có đủ sức mạnh để chiến thắng. Hãy tiến lên không do dự.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang mất kiểm soát. Dừng lại, xác định lại mục tiêu trước khi tiếp tục."
   },
   "Strength": {
     name_vi: "Sức Mạnh",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Kiên nhẫn và dịu dàng trong tình yêu. Vượt qua khó khăn bằng sự thấu hiểu.",
-      career: "Đối mặt thử thách bằng sự bình tĩnh và kiên trì.",
-      finance: "Kiên nhẫn trong đầu tư dài hạn. Không hoảng loạn khi thị trường biến động.",
-      self: "Sức mạnh nội tại, kiểm soát được bản năng và cảm xúc.",
-      health: "Có đủ sức mạnh để vượt qua bệnh tật hoặc duy trì lối sống lành mạnh.",
-      family: "Là điểm tựa tinh thần cho gia đình, kiên nhẫn với người thân."
-    },
-    meaning_matrix_rev: {
-      love: "Thiếu kiên nhẫn, dễ nổi nóng hoặc mất niềm tin vào mối quan hệ.",
-      career: "Nghi ngờ bản thân, thiếu tự tin để đối mặt thử thách.",
-      finance: "Hoảng loạn khi gặp khó khăn tài chính, thiếu bình tĩnh.",
-      self: "Tự nghi ngờ, để cảm xúc tiêu cực kiểm soát.",
-      health: "Thiếu sức mạnh ý chí, dễ bỏ cuộc.",
-      family: "Thiếu kiên nhẫn với người thân, dễ xung đột."
-    },
-    keywords_up: ["kiên nhẫn", "bình tĩnh", "tin tưởng", "chịu đựng"],
-    keywords_rev: ["tự yêu thương", "nghỉ ngơi", "tìm hỗ trợ", "chấp nhận"],
-    summary_up: "có đủ nội lực để đối mặt mọi thử thách",
-    summary_rev: "đang thiếu tự tin hoặc kiệt sức"
+    meaning_up: "Sức mạnh thật sự đến từ sự kiên nhẫn và lòng trắc ẩn. Bạn có đủ nội lực để đối mặt với khó khăn một cách bình tĩnh.",
+    meaning_rev: "Bạn đang thiếu tự tin hoặc để cảm xúc tiêu cực kiểm soát. Có thể đang nghi ngờ bản thân.",
+    keywords_up: ["kiên nhẫn", "bình tĩnh", "tin tưởng"],
+    keywords_rev: ["tự yêu thương", "nghỉ ngơi", "tìm hỗ trợ"],
+    summary_up: "có đủ nội lực đối mặt khó khăn",
+    summary_rev: "đang thiếu tự tin",
+    why_appear_up: "Lá bài này xuất hiện để nhắc nhở bạn rằng sức mạnh thật sự đến từ bên trong. Bạn có thể vượt qua.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang tự nghi ngờ mình. Hãy tử tế với bản thân và tìm nguồn hỗ trợ."
   },
   "The Hermit": {
     name_vi: "Ẩn Sĩ",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Cần thời gian một mình để suy nghĩ về mối quan hệ.",
-      career: "Làm việc độc lập, tìm hiểu sâu hoặc cần nghỉ ngơi.",
-      finance: "Cân nhắc kỹ trước khi chi tiêu, không vội vàng đầu tư.",
-      self: "Thời gian tự vấn, tìm hiểu bản thân sâu hơn.",
-      health: "Nghỉ ngơi, thiền định, chăm sóc tinh thần.",
-      family: "Cần không gian riêng, tạm rời xa gia đình để suy nghĩ."
-    },
-    meaning_matrix_rev: {
-      love: "Cô đơn quá mức, trốn tránh mối quan hệ.",
-      career: "Tách biệt quá mức với đồng nghiệp, bỏ lỡ cơ hội hợp tác.",
-      finance: "Bảo thủ quá mức, bỏ lỡ cơ hội kiếm tiền.",
-      self: "Cô lập bản thân, trầm cảm hoặc trốn tránh thực tế.",
-      health: "Cô đơn ảnh hưởng sức khỏe tinh thần.",
-      family: "Xa cách gia đình, thiếu kết nối."
-    },
-    keywords_up: ["suy ngẫm", "nghỉ ngơi", "tìm kiếm", "một mình"],
-    keywords_rev: ["kết nối", "mở lòng", "tham gia", "chia sẻ"],
-    summary_up: "cần thời gian một mình để tìm câu trả lời",
-    summary_rev: "đang cô lập bản thân quá mức"
+    meaning_up: "Đây là lúc cần thời gian một mình để suy ngẫm. Tạm rời xa ồn ào để tìm câu trả lời bên trong.",
+    meaning_rev: "Bạn đang cô lập quá mức hoặc trốn tránh thực tế. Có thể cần mở lòng với người khác.",
+    keywords_up: ["suy ngẫm", "nghỉ ngơi", "tìm kiếm"],
+    keywords_rev: ["kết nối", "mở lòng", "chia sẻ"],
+    summary_up: "cần thời gian một mình suy ngẫm",
+    summary_rev: "đang cô lập quá mức",
+    why_appear_up: "Lá bài này xuất hiện vì bạn cần thời gian yên tĩnh để hiểu rõ hơn về tình huống. Câu trả lời nằm trong sự tĩnh lặng.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang xa cách mọi người quá lâu. Đôi khi chúng ta cần người khác."
   },
   "Wheel of Fortune": {
     name_vi: "Bánh Xe Vận Mệnh",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Vận may trong tình yêu, có thể gặp người mới hoặc mối quan hệ chuyển biến tốt.",
-      career: "Cơ hội mới đến, thay đổi tích cực trong công việc.",
-      finance: "May mắn về tiền bạc, có thể có thu nhập bất ngờ.",
-      self: "Cuộc sống đang thay đổi tích cực, đi theo dòng chảy.",
-      health: "Sức khỏe cải thiện, may mắn trong điều trị.",
-      family: "Thay đổi tích cực trong gia đình, tin tốt."
-    },
-    meaning_matrix_rev: {
-      love: "Vận xui trong tình yêu, có thể gặp trở ngại hoặc chia ly tạm thời.",
-      career: "Gặp khó khăn bất ngờ, thay đổi không mong muốn.",
-      finance: "Thua lỗ bất ngờ, cẩn thận với cờ bạc và đầu cơ.",
-      self: "Giai đoạn khó khăn, cần chấp nhận thay đổi.",
-      health: "Cần cẩn thận, có thể có vấn đề sức khỏe bất ngờ.",
-      family: "Biến cố trong gia đình, cần thích nghi."
-    },
-    keywords_up: ["nắm bắt", "tin tưởng", "thay đổi", "may mắn"],
-    keywords_rev: ["kiên nhẫn", "chấp nhận", "thích nghi", "chờ đợi"],
+    meaning_up: "Cuộc sống đang thay đổi theo hướng tích cực. Cơ hội mới đang đến. Đây là chu kỳ may mắn.",
+    meaning_rev: "Bạn đang trải qua giai đoạn khó khăn. Đây chỉ là tạm thời - mọi thứ sẽ thay đổi.",
+    keywords_up: ["nắm bắt", "tin tưởng", "thay đổi"],
+    keywords_rev: ["kiên nhẫn", "chấp nhận", "thích nghi"],
     summary_up: "may mắn và cơ hội đang đến",
-    summary_rev: "đang trải qua giai đoạn khó khăn tạm thời"
+    summary_rev: "giai đoạn khó khăn tạm thời",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu vận may đang đến. Hãy sẵn sàng nắm bắt cơ hội.",
+    why_appear_rev: "Lá bài này xuất hiện để nhắc nhở bạn rằng khó khăn chỉ là tạm thời. Bánh xe sẽ quay - hãy kiên nhẫn."
   },
   "Justice": {
     name_vi: "Công Lý",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Mối quan hệ công bằng, cân bằng cho-nhận. Có thể liên quan đến pháp lý.",
-      career: "Được công nhận xứng đáng, kết quả phản ánh nỗ lực.",
-      finance: "Nhận được những gì xứng đáng, có thể liên quan đến kiện tụng.",
-      self: "Sống trung thực, chịu trách nhiệm với hành động của mình.",
-      health: "Cân bằng trong lối sống, nhận hậu quả của thói quen.",
-      family: "Công bằng trong gia đình, giải quyết tranh chấp."
-    },
-    meaning_matrix_rev: {
-      love: "Bất công trong mối quan hệ, một bên cho nhiều hơn.",
-      career: "Không được đánh giá đúng, kết quả không công bằng.",
-      finance: "Thua thiệt tài chính không công bằng.",
-      self: "Trốn tránh trách nhiệm, không trung thực với bản thân.",
-      health: "Không chịu trách nhiệm với sức khỏe của mình.",
-      family: "Bất công trong gia đình, thiên vị."
-    },
-    keywords_up: ["trung thực", "cân bằng", "chịu trách nhiệm", "công bằng"],
-    keywords_rev: ["xem lại", "chấp nhận", "tìm công bằng", "đối mặt"],
-    summary_up: "sự công bằng sẽ được thực thi",
-    summary_rev: "đang đối mặt với sự bất công"
+    meaning_up: "Sự công bằng sẽ được thực thi. Hành động của bạn sẽ có hậu quả tương xứng.",
+    meaning_rev: "Bạn đang đối mặt với sự bất công hoặc trốn tránh trách nhiệm.",
+    keywords_up: ["trung thực", "cân bằng", "chịu trách nhiệm"],
+    keywords_rev: ["xem lại", "chấp nhận", "đối mặt"],
+    summary_up: "công bằng sẽ được thực thi",
+    summary_rev: "đối mặt với bất công",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định sự thật sẽ được sáng tỏ. Hãy hành động đúng đắn.",
+    why_appear_rev: "Lá bài này xuất hiện vì có sự mất cân bằng cần được giải quyết. Hãy nhìn nhận trung thực."
   },
   "The Hanged Man": {
     name_vi: "Người Treo Ngược",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Cần nhìn mối quan hệ từ góc độ khác, tạm dừng để suy nghĩ.",
-      career: "Đình trệ có chủ đích, chờ đợi thời điểm tốt hơn.",
-      finance: "Không phải lúc hành động, chờ đợi và quan sát.",
-      self: "Buông bỏ để nhận được, hy sinh ngắn hạn cho lợi ích dài hạn.",
-      health: "Nghỉ ngơi, để cơ thể tự chữa lành.",
-      family: "Nhìn vấn đề gia đình từ góc độ khác."
-    },
-    meaning_matrix_rev: {
-      love: "Đình trệ quá lâu, cần hành động hoặc buông bỏ.",
-      career: "Bị kẹt, không tiến không lùi được.",
-      finance: "Hy sinh vô ích, cần thay đổi chiến lược.",
-      self: "Kháng cự thay đổi, không chịu buông bỏ.",
-      health: "Tình trạng sức khỏe bị treo lơ lửng.",
-      family: "Tình huống gia đình bế tắc."
-    },
-    keywords_up: ["chờ đợi", "buông bỏ", "nhìn khác", "hy sinh"],
-    keywords_rev: ["hành động", "quyết định", "tiến lên", "thay đổi"],
-    summary_up: "cần tạm dừng và nhìn từ góc độ khác",
-    summary_rev: "đang bị kẹt và cần phải hành động"
+    meaning_up: "Đây là lúc cần tạm dừng và nhìn mọi thứ từ góc độ khác. Đôi khi buông bỏ là cần thiết.",
+    meaning_rev: "Bạn đang kháng cự sự thay đổi hoặc bị kẹt trong tình huống.",
+    keywords_up: ["chờ đợi", "buông bỏ", "nhìn khác"],
+    keywords_rev: ["hành động", "quyết định", "tiến lên"],
+    summary_up: "cần tạm dừng, nhìn từ góc độ khác",
+    summary_rev: "đang bị kẹt và cần hành động",
+    why_appear_up: "Lá bài này xuất hiện vì bạn cần thay đổi cách nhìn. Đôi khi hy sinh ngắn hạn mang lại lợi ích dài hạn.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang trì hoãn quá lâu. Đã đến lúc phải quyết định."
   },
   "Death": {
     name_vi: "Tử Thần",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Kết thúc một giai đoạn, có thể là chia tay hoặc chuyển đổi mối quan hệ.",
-      career: "Kết thúc công việc cũ để bắt đầu mới, chuyển đổi nghề nghiệp.",
-      finance: "Kết thúc cách quản lý tiền cũ, bắt đầu phương pháp mới.",
-      self: "Phiên bản cũ của bạn đang chết đi, sẵn sàng cho sự thay đổi.",
-      health: "Kết thúc thói quen xấu, bắt đầu lối sống mới.",
-      family: "Thay đổi lớn trong gia đình, kết thúc một chương."
-    },
-    meaning_matrix_rev: {
-      love: "Kháng cự kết thúc, bám víu vào mối quan hệ đã hết.",
-      career: "Sợ thay đổi, không dám rời bỏ công việc không phù hợp.",
-      finance: "Bám víu cách làm cũ không hiệu quả.",
-      self: "Sợ thay đổi, không chịu buông bỏ quá khứ.",
-      health: "Không chịu thay đổi thói quen dù biết có hại.",
-      family: "Không chấp nhận thay đổi trong gia đình."
-    },
-    keywords_up: ["buông bỏ", "chấp nhận", "bắt đầu mới", "chuyển đổi"],
-    keywords_rev: ["đối mặt", "chấp nhận thay đổi", "tiến lên", "buông"],
+    meaning_up: "Một giai đoạn đang kết thúc để nhường chỗ cho điều mới. Đây là sự chuyển đổi cần thiết.",
+    meaning_rev: "Bạn đang kháng cự sự thay đổi không thể tránh khỏi.",
+    keywords_up: ["buông bỏ", "chấp nhận", "bắt đầu mới"],
+    keywords_rev: ["đối mặt", "chấp nhận thay đổi", "tiến lên"],
     summary_up: "kết thúc cũ để bắt đầu mới",
-    summary_rev: "đang kháng cự thay đổi cần thiết"
+    summary_rev: "đang kháng cự thay đổi",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu một kết thúc cần thiết. Đừng sợ - cái mới đang chờ đón.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang bám víu vào điều đã hết. Buông bỏ để tiến lên."
   },
   "Temperance": {
     name_vi: "Điều Độ",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Cân bằng trong mối quan hệ, hòa hợp và kiên nhẫn.",
-      career: "Cân bằng công việc và cuộc sống, làm việc bền vững.",
-      finance: "Chi tiêu cân đối, không thái quá về hướng nào.",
-      self: "Tìm sự cân bằng trong cuộc sống, điều độ trong mọi việc.",
-      health: "Cân bằng trong ăn uống và tập luyện, lối sống lành mạnh.",
-      family: "Hòa hợp gia đình, cân bằng giữa các mối quan hệ."
-    },
-    meaning_matrix_rev: {
-      love: "Mất cân bằng, một bên cho quá nhiều hoặc quá ít.",
-      career: "Mất cân bằng công việc-cuộc sống, kiệt sức.",
-      finance: "Chi tiêu thái quá hoặc quá tiết kiệm.",
-      self: "Sống thái quá, thiếu điều độ.",
-      health: "Ăn uống, tập luyện thiếu cân bằng.",
-      family: "Thiên vị trong gia đình, mất cân bằng."
-    },
-    keywords_up: ["cân bằng", "kiên nhẫn", "hài hòa", "điều độ"],
-    keywords_rev: ["điều chỉnh", "xem lại", "cân đối", "giảm bớt"],
+    meaning_up: "Cân bằng và điều độ là chìa khóa. Đừng đi cực đoan theo bất kỳ hướng nào.",
+    meaning_rev: "Bạn đang mất cân bằng - quá nhiều hoặc quá ít ở một khía cạnh nào đó.",
+    keywords_up: ["cân bằng", "kiên nhẫn", "hài hòa"],
+    keywords_rev: ["điều chỉnh", "xem lại", "cân đối"],
     summary_up: "cần cân bằng và điều độ",
-    summary_rev: "đang mất cân bằng trong cuộc sống"
+    summary_rev: "đang mất cân bằng",
+    why_appear_up: "Lá bài này xuất hiện để nhắc nhở về sự cân bằng. Kiên nhẫn kết hợp các yếu tố để có kết quả tốt.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang sống thái quá. Cần điều chỉnh lại."
   },
   "The Devil": {
     name_vi: "Ác Quỷ",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Bị ràng buộc bởi mối quan hệ độc hại hoặc ham muốn.",
-      career: "Bị trói buộc bởi công việc không thích, làm vì tiền.",
-      finance: "Tham lam, nghiện mua sắm hoặc cờ bạc.",
-      self: "Bị kiểm soát bởi thói quen xấu, nghiện ngập hoặc nỗi sợ.",
-      health: "Nghiện ngập ảnh hưởng sức khỏe, cần cai nghiện.",
-      family: "Mối quan hệ gia đình độc hại, bị kiểm soát."
-    },
-    meaning_matrix_rev: {
-      love: "Đang thoát khỏi mối quan hệ độc hại, nhận ra vấn đề.",
-      career: "Bắt đầu thoát khỏi công việc không phù hợp.",
-      finance: "Nhận ra và sửa chữa thói quen tài chính xấu.",
-      self: "Đang vượt qua nghiện ngập hoặc thói quen xấu.",
-      health: "Đang cai nghiện, cải thiện sức khỏe.",
-      family: "Thoát khỏi sự kiểm soát của gia đình."
-    },
-    keywords_up: ["nhận diện", "thoát ra", "kiểm soát", "thay đổi"],
-    keywords_rev: ["tiếp tục", "kiên trì", "tự do", "chữa lành"],
-    summary_up: "đang bị ràng buộc bởi thói quen xấu hoặc nỗi sợ",
-    summary_rev: "đang bắt đầu thoát khỏi ràng buộc"
+    meaning_up: "Bạn đang bị ràng buộc bởi thói quen xấu, nỗi sợ, hoặc ham muốn. Nhận ra rằng bạn có quyền tự do hơn bạn nghĩ.",
+    meaning_rev: "Bạn đang bắt đầu thoát khỏi những gì đã ràng buộc mình.",
+    keywords_up: ["nhận diện", "thoát ra", "thay đổi"],
+    keywords_rev: ["tiếp tục", "tự do", "chữa lành"],
+    summary_up: "bị ràng buộc bởi thói quen xấu",
+    summary_rev: "đang thoát khỏi ràng buộc",
+    why_appear_up: "Lá bài này xuất hiện để cảnh báo về những gì đang kiểm soát bạn. Bước đầu tiên là nhận ra.",
+    why_appear_rev: "Lá bài này xuất hiện để khẳng định bạn đang trên đường giải phóng. Tiếp tục đi."
   },
   "The Tower": {
     name_vi: "Tháp",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Sụp đổ bất ngờ, chia tay hoặc sự thật bị phơi bày.",
-      career: "Mất việc đột ngột, dự án thất bại hoặc thay đổi lớn.",
-      finance: "Thua lỗ bất ngờ, khủng hoảng tài chính.",
-      self: "Sụp đổ niềm tin, thức tỉnh đau đớn nhưng cần thiết.",
-      health: "Vấn đề sức khỏe bất ngờ, tai nạn.",
-      family: "Khủng hoảng gia đình, bí mật bị tiết lộ."
-    },
-    meaning_matrix_rev: {
-      love: "Tránh được chia tay hoặc đang phục hồi sau sụp đổ.",
-      career: "Tránh được thất bại hoặc đang xây dựng lại.",
-      finance: "Hồi phục sau khủng hoảng hoặc tránh được thua lỗ.",
-      self: "Đang phục hồi sau khủng hoảng cá nhân.",
-      health: "Phục hồi sau bệnh tật hoặc tai nạn.",
-      family: "Đang xây dựng lại sau khủng hoảng gia đình."
-    },
-    keywords_up: ["chấp nhận", "xây dựng lại", "học hỏi", "thích nghi"],
-    keywords_rev: ["tiếp tục hồi phục", "kiên trì", "xây dựng", "tin tưởng"],
+    meaning_up: "Một sự thay đổi đột ngột đang đến. Những gì được xây trên nền tảng yếu sẽ sụp đổ - đây là cơ hội xây dựng lại tốt hơn.",
+    meaning_rev: "Bạn đang trốn tránh thay đổi hoặc đang trong quá trình phục hồi sau khủng hoảng.",
+    keywords_up: ["chấp nhận", "xây dựng lại", "học hỏi"],
+    keywords_rev: ["tiếp tục hồi phục", "kiên trì", "tin tưởng"],
     summary_up: "thay đổi đột ngột, cần xây dựng lại",
-    summary_rev: "đang phục hồi sau khủng hoảng"
+    summary_rev: "đang phục hồi sau khủng hoảng",
+    why_appear_up: "Lá bài này xuất hiện để chuẩn bị bạn cho biến động. Đôi khi phải phá bỏ để xây mới.",
+    why_appear_rev: "Lá bài này xuất hiện để xác nhận bạn đang trong giai đoạn phục hồi. Tiếp tục kiên trì."
   },
   "The Star": {
     name_vi: "Ngôi Sao",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Hy vọng trong tình yêu, chữa lành sau tổn thương.",
-      career: "Tương lai tươi sáng, cảm hứng và hy vọng mới.",
-      finance: "Triển vọng tài chính tốt, hy vọng cải thiện.",
-      self: "Chữa lành, tìm lại niềm tin và hy vọng.",
-      health: "Hồi phục sức khỏe, chữa lành thể chất và tinh thần.",
-      family: "Hy vọng mới trong gia đình, hòa giải."
-    },
-    meaning_matrix_rev: {
-      love: "Mất niềm tin vào tình yêu, thất vọng.",
-      career: "Mất hy vọng về công việc, không thấy tương lai.",
-      finance: "Bi quan về tài chính, mất niềm tin.",
-      self: "Trầm cảm, mất hy vọng vào cuộc sống.",
-      health: "Sức khỏe tinh thần suy giảm, cần hỗ trợ.",
-      family: "Mất hy vọng về gia đình."
-    },
-    keywords_up: ["tin tưởng", "hy vọng", "chữa lành", "lạc quan"],
-    keywords_rev: ["tìm hỗ trợ", "kiên nhẫn", "nhỏ bước", "chấp nhận"],
+    meaning_up: "Hy vọng và niềm tin đang trở lại. Sau giai đoạn khó khăn, bạn đang bước vào thời kỳ chữa lành.",
+    meaning_rev: "Bạn đang mất niềm tin hoặc cảm thấy thất vọng. Cần tìm lại hy vọng.",
+    keywords_up: ["tin tưởng", "hy vọng", "chữa lành"],
+    keywords_rev: ["tìm hỗ trợ", "kiên nhẫn", "lạc quan"],
     summary_up: "hy vọng và chữa lành đang đến",
-    summary_rev: "đang mất niềm tin và cần hỗ trợ"
+    summary_rev: "đang mất niềm tin",
+    why_appear_up: "Lá bài này xuất hiện để mang đến hy vọng. Bạn đang trên đường chữa lành - hãy tin tưởng.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần tìm lại niềm tin. Bắt đầu từ những điều nhỏ để biết ơn."
   },
   "The Moon": {
     name_vi: "Mặt Trăng",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Có điều chưa rõ ràng trong mối quan hệ, lừa dối hoặc hiểu lầm.",
-      career: "Tình huống mơ hồ, không biết thực hư thế nào.",
-      finance: "Cẩn thận với lừa đảo, đừng tin những gì thấy bề ngoài.",
-      self: "Lo lắng, sợ hãi hoặc có điều chưa đối mặt trong tiềm thức.",
-      health: "Chẩn đoán chưa rõ ràng, cần kiểm tra thêm.",
-      family: "Bí mật trong gia đình, không ai nói thật."
-    },
-    meaning_matrix_rev: {
-      love: "Sự thật được phơi bày, hiểu rõ hơn về mối quan hệ.",
-      career: "Tình huống trở nên rõ ràng hơn.",
-      finance: "Phát hiện lừa đảo hoặc hiểu rõ tình hình tài chính.",
-      self: "Đối mặt với nỗi sợ, hiểu rõ bản thân hơn.",
-      health: "Chẩn đoán rõ ràng hơn.",
-      family: "Bí mật được tiết lộ, sự thật sáng tỏ."
-    },
-    keywords_up: ["cẩn thận", "chờ đợi", "kiểm tra", "nghi ngờ"],
-    keywords_rev: ["tin tưởng", "hành động", "sáng tỏ", "tiến lên"],
+    meaning_up: "Có điều gì đó chưa rõ ràng. Đừng vội kết luận khi chưa có đủ thông tin. Cảm xúc có thể đánh lừa bạn.",
+    meaning_rev: "Sự thật đang dần được sáng tỏ. Những lo lắng vô căn cứ đang tan biến.",
+    keywords_up: ["cẩn thận", "chờ đợi", "kiểm tra"],
+    keywords_rev: ["tin tưởng", "hành động", "sáng tỏ"],
     summary_up: "có điều chưa rõ ràng, cần cẩn thận",
-    summary_rev: "sự thật đang dần sáng tỏ"
+    summary_rev: "sự thật đang sáng tỏ",
+    why_appear_up: "Lá bài này xuất hiện để cảnh báo về sự mơ hồ. Đừng tin hoàn toàn vào vẻ bề ngoài.",
+    why_appear_rev: "Lá bài này xuất hiện để báo hiệu sự thật đang dần lộ diện. Bạn sẽ sớm hiểu rõ hơn."
   },
   "The Sun": {
     name_vi: "Mặt Trời",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Hạnh phúc trong tình yêu, mối quan hệ tươi sáng.",
-      career: "Thành công, được công nhận, tương lai sáng lạn.",
-      finance: "Thịnh vượng, tiền bạc dồi dào.",
-      self: "Vui vẻ, lạc quan, tự tin và năng lượng tích cực.",
-      health: "Sức khỏe tốt, tràn đầy năng lượng.",
-      family: "Gia đình hạnh phúc, tin vui."
-    },
-    meaning_matrix_rev: {
-      love: "Niềm vui bị che mờ, vấn đề nhỏ trong mối quan hệ.",
-      career: "Thành công bị trì hoãn, cần kiên nhẫn.",
-      finance: "Tài chính ổn nhưng chưa đạt kỳ vọng.",
-      self: "Thiếu tự tin tạm thời, cần tìm lại niềm vui.",
-      health: "Sức khỏe ổn nhưng thiếu năng lượng.",
-      family: "Niềm vui gia đình bị ảnh hưởng nhẹ."
-    },
-    keywords_up: ["tận hưởng", "chia sẻ", "tỏa sáng", "lạc quan"],
-    keywords_rev: ["kiên nhẫn", "tìm niềm vui", "lạc quan", "tin tưởng"],
+    meaning_up: "Thành công, hạnh phúc và sự rõ ràng. Mọi thứ đang diễn ra tốt đẹp. Đây là thời điểm tận hưởng.",
+    meaning_rev: "Niềm vui bị che mờ tạm thời. Nhưng ánh sáng vẫn ở đó.",
+    keywords_up: ["tận hưởng", "chia sẻ", "lạc quan"],
+    keywords_rev: ["kiên nhẫn", "tìm niềm vui", "tin tưởng"],
     summary_up: "thành công và hạnh phúc",
-    summary_rev: "niềm vui bị che mờ tạm thời"
+    summary_rev: "niềm vui bị che mờ tạm thời",
+    why_appear_up: "Lá bài này xuất hiện để mang đến tin vui. Hãy tận hưởng và lan tỏa năng lượng tích cực.",
+    why_appear_rev: "Lá bài này xuất hiện để nhắc nhở rằng khó khăn chỉ tạm thời. Ánh sáng sẽ trở lại."
   },
   "Judgement": {
     name_vi: "Phán Xét",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Đánh giá lại mối quan hệ, quyết định quan trọng.",
-      career: "Được đánh giá, có thể là thăng tiến hoặc kết quả quan trọng.",
-      finance: "Đánh giá lại tài chính, quyết định lớn.",
-      self: "Thức tỉnh, nhìn lại cuộc sống và thay đổi.",
-      health: "Đánh giá lại sức khỏe, quyết định thay đổi lối sống.",
-      family: "Đánh giá lại mối quan hệ gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Phán xét quá khắc nghiệt, không tha thứ.",
-      career: "Bị đánh giá không công bằng, trốn tránh kết quả.",
-      finance: "Không chịu nhìn nhận thực tế tài chính.",
-      self: "Tự phán xét quá khắc nghiệt, không tha thứ cho mình.",
-      health: "Phớt lờ lời khuyên về sức khỏe.",
-      family: "Không chịu hòa giải với gia đình."
-    },
-    keywords_up: ["đánh giá", "quyết định", "thay đổi", "thức tỉnh"],
-    keywords_rev: ["tha thứ", "chấp nhận", "buông bỏ", "hòa giải"],
-    summary_up: "thời điểm đánh giá lại và quyết định quan trọng",
-    summary_rev: "cần tha thứ cho bản thân và người khác"
+    meaning_up: "Đây là thời điểm đánh giá lại và đưa ra quyết định quan trọng. Lắng nghe tiếng gọi bên trong.",
+    meaning_rev: "Bạn đang tự phán xét quá khắc nghiệt hoặc trốn tránh quyết định quan trọng.",
+    keywords_up: ["đánh giá", "quyết định", "thức tỉnh"],
+    keywords_rev: ["tha thứ", "chấp nhận", "hòa giải"],
+    summary_up: "thời điểm đánh giá lại và quyết định",
+    summary_rev: "cần tha thứ cho bản thân",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang ở ngã rẽ quan trọng. Hãy lắng nghe tiếng gọi bên trong.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang quá khắc nghiệt với bản thân. Hãy tha thứ và tiến lên."
   },
   "The World": {
     name_vi: "Thế Giới",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Hoàn thành, mối quan hệ viên mãn hoặc đạt được mục tiêu tình yêu.",
-      career: "Thành công lớn, hoàn thành dự án quan trọng.",
-      finance: "Đạt được mục tiêu tài chính, thịnh vượng.",
-      self: "Hoàn thành một chương quan trọng trong cuộc sống.",
-      health: "Sức khỏe hoàn hảo, cân bằng thể chất-tinh thần.",
-      family: "Gia đình viên mãn, đạt được mục tiêu chung."
-    },
-    meaning_matrix_rev: {
-      love: "Gần đạt mục tiêu nhưng còn thiếu điều gì đó.",
-      career: "Dự án gần hoàn thành, cần thêm nỗ lực cuối.",
-      finance: "Gần đạt mục tiêu tài chính.",
-      self: "Cảm giác chưa trọn vẹn, cần hoàn thành điều gì.",
-      health: "Gần đạt mục tiêu sức khỏe.",
-      family: "Gia đình gần đạt mục tiêu chung."
-    },
-    keywords_up: ["ăn mừng", "tri ân", "bắt đầu mới", "chia sẻ"],
-    keywords_rev: ["hoàn thành", "nỗ lực cuối", "kiên trì", "đừng bỏ cuộc"],
+    meaning_up: "Hoàn thành, thành tựu và sự viên mãn. Bạn đã đạt được mục tiêu quan trọng. Sẵn sàng cho chu kỳ mới.",
+    meaning_rev: "Bạn đang gần đến đích nhưng còn thiếu điều gì đó. Cần thêm nỗ lực cuối cùng.",
+    keywords_up: ["ăn mừng", "tri ân", "bắt đầu mới"],
+    keywords_rev: ["hoàn thành", "nỗ lực cuối", "đừng bỏ cuộc"],
     summary_up: "hoàn thành và viên mãn",
-    summary_rev: "gần đạt mục tiêu, cần thêm nỗ lực"
+    summary_rev: "gần đạt mục tiêu",
+    why_appear_up: "Lá bài này xuất hiện để chúc mừng thành tựu của bạn. Hãy ăn mừng và chuẩn bị cho chương tiếp.",
+    why_appear_rev: "Lá bài này xuất hiện để khích lệ bạn không bỏ cuộc. Chỉ còn một chút nữa thôi."
   }
 };
 
@@ -560,338 +287,170 @@ const wands: Record<string, CardData> = {
   "Ace of Wands": {
     name_vi: "Át Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Bắt đầu mối quan hệ mới đầy đam mê hoặc tình yêu được thổi bùng.",
-      career: "Ý tưởng mới, dự án mới bắt đầu với năng lượng cao.",
-      finance: "Cơ hội kiếm tiền mới, nguồn thu nhập mới.",
-      self: "Cảm hứng mới, động lực mạnh mẽ.",
-      health: "Năng lượng dồi dào, bắt đầu tập luyện mới.",
-      family: "Khởi đầu mới trong gia đình, có thể là thành viên mới."
-    },
-    meaning_matrix_rev: {
-      love: "Chần chừ bắt đầu mối quan hệ, thiếu đam mê.",
-      career: "Ý tưởng bị chặn, dự án chậm bắt đầu.",
-      finance: "Cơ hội kiếm tiền bị bỏ lỡ.",
-      self: "Thiếu động lực, ý tưởng không thành hành động.",
-      health: "Thiếu năng lượng để bắt đầu.",
-      family: "Khởi đầu mới bị trì hoãn."
-    },
-    keywords_up: ["bắt đầu", "hành động", "đam mê", "sáng tạo"],
-    keywords_rev: ["lập kế hoạch", "kiên nhẫn", "tìm động lực", "chuẩn bị"],
+    meaning_up: "Một ý tưởng mới hoặc dự án mới đang bắt đầu. Bạn có nguồn năng lượng và động lực mạnh mẽ.",
+    meaning_rev: "Ý tưởng bị chặn, thiếu động lực hoặc khởi đầu bị trì hoãn.",
+    keywords_up: ["bắt đầu", "hành động", "đam mê"],
+    keywords_rev: ["lập kế hoạch", "tìm động lực", "chuẩn bị"],
     summary_up: "khởi đầu mới đầy năng lượng",
-    summary_rev: "khởi đầu bị trì hoãn, thiếu động lực"
+    summary_rev: "khởi đầu bị trì hoãn",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu nguồn năng lượng mới. Hãy nắm bắt và hành động.",
+    why_appear_rev: "Lá bài này xuất hiện vì có rào cản cần vượt qua trước khi bắt đầu. Hãy chuẩn bị kỹ hơn."
   },
   "Two of Wands": {
     name_vi: "Hai Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Cân nhắc tương lai của mối quan hệ, lập kế hoạch.",
-      career: "Lên kế hoạch cho bước tiến tiếp theo.",
-      finance: "Đánh giá cơ hội đầu tư, mở rộng.",
-      self: "Suy nghĩ về hướng đi, lập kế hoạch cuộc sống.",
-      health: "Lập kế hoạch chăm sóc sức khỏe dài hạn.",
-      family: "Lên kế hoạch cho tương lai gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Sợ cam kết, không dám nghĩ xa.",
-      career: "Thiếu tầm nhìn, không có kế hoạch.",
-      finance: "Không dám mở rộng, bỏ lỡ cơ hội.",
-      self: "Không có mục tiêu rõ ràng.",
-      health: "Không có kế hoạch sức khỏe.",
-      family: "Không nghĩ đến tương lai gia đình."
-    },
-    keywords_up: ["lên kế hoạch", "mở rộng", "quyết định", "tầm nhìn"],
-    keywords_rev: ["bắt đầu nhỏ", "tập trung", "xác định mục tiêu", "cam kết"],
-    summary_up: "đang lên kế hoạch và cân nhắc tương lai",
-    summary_rev: "thiếu tầm nhìn và kế hoạch"
+    meaning_up: "Bạn đang lên kế hoạch và cân nhắc cho tương lai. Có tiềm năng lớn đang chờ đợi.",
+    meaning_rev: "Thiếu tầm nhìn, sợ cam kết hoặc không có kế hoạch rõ ràng.",
+    keywords_up: ["lên kế hoạch", "mở rộng", "tầm nhìn"],
+    keywords_rev: ["bắt đầu nhỏ", "xác định mục tiêu", "cam kết"],
+    summary_up: "đang lên kế hoạch tương lai",
+    summary_rev: "thiếu tầm nhìn và kế hoạch",
+    why_appear_up: "Lá bài này xuất hiện vì bạn có nhiều lựa chọn. Hãy tập trung và quyết định hướng đi.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang thiếu mục tiêu rõ ràng. Hãy dành thời gian suy nghĩ."
   },
   "Three of Wands": {
     name_vi: "Ba Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Mở rộng mối quan hệ, bước sang giai đoạn mới.",
-      career: "Dự án đang phát triển, chờ kết quả tốt.",
-      finance: "Đầu tư đang sinh lợi, mở rộng kinh doanh.",
-      self: "Tiến bộ rõ rệt, đang đi đúng hướng.",
-      health: "Nỗ lực chăm sóc sức khỏe đang có kết quả.",
-      family: "Gia đình phát triển, mở rộng."
-    },
-    meaning_matrix_rev: {
-      love: "Kết quả không như mong đợi, thất vọng.",
-      career: "Dự án bị chậm tiến độ.",
-      finance: "Đầu tư chậm sinh lợi.",
-      self: "Tiến bộ chậm, cần kiên nhẫn.",
-      health: "Kết quả sức khỏe chậm đến.",
-      family: "Kế hoạch gia đình bị trì hoãn."
-    },
-    keywords_up: ["kiên nhẫn chờ", "tin tưởng", "tiếp tục", "mở rộng"],
-    keywords_rev: ["đánh giá lại", "điều chỉnh", "kiên nhẫn", "linh hoạt"],
+    meaning_up: "Tiến bộ rõ rệt, đang đi đúng hướng. Kết quả tốt đang đến.",
+    meaning_rev: "Tiến bộ chậm, kết quả không như mong đợi.",
+    keywords_up: ["kiên nhẫn", "tin tưởng", "mở rộng"],
+    keywords_rev: ["đánh giá lại", "điều chỉnh", "linh hoạt"],
     summary_up: "tiến bộ tốt, chờ đợi kết quả",
-    summary_rev: "tiến độ chậm, cần kiên nhẫn"
+    summary_rev: "tiến độ chậm",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định bạn đang đi đúng hướng. Kiên nhẫn chờ đợi.",
+    why_appear_rev: "Lá bài này xuất hiện vì cần điều chỉnh chiến lược. Xem lại cách tiếp cận."
   },
   "Four of Wands": {
     name_vi: "Bốn Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Ăn mừng mối quan hệ, có thể là đính hôn, kết hôn.",
-      career: "Đạt cột mốc quan trọng, ăn mừng thành tích.",
-      finance: "Ổn định tài chính, có thể mua nhà.",
-      self: "Hoàn thành giai đoạn quan trọng, ăn mừng.",
-      health: "Đạt mục tiêu sức khỏe, cảm giác ổn định.",
-      family: "Sum họp gia đình, lễ kỷ niệm."
-    },
-    meaning_matrix_rev: {
-      love: "Thiếu sự ổn định trong mối quan hệ.",
-      career: "Chưa đạt cột mốc mong muốn.",
-      finance: "Chưa ổn định về tài chính.",
-      self: "Cảm giác chưa trọn vẹn.",
-      health: "Chưa đạt mục tiêu sức khỏe.",
-      family: "Căng thẳng trong gia đình."
-    },
-    keywords_up: ["ăn mừng", "tri ân", "chia sẻ", "tận hưởng"],
-    keywords_rev: ["xây dựng", "kiên nhẫn", "nỗ lực", "kết nối"],
-    summary_up: "ăn mừng thành tích và sự ổn định",
-    summary_rev: "chưa đạt được sự ổn định mong muốn"
+    meaning_up: "Đạt cột mốc quan trọng, ăn mừng thành tích. Ổn định và hạnh phúc.",
+    meaning_rev: "Chưa đạt cột mốc mong muốn, thiếu sự ổn định.",
+    keywords_up: ["ăn mừng", "tri ân", "tận hưởng"],
+    keywords_rev: ["xây dựng", "kiên nhẫn", "nỗ lực"],
+    summary_up: "ăn mừng thành tích",
+    summary_rev: "chưa đạt được sự ổn định",
+    why_appear_up: "Lá bài này xuất hiện để chúc mừng thành tựu. Hãy tận hưởng khoảnh khắc này.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang cần thêm nỗ lực để đạt mục tiêu."
   },
   "Five of Wands": {
     name_vi: "Năm Gậy",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Xung đột, cạnh tranh trong tình yêu.",
-      career: "Cạnh tranh gay gắt, xung đột đồng nghiệp.",
-      finance: "Cạnh tranh về tiền bạc, tranh chấp.",
-      self: "Xung đột nội tâm, không biết chọn gì.",
-      health: "Căng thẳng do xung đột.",
-      family: "Tranh cãi trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Xung đột được giải quyết hoặc tránh được.",
-      career: "Hợp tác thay vì cạnh tranh.",
-      finance: "Tìm được giải pháp hòa giải.",
-      self: "Xung đột nội tâm được giải quyết.",
-      health: "Căng thẳng giảm bớt.",
-      family: "Gia đình hòa giải."
-    },
-    keywords_up: ["đối thoại", "hợp tác", "lắng nghe", "thỏa hiệp"],
-    keywords_rev: ["duy trì hòa bình", "tránh xung đột", "hợp tác", "nhẫn nhịn"],
+    meaning_up: "Xung đột, cạnh tranh gay gắt. Cần tìm cách hợp tác thay vì đối đầu.",
+    meaning_rev: "Xung đột được giải quyết hoặc tránh được.",
+    keywords_up: ["đối thoại", "hợp tác", "thỏa hiệp"],
+    keywords_rev: ["duy trì hòa bình", "tránh xung đột"],
     summary_up: "đang có xung đột và cạnh tranh",
-    summary_rev: "xung đột đang được giải quyết"
+    summary_rev: "xung đột đang được giải quyết",
+    why_appear_up: "Lá bài này xuất hiện vì có sự căng thẳng cần giải quyết. Tìm cách hợp tác.",
+    why_appear_rev: "Lá bài này xuất hiện để báo hiệu xung đột đang lắng xuống. Tiếp tục duy trì hòa khí."
   },
   "Six of Wands": {
     name_vi: "Sáu Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Được công nhận trong tình yêu, tự hào về mối quan hệ.",
-      career: "Thắng lợi, được công nhận, thăng tiến.",
-      finance: "Thành công tài chính, được thưởng.",
-      self: "Tự tin, được người khác ngưỡng mộ.",
-      health: "Chiến thắng bệnh tật, đạt mục tiêu.",
-      family: "Được gia đình tự hào."
-    },
-    meaning_matrix_rev: {
-      love: "Thiếu sự công nhận, cảm thấy bị bỏ quên.",
-      career: "Nỗ lực không được ghi nhận.",
-      finance: "Không được thưởng xứng đáng.",
-      self: "Thiếu tự tin, nghi ngờ bản thân.",
-      health: "Chưa đạt mục tiêu.",
-      family: "Cảm thấy không được gia đình đánh giá cao."
-    },
-    keywords_up: ["tận hưởng", "khiêm tốn", "chia sẻ", "tiếp tục"],
-    keywords_rev: ["tự tin", "ghi nhận bản thân", "kiên trì", "không so sánh"],
+    meaning_up: "Thắng lợi, được công nhận và ngưỡng mộ. Tự tin vào thành công.",
+    meaning_rev: "Nỗ lực không được ghi nhận, thiếu tự tin.",
+    keywords_up: ["tận hưởng", "khiêm tốn", "tiếp tục"],
+    keywords_rev: ["tự tin", "ghi nhận bản thân", "kiên trì"],
     summary_up: "chiến thắng và được công nhận",
-    summary_rev: "nỗ lực chưa được ghi nhận"
+    summary_rev: "nỗ lực chưa được ghi nhận",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định thành công của bạn. Hãy tự hào nhưng khiêm tốn.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần tin vào giá trị của mình, dù người khác chưa thấy."
   },
   "Seven of Wands": {
     name_vi: "Bảy Gậy",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Bảo vệ mối quan hệ trước áp lực bên ngoài.",
-      career: "Đứng vững trước thử thách, cạnh tranh.",
-      finance: "Bảo vệ tài sản, đối mặt áp lực tài chính.",
-      self: "Kiên định với quan điểm của mình.",
-      health: "Chiến đấu với bệnh tật.",
-      family: "Bảo vệ gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Kiệt sức vì bảo vệ mối quan hệ.",
-      career: "Bị áp đảo, mất vị trí.",
-      finance: "Không giữ được tài chính.",
-      self: "Bỏ cuộc, thiếu kiên định.",
-      health: "Kiệt sức vì chống chọi.",
-      family: "Không bảo vệ được gia đình."
-    },
-    keywords_up: ["kiên định", "đứng vững", "chiến đấu", "bảo vệ"],
-    keywords_rev: ["nghỉ ngơi", "tìm đồng minh", "chọn trận đánh", "buông bỏ"],
-    summary_up: "đang đứng vững trước thử thách",
-    summary_rev: "kiệt sức vì chiến đấu liên tục"
+    meaning_up: "Đứng vững trước thử thách, bảo vệ vị trí của mình.",
+    meaning_rev: "Kiệt sức vì chiến đấu liên tục, cần nghỉ ngơi.",
+    keywords_up: ["kiên định", "đứng vững", "bảo vệ"],
+    keywords_rev: ["nghỉ ngơi", "tìm đồng minh", "buông bỏ"],
+    summary_up: "đứng vững trước thử thách",
+    summary_rev: "kiệt sức vì chiến đấu",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang đối mặt với áp lực. Hãy kiên định.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần nghỉ ngơi. Không thể chiến đấu mãi được."
   },
   "Eight of Wands": {
     name_vi: "Tám Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Mọi thứ diễn ra nhanh, có thể có tin nhắn quan trọng.",
-      career: "Dự án tiến triển nhanh, nhiều việc đến cùng lúc.",
-      finance: "Tiền vào nhanh, giao dịch chóng vánh.",
-      self: "Cuộc sống bận rộn, nhiều thay đổi nhanh.",
-      health: "Hồi phục nhanh.",
-      family: "Tin tức nhanh từ gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Chờ đợi, trì hoãn trong tình yêu.",
-      career: "Dự án bị đình trệ.",
-      finance: "Tiền chậm đến.",
-      self: "Mọi thứ chậm lại.",
-      health: "Hồi phục chậm.",
-      family: "Chờ tin từ gia đình."
-    },
-    keywords_up: ["hành động nhanh", "nắm bắt", "linh hoạt", "sẵn sàng"],
-    keywords_rev: ["kiên nhẫn", "chuẩn bị", "không vội", "chờ đợi"],
-    summary_up: "mọi thứ diễn ra nhanh chóng",
-    summary_rev: "đang bị trì hoãn"
+    meaning_up: "Mọi thứ diễn ra nhanh chóng. Tin tức, thay đổi đang đến.",
+    meaning_rev: "Chờ đợi, trì hoãn, mọi thứ chậm lại.",
+    keywords_up: ["hành động nhanh", "nắm bắt", "sẵn sàng"],
+    keywords_rev: ["kiên nhẫn", "chuẩn bị", "chờ đợi"],
+    summary_up: "mọi thứ diễn ra nhanh",
+    summary_rev: "đang bị trì hoãn",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu tốc độ. Sẵn sàng cho sự thay đổi nhanh.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang phải chờ đợi. Hãy kiên nhẫn."
   },
   "Nine of Wands": {
     name_vi: "Chín Gậy",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Kiên trì dù mệt mỏi, gần đến đích.",
-      career: "Kiệt sức nhưng gần thành công.",
-      finance: "Cố gắng cuối cùng về tài chính.",
-      self: "Mệt nhưng không bỏ cuộc.",
-      health: "Kiệt sức, cần nghỉ ngơi nhưng phải tiếp tục.",
-      family: "Kiên trì vì gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá mệt mỏi, muốn bỏ cuộc.",
-      career: "Kiệt sức, cần nghỉ ngơi.",
-      finance: "Không còn sức chiến đấu.",
-      self: "Cần nghỉ ngơi gấp.",
-      health: "Cơ thể đang kiệt sức.",
-      family: "Quá mệt để lo cho gia đình."
-    },
-    keywords_up: ["kiên trì", "nghỉ ngơi khi cần", "gần đến đích", "tiếp tục"],
-    keywords_rev: ["nghỉ ngơi", "xin giúp đỡ", "buông bớt", "tự chăm sóc"],
+    meaning_up: "Kiệt sức nhưng gần đến đích. Kiên trì thêm một chút.",
+    meaning_rev: "Quá mệt mỏi, cần nghỉ ngơi gấp.",
+    keywords_up: ["kiên trì", "gần đến đích", "tiếp tục"],
+    keywords_rev: ["nghỉ ngơi", "xin giúp đỡ", "tự chăm sóc"],
     summary_up: "kiệt sức nhưng kiên trì",
-    summary_rev: "cần nghỉ ngơi ngay"
+    summary_rev: "cần nghỉ ngơi ngay",
+    why_appear_up: "Lá bài này xuất hiện để khích lệ bạn. Chỉ còn một chút nữa thôi - đừng bỏ cuộc.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang quá tải. Nghỉ ngơi là cần thiết."
   },
   "Ten of Wands": {
     name_vi: "Mười Gậy",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Gánh nặng trong mối quan hệ, quá nhiều trách nhiệm.",
-      career: "Quá tải công việc, gánh vác quá nhiều.",
-      finance: "Áp lực tài chính nặng nề.",
-      self: "Kiệt sức vì gánh quá nhiều.",
-      health: "Cơ thể quá tải, cần giảm bớt.",
-      family: "Gánh nặng gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Bắt đầu giảm bớt gánh nặng.",
-      career: "Ủy thác công việc, giảm tải.",
-      finance: "Giảm áp lực tài chính.",
-      self: "Học cách từ chối, buông bỏ.",
-      health: "Bắt đầu hồi phục.",
-      family: "Chia sẻ gánh nặng với gia đình."
-    },
-    keywords_up: ["ủy thác", "từ chối", "ưu tiên", "giảm bớt"],
-    keywords_rev: ["tiếp tục giảm tải", "nghỉ ngơi", "chia sẻ", "buông bỏ"],
-    summary_up: "đang gánh quá nhiều, cần giảm tải",
-    summary_rev: "đang học cách buông bỏ"
+    meaning_up: "Gánh nặng quá nhiều, quá tải. Cần giảm bớt trách nhiệm.",
+    meaning_rev: "Bắt đầu giảm bớt gánh nặng, học cách từ chối.",
+    keywords_up: ["ủy thác", "từ chối", "ưu tiên"],
+    keywords_rev: ["tiếp tục giảm tải", "nghỉ ngơi", "buông bỏ"],
+    summary_up: "đang gánh quá nhiều",
+    summary_rev: "đang học cách buông bỏ",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang ôm đồm quá nhiều. Hãy chia sẻ gánh nặng.",
+    why_appear_rev: "Lá bài này xuất hiện để xác nhận bạn đang trên đường nhẹ gánh. Tiếp tục buông bỏ."
   },
   "Page of Wands": {
     name_vi: "Thị Đồng Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tin tức về tình yêu, bắt đầu mới.",
-      career: "Cơ hội mới, tin tốt về công việc.",
-      finance: "Tin tức về tiền bạc, cơ hội nhỏ.",
-      self: "Khám phá đam mê mới.",
-      health: "Bắt đầu thói quen mới.",
-      family: "Tin tức từ gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Tin xấu hoặc không có tin gì.",
-      career: "Cơ hội bị trì hoãn.",
-      finance: "Tin không tốt về tài chính.",
-      self: "Thiếu động lực khám phá.",
-      health: "Khó bắt đầu thói quen mới.",
-      family: "Tin xấu từ gia đình."
-    },
-    keywords_up: ["khám phá", "thử nghiệm", "học hỏi", "hào hứng"],
-    keywords_rev: ["kiên nhẫn", "chuẩn bị", "tập trung", "không nản"],
+    meaning_up: "Tin tức tốt, cơ hội mới. Khám phá đam mê.",
+    meaning_rev: "Tin xấu hoặc cơ hội bị trì hoãn.",
+    keywords_up: ["khám phá", "học hỏi", "hào hứng"],
+    keywords_rev: ["kiên nhẫn", "chuẩn bị", "không nản"],
     summary_up: "tin tốt và khởi đầu mới",
-    summary_rev: "tin tức bị trì hoãn"
+    summary_rev: "tin tức bị trì hoãn",
+    why_appear_up: "Lá bài này xuất hiện để báo tin vui hoặc cơ hội mới. Hãy đón nhận với sự hào hứng.",
+    why_appear_rev: "Lá bài này xuất hiện vì tin tức đang chậm đến. Hãy kiên nhẫn chờ đợi."
   },
   "Knight of Wands": {
     name_vi: "Hiệp Sĩ Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Theo đuổi tình yêu mạnh mẽ, đam mê.",
-      career: "Hành động nhanh, theo đuổi mục tiêu.",
-      finance: "Kiếm tiền nhanh, mạo hiểm.",
-      self: "Tràn đầy năng lượng và đam mê.",
-      health: "Năng động, hoạt động thể chất cao.",
-      family: "Hành động vì gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Hấp tấp trong tình yêu, thiếu cam kết.",
-      career: "Hành động thiếu suy nghĩ.",
-      finance: "Mạo hiểm quá mức.",
-      self: "Bồng bột, thiếu kiên nhẫn.",
-      health: "Hoạt động quá mức gây chấn thương.",
-      family: "Hấp tấp trong quyết định gia đình."
-    },
-    keywords_up: ["tiến lên", "dám làm", "năng động", "tự tin"],
-    keywords_rev: ["suy nghĩ kỹ", "kiên nhẫn", "lập kế hoạch", "bình tĩnh"],
-    summary_up: "hành động mạnh mẽ và đam mê",
-    summary_rev: "hấp tấp và thiếu suy nghĩ"
+    meaning_up: "Hành động nhanh, đam mê, theo đuổi mục tiêu mạnh mẽ.",
+    meaning_rev: "Hấp tấp, thiếu suy nghĩ, thiếu kiên nhẫn.",
+    keywords_up: ["tiến lên", "dám làm", "tự tin"],
+    keywords_rev: ["suy nghĩ kỹ", "kiên nhẫn", "bình tĩnh"],
+    summary_up: "hành động mạnh mẽ",
+    summary_rev: "hấp tấp và thiếu suy nghĩ",
+    why_appear_up: "Lá bài này xuất hiện để khuyến khích bạn hành động. Đam mê sẽ dẫn lối.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang quá vội vàng. Bình tĩnh lại."
   },
   "Queen of Wands": {
     name_vi: "Hoàng Hậu Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tự tin trong tình yêu, thu hút.",
-      career: "Lãnh đạo có ảnh hưởng, tự tin.",
-      finance: "Quản lý tiền bạc độc lập, sáng tạo.",
-      self: "Tự tin, quyến rũ, có sức ảnh hưởng.",
-      health: "Sức khỏe tốt, năng lượng cao.",
-      family: "Trụ cột gia đình, truyền cảm hứng."
-    },
-    meaning_matrix_rev: {
-      love: "Độc đoán hoặc ghen tuông trong tình yêu.",
-      career: "Quá kiểm soát hoặc thiếu tự tin.",
-      finance: "Chi tiêu phô trương.",
-      self: "Thiếu tự tin hoặc quá tự cao.",
-      health: "Năng lượng không ổn định.",
-      family: "Kiểm soát gia đình quá mức."
-    },
-    keywords_up: ["tỏa sáng", "tự tin", "lãnh đạo", "truyền cảm hứng"],
-    keywords_rev: ["khiêm tốn", "lắng nghe", "linh hoạt", "cân bằng"],
+    meaning_up: "Tự tin, quyến rũ, có sức ảnh hưởng. Truyền cảm hứng cho người khác.",
+    meaning_rev: "Quá kiểm soát hoặc thiếu tự tin.",
+    keywords_up: ["tỏa sáng", "tự tin", "truyền cảm hứng"],
+    keywords_rev: ["khiêm tốn", "lắng nghe", "cân bằng"],
     summary_up: "tự tin và có sức ảnh hưởng",
-    summary_rev: "cần cân bằng giữa tự tin và khiêm tốn"
+    summary_rev: "cần cân bằng",
+    why_appear_up: "Lá bài này xuất hiện để nhắc nhở bạn về sức mạnh bên trong. Hãy tỏa sáng.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần điều chỉnh cách thể hiện bản thân."
   },
   "King of Wands": {
     name_vi: "Hoàng Đế Gậy",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người yêu/đối tác có tầm nhìn, lãnh đạo.",
-      career: "Lãnh đạo xuất sắc, tầm nhìn xa.",
-      finance: "Quản lý tài chính như doanh nhân.",
-      self: "Có tầm nhìn và khả năng lãnh đạo.",
-      health: "Có ý chí mạnh mẽ về sức khỏe.",
-      family: "Trụ cột gia đình, người dẫn dắt."
-    },
-    meaning_matrix_rev: {
-      love: "Độc đoán, không lắng nghe.",
-      career: "Lãnh đạo kém hiệu quả.",
-      finance: "Quyết định tài chính vội vàng.",
-      self: "Thiếu tầm nhìn hoặc quá tự phụ.",
-      health: "Bỏ bê sức khỏe vì công việc.",
-      family: "Độc đoán với gia đình."
-    },
-    keywords_up: ["lãnh đạo", "tầm nhìn", "quyết đoán", "truyền cảm hứng"],
-    keywords_rev: ["lắng nghe", "linh hoạt", "khiêm tốn", "cân nhắc"],
+    meaning_up: "Lãnh đạo có tầm nhìn, quyết đoán và truyền cảm hứng.",
+    meaning_rev: "Độc đoán, thiếu tầm nhìn hoặc không lắng nghe.",
+    keywords_up: ["lãnh đạo", "tầm nhìn", "quyết đoán"],
+    keywords_rev: ["lắng nghe", "linh hoạt", "khiêm tốn"],
     summary_up: "lãnh đạo có tầm nhìn",
-    summary_rev: "cần lắng nghe và linh hoạt hơn"
+    summary_rev: "cần lắng nghe hơn",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định khả năng lãnh đạo của bạn. Hãy dẫn dắt.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang quá độc đoán. Hãy lắng nghe người khác."
   }
 };
 
@@ -900,338 +459,170 @@ const cups: Record<string, CardData> = {
   "Ace of Cups": {
     name_vi: "Át Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tình yêu mới bắt đầu, cảm xúc dâng trào.",
-      career: "Cơ hội mới mang lại niềm vui.",
-      finance: "Thu nhập từ công việc yêu thích.",
-      self: "Tình yêu bản thân, mở lòng.",
-      health: "Sức khỏe tinh thần tốt.",
-      family: "Tình yêu gia đình nở rộ."
-    },
-    meaning_matrix_rev: {
-      love: "Kìm nén cảm xúc, không dám yêu.",
-      career: "Thiếu đam mê với công việc.",
-      finance: "Không hài lòng dù có tiền.",
-      self: "Không yêu thương bản thân.",
-      health: "Cảm xúc bị kìm nén.",
-      family: "Khó thể hiện tình cảm với gia đình."
-    },
-    keywords_up: ["mở lòng", "đón nhận", "yêu thương", "cảm nhận"],
-    keywords_rev: ["chữa lành", "mở lòng", "tự yêu thương", "buông bỏ"],
+    meaning_up: "Tình yêu mới, cảm xúc dâng trào, mở lòng đón nhận.",
+    meaning_rev: "Kìm nén cảm xúc, không dám yêu thương.",
+    keywords_up: ["mở lòng", "đón nhận", "yêu thương"],
+    keywords_rev: ["chữa lành", "tự yêu thương", "buông bỏ"],
     summary_up: "tình yêu mới và cảm xúc dồi dào",
-    summary_rev: "đang kìm nén cảm xúc"
+    summary_rev: "đang kìm nén cảm xúc",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu tình cảm mới. Hãy mở lòng đón nhận.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang đóng cửa trái tim. Hãy tự chữa lành trước."
   },
   "Two of Cups": {
     name_vi: "Hai Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Kết nối sâu sắc, tình yêu hỗ tương.",
-      career: "Hợp tác tốt đẹp.",
-      finance: "Hợp tác kinh doanh có lợi.",
-      self: "Cân bằng nội tâm.",
-      health: "Mối quan hệ tốt hỗ trợ sức khỏe.",
-      family: "Hòa thuận trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Mất cân bằng trong mối quan hệ.",
-      career: "Hợp tác không suôn sẻ.",
-      finance: "Bất đồng về tiền với đối tác.",
-      self: "Mất cân bằng nội tâm.",
-      health: "Mối quan hệ ảnh hưởng sức khỏe.",
-      family: "Bất hòa trong gia đình."
-    },
-    keywords_up: ["kết nối", "hợp tác", "chia sẻ", "đồng điệu"],
-    keywords_rev: ["giao tiếp", "cân bằng", "lắng nghe", "thỏa hiệp"],
-    summary_up: "kết nối sâu sắc và hòa hợp",
-    summary_rev: "mất cân bằng trong mối quan hệ"
+    meaning_up: "Kết nối sâu sắc, tình yêu hỗ tương, hợp tác tốt đẹp.",
+    meaning_rev: "Mất cân bằng trong mối quan hệ.",
+    keywords_up: ["kết nối", "hợp tác", "đồng điệu"],
+    keywords_rev: ["giao tiếp", "cân bằng", "thỏa hiệp"],
+    summary_up: "kết nối sâu sắc",
+    summary_rev: "mất cân bằng trong quan hệ",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định mối liên kết mạnh mẽ. Trân trọng nó.",
+    why_appear_rev: "Lá bài này xuất hiện vì mối quan hệ cần được điều chỉnh. Hãy giao tiếp."
   },
   "Three of Cups": {
     name_vi: "Ba Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tình bạn hỗ trợ tình yêu, vui vẻ.",
-      career: "Làm việc nhóm vui vẻ.",
-      finance: "Chia sẻ thành công với bạn bè.",
-      self: "Niềm vui từ bạn bè.",
-      health: "Sức khỏe tốt nhờ giao tiếp xã hội.",
-      family: "Sum họp gia đình vui vẻ."
-    },
-    meaning_matrix_rev: {
-      love: "Bạn bè can thiệp vào tình yêu.",
-      career: "Xung đột trong nhóm.",
-      finance: "Tranh chấp tiền bạc với bạn.",
-      self: "Cô đơn giữa đám đông.",
-      health: "Thiếu giao tiếp xã hội.",
-      family: "Căng thẳng trong sum họp gia đình."
-    },
-    keywords_up: ["ăn mừng", "kết nối", "chia sẻ", "tận hưởng"],
-    keywords_rev: ["chọn bạn", "ranh giới", "tự chăm sóc", "độc lập"],
-    summary_up: "niềm vui và kết nối bạn bè",
-    summary_rev: "xung đột trong nhóm bạn"
+    meaning_up: "Niềm vui, ăn mừng, tình bạn và kết nối xã hội.",
+    meaning_rev: "Cô đơn hoặc xung đột trong nhóm bạn.",
+    keywords_up: ["ăn mừng", "kết nối", "chia sẻ"],
+    keywords_rev: ["chọn bạn", "ranh giới", "độc lập"],
+    summary_up: "niềm vui và kết nối",
+    summary_rev: "cô đơn hoặc xung đột",
+    why_appear_up: "Lá bài này xuất hiện để nhắc bạn tận hưởng tình bạn và niềm vui.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang cảm thấy xa cách. Hãy kết nối lại."
   },
   "Four of Cups": {
     name_vi: "Bốn Cốc",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Chán nản trong tình yêu, không thấy hứng thú.",
-      career: "Mất động lực, chán công việc.",
-      finance: "Không quan tâm đến cơ hội tài chính.",
-      self: "Buồn chán, mất phương hướng.",
-      health: "Trầm cảm nhẹ, thiếu động lực.",
-      family: "Thờ ơ với gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Nhận ra cơ hội mới trong tình yêu.",
-      career: "Tìm lại động lực.",
-      finance: "Nhận ra cơ hội đã bỏ qua.",
-      self: "Thoát khỏi trầm cảm.",
-      health: "Tìm lại năng lượng.",
-      family: "Quan tâm lại đến gia đình."
-    },
-    keywords_up: ["nhìn quanh", "mở mắt", "đánh giá lại", "tri ân"],
-    keywords_rev: ["nắm bắt", "hành động", "mở lòng", "thay đổi"],
-    summary_up: "đang chán nản và bỏ qua cơ hội",
-    summary_rev: "bắt đầu nhận ra cơ hội mới"
+    meaning_up: "Chán nản, mất động lực, bỏ qua cơ hội trước mắt.",
+    meaning_rev: "Nhận ra cơ hội mới, thoát khỏi trầm cảm.",
+    keywords_up: ["nhìn quanh", "đánh giá lại", "tri ân"],
+    keywords_rev: ["nắm bắt", "hành động", "mở lòng"],
+    summary_up: "chán nản và bỏ qua cơ hội",
+    summary_rev: "nhận ra cơ hội mới",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang không thấy những gì đang được trao. Nhìn lại.",
+    why_appear_rev: "Lá bài này xuất hiện để báo hiệu bạn đang tỉnh dậy. Hãy nắm bắt cơ hội."
   },
   "Five of Cups": {
     name_vi: "Năm Cốc",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Đau buồn về mất mát trong tình yêu.",
-      career: "Thất vọng về công việc.",
-      finance: "Thua lỗ, mất mát tài chính.",
-      self: "Đau buồn, tiếc nuối quá khứ.",
-      health: "Cảm xúc ảnh hưởng sức khỏe.",
-      family: "Mất mát trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Bắt đầu vượt qua nỗi đau.",
-      career: "Học từ thất bại.",
-      finance: "Hồi phục sau thua lỗ.",
-      self: "Chữa lành và tiến về phía trước.",
-      health: "Sức khỏe tinh thần cải thiện.",
-      family: "Vượt qua mất mát cùng gia đình."
-    },
-    keywords_up: ["chấp nhận", "khóc", "để tang", "nhìn về phía trước"],
-    keywords_rev: ["tiến lên", "tha thứ", "chữa lành", "biết ơn"],
-    summary_up: "đang đau buồn và tiếc nuối",
-    summary_rev: "đang vượt qua nỗi đau"
+    meaning_up: "Đau buồn, tiếc nuối, tập trung vào mất mát.",
+    meaning_rev: "Bắt đầu vượt qua nỗi đau, nhìn về phía trước.",
+    keywords_up: ["chấp nhận", "để tang", "nhìn về phía trước"],
+    keywords_rev: ["tiến lên", "tha thứ", "chữa lành"],
+    summary_up: "đau buồn và tiếc nuối",
+    summary_rev: "đang vượt qua nỗi đau",
+    why_appear_up: "Lá bài này xuất hiện để thừa nhận nỗi đau của bạn. Nhưng đừng quên những gì còn lại.",
+    why_appear_rev: "Lá bài này xuất hiện để khẳng định bạn đang chữa lành. Tiếp tục tiến lên."
   },
   "Six of Cups": {
     name_vi: "Sáu Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tình yêu từ quá khứ, hoài niệm ngọt ngào.",
-      career: "Gặp lại đồng nghiệp cũ, cơ hội từ quá khứ.",
-      finance: "Nhận quà hoặc tiền từ người quen.",
-      self: "Hoài niệm, kết nối với tuổi thơ.",
-      health: "Nghỉ ngơi, thư giãn như trẻ con.",
-      family: "Đoàn tụ gia đình, hoài niệm."
-    },
-    meaning_matrix_rev: {
-      love: "Bám víu quá khứ, không tiến lên.",
-      career: "Sống trong quá khứ thay vì tiến lên.",
-      finance: "Dựa dẫm vào người khác.",
-      self: "Không trưởng thành.",
-      health: "Sống trong hoài niệm không lành mạnh.",
-      family: "Mâu thuẫn về quá khứ gia đình."
-    },
-    keywords_up: ["hoài niệm", "tri ân", "kết nối", "chia sẻ"],
-    keywords_rev: ["tiến lên", "trưởng thành", "độc lập", "buông quá khứ"],
-    summary_up: "hoài niệm ngọt ngào về quá khứ",
-    summary_rev: "đang bám víu quá khứ"
+    meaning_up: "Hoài niệm, ký ức ngọt ngào, kết nối với quá khứ.",
+    meaning_rev: "Bám víu quá khứ, không tiến lên được.",
+    keywords_up: ["hoài niệm", "tri ân", "kết nối"],
+    keywords_rev: ["tiến lên", "trưởng thành", "buông quá khứ"],
+    summary_up: "hoài niệm ngọt ngào",
+    summary_rev: "bám víu quá khứ",
+    why_appear_up: "Lá bài này xuất hiện để kết nối bạn với những ký ức đẹp. Trân trọng nhưng đừng mắc kẹt.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang sống trong quá khứ. Hãy hướng về phía trước."
   },
   "Seven of Cups": {
     name_vi: "Bảy Cốc",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Nhiều lựa chọn, khó quyết định.",
-      career: "Nhiều cơ hội nhưng cần chọn.",
-      finance: "Nhiều ý tưởng kiếm tiền nhưng chưa thực tế.",
-      self: "Ảo tưởng, mơ mộng nhiều.",
-      health: "Cần tập trung vào một phương pháp.",
-      family: "Nhiều kế hoạch gia đình chưa thực hiện."
-    },
-    meaning_matrix_rev: {
-      love: "Đã chọn được đúng người.",
-      career: "Tập trung vào một cơ hội.",
-      finance: "Quyết định đầu tư cụ thể.",
-      self: "Thực tế hơn, bớt mơ mộng.",
-      health: "Cam kết với một kế hoạch.",
-      family: "Quyết định rõ ràng cho gia đình."
-    },
-    keywords_up: ["tập trung", "chọn lọc", "thực tế", "quyết định"],
-    keywords_rev: ["thực hiện", "cam kết", "hành động", "tập trung"],
+    meaning_up: "Nhiều lựa chọn, ảo tưởng, cần tập trung vào thực tế.",
+    meaning_rev: "Đã có quyết định rõ ràng, thực tế hơn.",
+    keywords_up: ["tập trung", "chọn lọc", "thực tế"],
+    keywords_rev: ["thực hiện", "cam kết", "hành động"],
     summary_up: "nhiều lựa chọn, cần tập trung",
-    summary_rev: "đã có quyết định rõ ràng"
+    summary_rev: "đã có quyết định rõ ràng",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang mơ mộng quá nhiều. Hãy chọn một thứ và tập trung.",
+    why_appear_rev: "Lá bài này xuất hiện để khẳng định bạn đã rõ ràng hơn. Bây giờ hãy hành động."
   },
   "Eight of Cups": {
     name_vi: "Tám Cốc",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Rời bỏ mối quan hệ không còn ý nghĩa.",
-      career: "Từ bỏ công việc để tìm điều tốt hơn.",
-      finance: "Từ bỏ nguồn thu nhập không đáng.",
-      self: "Rời bỏ để tìm kiếm ý nghĩa.",
-      health: "Thay đổi lối sống hoàn toàn.",
-      family: "Rời xa gia đình để phát triển."
-    },
-    meaning_matrix_rev: {
-      love: "Sợ rời bỏ, bám víu.",
-      career: "Ở lại công việc không hạnh phúc.",
-      finance: "Không dám thay đổi nguồn thu.",
-      self: "Sợ thay đổi, bám víu hiện tại.",
-      health: "Không dám thay đổi thói quen.",
-      family: "Không dám rời xa gia đình."
-    },
-    keywords_up: ["dũng cảm rời đi", "tìm kiếm", "buông bỏ", "khám phá"],
-    keywords_rev: ["đối mặt", "quyết định", "dũng cảm", "thay đổi"],
-    summary_up: "rời bỏ để tìm điều ý nghĩa hơn",
-    summary_rev: "đang sợ thay đổi và bám víu"
+    meaning_up: "Rời bỏ để tìm điều ý nghĩa hơn. Dũng cảm ra đi.",
+    meaning_rev: "Sợ thay đổi, bám víu vào điều không còn phù hợp.",
+    keywords_up: ["rời đi", "tìm kiếm", "buông bỏ"],
+    keywords_rev: ["đối mặt", "dũng cảm", "thay đổi"],
+    summary_up: "rời bỏ để tìm điều tốt hơn",
+    summary_rev: "sợ thay đổi",
+    why_appear_up: "Lá bài này xuất hiện vì bạn biết đã đến lúc ra đi. Hãy dũng cảm bước tiếp.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang bám víu. Hãy đối mặt với nỗi sợ."
   },
   "Nine of Cups": {
     name_vi: "Chín Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Hài lòng trong tình yêu, ước nguyện thành.",
-      career: "Thỏa mãn với thành tựu công việc.",
-      finance: "Giàu có, đầy đủ.",
-      self: "Hạnh phúc, mãn nguyện.",
-      health: "Sức khỏe tốt, hài lòng.",
-      family: "Gia đình hạnh phúc."
-    },
-    meaning_matrix_rev: {
-      love: "Không hài lòng dù có mọi thứ.",
-      career: "Thành công nhưng không vui.",
-      finance: "Có tiền nhưng không hạnh phúc.",
-      self: "Tham lam, không bao giờ đủ.",
-      health: "Ăn uống quá độ.",
-      family: "Gia đình đầy đủ nhưng thiếu hạnh phúc."
-    },
-    keywords_up: ["tận hưởng", "tri ân", "chia sẻ", "hài lòng"],
-    keywords_rev: ["xem lại giá trị", "tri ân", "đủ", "buông bỏ tham lam"],
+    meaning_up: "Hài lòng, mãn nguyện, ước nguyện thành hiện thực.",
+    meaning_rev: "Không hài lòng dù có mọi thứ, tham lam.",
+    keywords_up: ["tận hưởng", "tri ân", "hài lòng"],
+    keywords_rev: ["xem lại giá trị", "tri ân", "đủ"],
     summary_up: "hạnh phúc và mãn nguyện",
-    summary_rev: "có mọi thứ nhưng không hài lòng"
+    summary_rev: "có mọi thứ nhưng không hài lòng",
+    why_appear_up: "Lá bài này xuất hiện để chúc mừng. Ước nguyện đang thành hiện thực.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang không biết đủ. Hãy tri ân những gì đang có."
   },
   "Ten of Cups": {
     name_vi: "Mười Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tình yêu viên mãn, hạnh phúc gia đình.",
-      career: "Công việc mang lại hạnh phúc.",
-      finance: "Đủ đầy, an tâm.",
-      self: "Hạnh phúc trọn vẹn.",
-      health: "Sức khỏe tốt, hài hòa.",
-      family: "Gia đình hạnh phúc hoàn hảo."
-    },
-    meaning_matrix_rev: {
-      love: "Mâu thuẫn trong gia đình.",
-      career: "Công việc ảnh hưởng hạnh phúc.",
-      finance: "Tiền bạc gây mâu thuẫn.",
-      self: "Thiếu hạnh phúc nội tâm.",
-      health: "Căng thẳng gia đình ảnh hưởng sức khỏe.",
-      family: "Gia đình không hài hòa."
-    },
-    keywords_up: ["tri ân", "chia sẻ", "nuôi dưỡng", "tận hưởng"],
-    keywords_rev: ["giao tiếp", "hòa giải", "ưu tiên", "chữa lành"],
-    summary_up: "hạnh phúc gia đình viên mãn",
-    summary_rev: "cần hòa giải trong gia đình"
+    meaning_up: "Hạnh phúc viên mãn, gia đình hòa thuận, tình yêu trọn vẹn.",
+    meaning_rev: "Mâu thuẫn, gia đình không hài hòa.",
+    keywords_up: ["tri ân", "nuôi dưỡng", "tận hưởng"],
+    keywords_rev: ["giao tiếp", "hòa giải", "ưu tiên"],
+    summary_up: "hạnh phúc viên mãn",
+    summary_rev: "cần hòa giải",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu hạnh phúc đang đến hoặc cần được trân trọng.",
+    why_appear_rev: "Lá bài này xuất hiện vì gia đình cần sự quan tâm. Hãy hòa giải."
   },
   "Page of Cups": {
     name_vi: "Thị Đồng Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Tin tức về tình yêu, lời tỏ tình.",
-      career: "Cơ hội sáng tạo mới.",
-      finance: "Tin tức tốt về tiền.",
-      self: "Cảm hứng sáng tạo.",
-      health: "Cảm xúc tích cực.",
-      family: "Tin vui từ con cái hoặc người trẻ."
-    },
-    meaning_matrix_rev: {
-      love: "Tin buồn về tình yêu.",
-      career: "Ý tưởng sáng tạo bị chặn.",
-      finance: "Tin không tốt về tiền.",
-      self: "Cảm xúc trẻ con.",
-      health: "Cảm xúc không ổn định.",
-      family: "Tin buồn từ con cái."
-    },
-    keywords_up: ["mở lòng", "sáng tạo", "lắng nghe trực giác", "vui vẻ"],
-    keywords_rev: ["trưởng thành", "cân bằng", "thực tế", "kiểm soát"],
-    summary_up: "tin tốt về cảm xúc và sáng tạo",
-    summary_rev: "cảm xúc chưa trưởng thành"
+    meaning_up: "Tin tức về tình cảm, cảm hứng sáng tạo, trực giác.",
+    meaning_rev: "Tin buồn, cảm xúc chưa trưởng thành.",
+    keywords_up: ["mở lòng", "sáng tạo", "vui vẻ"],
+    keywords_rev: ["trưởng thành", "cân bằng", "kiểm soát"],
+    summary_up: "tin tốt về cảm xúc",
+    summary_rev: "cảm xúc chưa trưởng thành",
+    why_appear_up: "Lá bài này xuất hiện để mang đến tin vui về tình cảm hoặc sáng tạo.",
+    why_appear_rev: "Lá bài này xuất hiện vì cần trưởng thành hơn trong cách xử lý cảm xúc."
   },
   "Knight of Cups": {
     name_vi: "Hiệp Sĩ Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người theo đuổi lãng mạn, lời cầu hôn.",
-      career: "Theo đuổi đam mê.",
-      finance: "Đầu tư theo đam mê.",
-      self: "Lãng mạn, sáng tạo.",
-      health: "Cân bằng cảm xúc.",
-      family: "Người mang tin vui đến gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Mơ mộng không thực tế, hứa suông.",
-      career: "Theo đuổi không thực tế.",
-      finance: "Đầu tư theo cảm xúc.",
-      self: "Quá mơ mộng.",
-      health: "Cảm xúc thất thường.",
-      family: "Hứa hẹn không thực hiện."
-    },
-    keywords_up: ["theo đuổi", "lãng mạn", "sáng tạo", "lắng nghe trái tim"],
-    keywords_rev: ["thực tế", "cam kết", "hành động", "trách nhiệm"],
-    summary_up: "theo đuổi đam mê và lãng mạn",
-    summary_rev: "mơ mộng không thực tế"
+    meaning_up: "Lãng mạn, theo đuổi đam mê, lắng nghe trái tim.",
+    meaning_rev: "Mơ mộng không thực tế, hứa suông.",
+    keywords_up: ["theo đuổi", "lãng mạn", "lắng nghe trái tim"],
+    keywords_rev: ["thực tế", "cam kết", "trách nhiệm"],
+    summary_up: "theo đuổi đam mê",
+    summary_rev: "mơ mộng không thực tế",
+    why_appear_up: "Lá bài này xuất hiện để khuyến khích bạn theo đuổi điều mình yêu thích.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo đừng chỉ mơ - hãy hành động thực tế."
   },
   "Queen of Cups": {
     name_vi: "Hoàng Hậu Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Yêu thương vô điều kiện, thấu hiểu.",
-      career: "Sử dụng trực giác trong công việc.",
-      finance: "Quản lý tiền bằng trực giác.",
-      self: "Trực giác mạnh, thấu cảm.",
-      health: "Chăm sóc sức khỏe tinh thần.",
-      family: "Người mẹ, người chăm sóc."
-    },
-    meaning_matrix_rev: {
-      love: "Quá phụ thuộc cảm xúc.",
-      career: "Cảm xúc ảnh hưởng công việc.",
-      finance: "Chi tiêu theo cảm xúc.",
-      self: "Dễ bị tổn thương, quá nhạy cảm.",
-      health: "Cảm xúc ảnh hưởng sức khỏe.",
-      family: "Quá lo lắng cho gia đình."
-    },
-    keywords_up: ["lắng nghe", "thấu cảm", "chăm sóc", "tin trực giác"],
-    keywords_rev: ["ranh giới", "tự chăm sóc", "cân bằng", "mạnh mẽ"],
+    meaning_up: "Thấu cảm, yêu thương, trực giác mạnh mẽ.",
+    meaning_rev: "Quá nhạy cảm, phụ thuộc cảm xúc.",
+    keywords_up: ["lắng nghe", "thấu cảm", "chăm sóc"],
+    keywords_rev: ["ranh giới", "tự chăm sóc", "mạnh mẽ"],
     summary_up: "thấu cảm và yêu thương",
-    summary_rev: "quá nhạy cảm, cần ranh giới"
+    summary_rev: "quá nhạy cảm",
+    why_appear_up: "Lá bài này xuất hiện để nhắc bạn tin vào trực giác và lòng trắc ẩn.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần bảo vệ bản thân khỏi bị tổn thương."
   },
   "King of Cups": {
     name_vi: "Hoàng Đế Cốc",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người yêu/đối tác trưởng thành về cảm xúc.",
-      career: "Lãnh đạo bằng trái tim và lý trí.",
-      finance: "Quản lý tài chính bình tĩnh.",
-      self: "Kiểm soát cảm xúc, trưởng thành.",
-      health: "Sức khỏe tinh thần ổn định.",
-      family: "Người cha/chồng tốt."
-    },
-    meaning_matrix_rev: {
-      love: "Kìm nén cảm xúc hoặc thao túng.",
-      career: "Cảm xúc thất thường ảnh hưởng lãnh đạo.",
-      finance: "Quyết định tài chính bị cảm xúc chi phối.",
-      self: "Kìm nén hoặc mất kiểm soát cảm xúc.",
-      health: "Căng thẳng tinh thần.",
-      family: "Xa cách cảm xúc với gia đình."
-    },
-    keywords_up: ["cân bằng", "lãnh đạo", "thấu hiểu", "bình tĩnh"],
-    keywords_rev: ["thể hiện cảm xúc", "kết nối", "buông bỏ", "chữa lành"],
+    meaning_up: "Trưởng thành về cảm xúc, cân bằng, thấu hiểu.",
+    meaning_rev: "Kìm nén cảm xúc hoặc mất kiểm soát.",
+    keywords_up: ["cân bằng", "thấu hiểu", "bình tĩnh"],
+    keywords_rev: ["thể hiện cảm xúc", "kết nối", "buông bỏ"],
     summary_up: "trưởng thành về cảm xúc",
-    summary_rev: "cần cân bằng cảm xúc"
+    summary_rev: "cần cân bằng cảm xúc",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định sự trưởng thành trong cách xử lý cảm xúc.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang kìm nén hoặc mất kiểm soát cảm xúc."
   }
 };
 
@@ -1240,338 +631,170 @@ const swords: Record<string, CardData> = {
   "Ace of Swords": {
     name_vi: "Át Kiếm",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Sự thật trong tình yêu, giao tiếp rõ ràng.",
-      career: "Ý tưởng mới, quyết định đúng đắn.",
-      finance: "Sáng suốt trong tài chính.",
-      self: "Sáng suốt, tư duy rõ ràng.",
-      health: "Chẩn đoán rõ ràng, quyết định sức khỏe.",
-      family: "Giao tiếp thẳng thắn với gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Hiểu lầm, giao tiếp kém.",
-      career: "Ý tưởng bị chặn, không rõ ràng.",
-      finance: "Quyết định tài chính mơ hồ.",
-      self: "Tư duy rối loạn.",
-      health: "Chẩn đoán chưa rõ.",
-      family: "Thiếu giao tiếp với gia đình."
-    },
-    keywords_up: ["nói thẳng", "quyết định", "sáng suốt", "hành động"],
-    keywords_rev: ["làm rõ", "giao tiếp", "suy nghĩ kỹ", "chờ thông tin"],
-    summary_up: "sáng suốt và quyết định đúng đắn",
-    summary_rev: "tư duy mơ hồ, cần làm rõ"
+    meaning_up: "Sáng suốt, sự thật, quyết định đúng đắn.",
+    meaning_rev: "Hiểu lầm, tư duy mơ hồ, giao tiếp kém.",
+    keywords_up: ["nói thẳng", "quyết định", "sáng suốt"],
+    keywords_rev: ["làm rõ", "giao tiếp", "suy nghĩ kỹ"],
+    summary_up: "sáng suốt và quyết định đúng",
+    summary_rev: "tư duy mơ hồ",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang có sự sáng suốt. Hãy hành động theo sự thật.",
+    why_appear_rev: "Lá bài này xuất hiện vì có sự hiểu lầm cần được làm rõ."
   },
   "Two of Swords": {
     name_vi: "Hai Kiếm",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Bế tắc, cần quyết định trong tình yêu.",
-      career: "Đang cân nhắc, chưa quyết định.",
-      finance: "Chưa biết chọn phương án tài chính nào.",
-      self: "Xung đột nội tâm, cần thời gian.",
-      health: "Căng thẳng do không quyết định được.",
-      family: "Bế tắc trong vấn đề gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Đã có quyết định hoặc bị ép chọn.",
-      career: "Bị ép quyết định.",
-      finance: "Phải chọn dù không muốn.",
-      self: "Không thể trì hoãn thêm.",
-      health: "Cần quyết định về sức khỏe.",
-      family: "Bị ép đứng về một bên."
-    },
-    keywords_up: ["thu thập thông tin", "cân nhắc", "kiên nhẫn", "trực giác"],
-    keywords_rev: ["quyết định", "chấp nhận", "đối mặt", "hành động"],
-    summary_up: "đang cân nhắc và chưa quyết định",
-    summary_rev: "bị ép phải đưa ra quyết định"
+    meaning_up: "Bế tắc, cần quyết định nhưng chưa đủ thông tin.",
+    meaning_rev: "Bị ép phải quyết định, không thể trì hoãn.",
+    keywords_up: ["thu thập thông tin", "cân nhắc", "kiên nhẫn"],
+    keywords_rev: ["quyết định", "đối mặt", "hành động"],
+    summary_up: "chưa quyết định được",
+    summary_rev: "bị ép phải quyết định",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang cần thêm thông tin trước khi quyết định.",
+    why_appear_rev: "Lá bài này xuất hiện vì không thể trì hoãn thêm. Hãy quyết định."
   },
   "Three of Swords": {
     name_vi: "Ba Kiếm",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Đau khổ, tan vỡ, phản bội.",
-      career: "Thất vọng về công việc.",
-      finance: "Mất mát tài chính đau đớn.",
-      self: "Đau lòng, tổn thương.",
-      health: "Đau tim, căng thẳng cảm xúc.",
-      family: "Đau khổ trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Đang hồi phục sau đau khổ.",
-      career: "Vượt qua thất vọng.",
-      finance: "Hồi phục sau mất mát.",
-      self: "Chữa lành vết thương.",
-      health: "Hồi phục sức khỏe tinh thần.",
-      family: "Hàn gắn sau đau khổ."
-    },
-    keywords_up: ["để tang", "khóc", "chấp nhận", "tìm hỗ trợ"],
-    keywords_rev: ["tiến lên", "tha thứ", "chữa lành", "học từ đau"],
+    meaning_up: "Đau khổ, tổn thương, tan vỡ.",
+    meaning_rev: "Đang hồi phục, vượt qua nỗi đau.",
+    keywords_up: ["để tang", "chấp nhận", "tìm hỗ trợ"],
+    keywords_rev: ["tiến lên", "tha thứ", "chữa lành"],
     summary_up: "đau khổ và tổn thương",
-    summary_rev: "đang chữa lành và hồi phục"
+    summary_rev: "đang chữa lành",
+    why_appear_up: "Lá bài này xuất hiện để thừa nhận nỗi đau. Cho phép mình buồn.",
+    why_appear_rev: "Lá bài này xuất hiện để xác nhận bạn đang vượt qua. Tiếp tục tiến lên."
   },
   "Four of Swords": {
     name_vi: "Bốn Kiếm",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Cần nghỉ ngơi khỏi mối quan hệ.",
-      career: "Nghỉ ngơi, tạm dừng công việc.",
-      finance: "Tạm dừng chi tiêu, tích lũy.",
-      self: "Nghỉ ngơi, thiền định.",
-      health: "Nghỉ dưỡng, hồi phục.",
-      family: "Thời gian yên tĩnh với gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Trở lại sau thời gian nghỉ.",
-      career: "Quay lại công việc.",
-      finance: "Bắt đầu chi tiêu lại.",
-      self: "Kết thúc giai đoạn nghỉ ngơi.",
-      health: "Đã nghỉ đủ, sẵn sàng hoạt động.",
-      family: "Trở lại cuộc sống gia đình bận rộn."
-    },
-    keywords_up: ["nghỉ ngơi", "thiền định", "hồi phục", "tĩnh lặng"],
-    keywords_rev: ["quay lại", "năng lượng mới", "hành động", "bắt đầu"],
-    summary_up: "cần nghỉ ngơi và hồi phục",
-    summary_rev: "đã sẵn sàng quay lại"
+    meaning_up: "Nghỉ ngơi, hồi phục, cần tạm dừng.",
+    meaning_rev: "Đã nghỉ đủ, sẵn sàng quay lại.",
+    keywords_up: ["nghỉ ngơi", "thiền định", "hồi phục"],
+    keywords_rev: ["quay lại", "năng lượng mới", "bắt đầu"],
+    summary_up: "cần nghỉ ngơi",
+    summary_rev: "sẵn sàng quay lại",
+    why_appear_up: "Lá bài này xuất hiện vì bạn cần nghỉ ngơi. Đừng ép bản thân.",
+    why_appear_rev: "Lá bài này xuất hiện vì đã đến lúc quay lại. Bạn đã sẵn sàng."
   },
   "Five of Swords": {
     name_vi: "Năm Kiếm",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Xung đột, thắng mà không vui.",
-      career: "Cạnh tranh không lành mạnh.",
-      finance: "Kiếm tiền bằng cách không đẹp.",
-      self: "Thắng nhưng mất mát.",
-      health: "Căng thẳng do xung đột.",
-      family: "Tranh cãi trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Hòa giải sau xung đột.",
-      career: "Nhận ra sai lầm, hòa giải.",
-      finance: "Thay đổi cách kiếm tiền.",
-      self: "Học từ xung đột.",
-      health: "Giảm căng thẳng.",
-      family: "Hòa giải gia đình."
-    },
-    keywords_up: ["xem lại", "hòa giải", "nhường nhịn", "buông bỏ ego"],
-    keywords_rev: ["học từ sai lầm", "hòa giải", "tha thứ", "tiến lên"],
-    summary_up: "xung đột và thắng không trọn vẹn",
-    summary_rev: "học từ xung đột và hòa giải"
+    meaning_up: "Xung đột, thắng nhưng mất mát, cạnh tranh không lành mạnh.",
+    meaning_rev: "Hòa giải, học từ xung đột.",
+    keywords_up: ["xem lại", "hòa giải", "buông bỏ ego"],
+    keywords_rev: ["học từ sai lầm", "tha thứ", "tiến lên"],
+    summary_up: "xung đột và mất mát",
+    summary_rev: "học từ xung đột",
+    why_appear_up: "Lá bài này xuất hiện để cảnh báo về xung đột. Chiến thắng không đáng giá.",
+    why_appear_rev: "Lá bài này xuất hiện vì đã đến lúc hòa giải và học từ sai lầm."
   },
   "Six of Swords": {
     name_vi: "Sáu Kiếm",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Rời bỏ mối quan hệ khó khăn.",
-      career: "Chuyển việc, thay đổi môi trường.",
-      finance: "Chuyển đổi tài chính.",
-      self: "Chuyển đổi, tiến về tương lai.",
-      health: "Hồi phục, chuyển sang giai đoạn tốt hơn.",
-      family: "Di chuyển gia đình, thay đổi."
-    },
-    meaning_matrix_rev: {
-      love: "Không dám rời bỏ mối quan hệ khó.",
-      career: "Sợ thay đổi công việc.",
-      finance: "Không dám chuyển đổi tài chính.",
-      self: "Bám víu quá khứ.",
-      health: "Hồi phục chậm.",
-      family: "Gia đình không muốn thay đổi."
-    },
-    keywords_up: ["tiến lên", "buông bỏ", "di chuyển", "chấp nhận"],
-    keywords_rev: ["đối mặt", "dũng cảm", "thay đổi", "quyết định"],
+    meaning_up: "Chuyển đổi, rời bỏ khó khăn, tiến về tương lai.",
+    meaning_rev: "Khó rời bỏ, bám víu quá khứ.",
+    keywords_up: ["tiến lên", "buông bỏ", "di chuyển"],
+    keywords_rev: ["đối mặt", "dũng cảm", "thay đổi"],
     summary_up: "chuyển đổi sang giai đoạn tốt hơn",
-    summary_rev: "khó khăn trong việc rời bỏ"
+    summary_rev: "khó khăn trong việc rời bỏ",
+    why_appear_up: "Lá bài này xuất hiện để xác nhận bạn đang rời bỏ khó khăn. Tiếp tục đi.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang khó rời bỏ. Hãy dũng cảm."
   },
   "Seven of Swords": {
     name_vi: "Bảy Kiếm",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Lừa dối, không trung thực trong tình yêu.",
-      career: "Ai đó không trung thực, cẩn thận.",
-      finance: "Cẩn thận với lừa đảo.",
-      self: "Đang tự lừa dối bản thân.",
-      health: "Không trung thực về sức khỏe.",
-      family: "Ai đó trong gia đình không nói thật."
-    },
-    meaning_matrix_rev: {
-      love: "Sự thật được phơi bày.",
-      career: "Lừa dối bị phát hiện.",
-      finance: "Lừa đảo bị bại lộ.",
-      self: "Đối mặt với sự thật.",
-      health: "Nhận ra vấn đề sức khỏe thực sự.",
-      family: "Bí mật gia đình được tiết lộ."
-    },
-    keywords_up: ["cẩn thận", "kiểm tra", "trung thực", "đề phòng"],
-    keywords_rev: ["đối mặt", "thành thật", "sửa chữa", "minh bạch"],
-    summary_up: "có sự không trung thực xung quanh",
-    summary_rev: "sự thật đang được phơi bày"
+    meaning_up: "Có sự không trung thực, lừa dối hoặc chiến thuật.",
+    meaning_rev: "Sự thật được phơi bày.",
+    keywords_up: ["cẩn thận", "kiểm tra", "trung thực"],
+    keywords_rev: ["đối mặt", "thành thật", "sửa chữa"],
+    summary_up: "có sự không trung thực",
+    summary_rev: "sự thật được phơi bày",
+    why_appear_up: "Lá bài này xuất hiện để cảnh báo về sự lừa dối. Hãy cẩn thận.",
+    why_appear_rev: "Lá bài này xuất hiện vì sự thật đang lộ ra. Hãy đối mặt trung thực."
   },
   "Eight of Swords": {
     name_vi: "Tám Kiếm",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Cảm giác bị mắc kẹt trong mối quan hệ.",
-      career: "Bị giới hạn, không có lối thoát.",
-      finance: "Bế tắc tài chính.",
-      self: "Tự giới hạn bản thân, bị mắc kẹt.",
-      health: "Căng thẳng do cảm giác bị mắc kẹt.",
-      family: "Bị trói buộc bởi gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Nhận ra có lối thoát.",
-      career: "Tìm được cách thoát khỏi giới hạn.",
-      finance: "Tìm được giải pháp tài chính.",
-      self: "Nhận ra xiềng xích là tự tạo.",
-      health: "Thoát khỏi căng thẳng.",
-      family: "Tìm được tự do trong gia đình."
-    },
-    keywords_up: ["tìm lối thoát", "nhờ giúp đỡ", "thay đổi góc nhìn", "hành động nhỏ"],
-    keywords_rev: ["hành động", "tự do", "dũng cảm", "quyết định"],
-    summary_up: "cảm giác bị mắc kẹt không lối thoát",
-    summary_rev: "đang tìm được lối thoát"
+    meaning_up: "Cảm giác bị mắc kẹt, giới hạn tự áp đặt.",
+    meaning_rev: "Nhận ra có lối thoát, tự giải phóng.",
+    keywords_up: ["tìm lối thoát", "nhờ giúp đỡ", "thay đổi góc nhìn"],
+    keywords_rev: ["hành động", "tự do", "dũng cảm"],
+    summary_up: "cảm giác bị mắc kẹt",
+    summary_rev: "tìm được lối thoát",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang tự giới hạn mình. Lối thoát có sẵn.",
+    why_appear_rev: "Lá bài này xuất hiện để khẳng định bạn đang tự giải phóng. Tiếp tục."
   },
   "Nine of Swords": {
     name_vi: "Chín Kiếm",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Lo lắng về mối quan hệ, mất ngủ.",
-      career: "Stress công việc, ác mộng.",
-      finance: "Lo lắng về tiền bạc.",
-      self: "Lo âu, ác mộng, suy nghĩ tiêu cực.",
-      health: "Mất ngủ, lo âu ảnh hưởng sức khỏe.",
-      family: "Lo lắng về gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Bắt đầu bớt lo lắng.",
-      career: "Stress giảm.",
-      finance: "Bớt lo về tiền.",
-      self: "Thoát khỏi suy nghĩ tiêu cực.",
-      health: "Ngủ tốt hơn.",
-      family: "Bớt lo về gia đình."
-    },
-    keywords_up: ["chia sẻ", "tìm hỗ trợ", "nghỉ ngơi", "thiền định"],
-    keywords_rev: ["tiếp tục chữa lành", "kiên trì", "tin tưởng", "lạc quan"],
+    meaning_up: "Lo âu, suy nghĩ tiêu cực, mất ngủ.",
+    meaning_rev: "Bắt đầu bớt lo, thoát khỏi suy nghĩ tiêu cực.",
+    keywords_up: ["chia sẻ", "tìm hỗ trợ", "nghỉ ngơi"],
+    keywords_rev: ["tiếp tục chữa lành", "kiên trì", "lạc quan"],
     summary_up: "lo âu và suy nghĩ tiêu cực",
-    summary_rev: "đang thoát khỏi lo âu"
+    summary_rev: "đang thoát khỏi lo âu",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang lo lắng quá nhiều. Hãy chia sẻ với ai đó.",
+    why_appear_rev: "Lá bài này xuất hiện để khẳng định bạn đang bớt lo. Tiếp tục như vậy."
   },
   "Ten of Swords": {
     name_vi: "Mười Kiếm",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Kết thúc đau đớn, chạm đáy.",
-      career: "Thất bại nặng nề, bị sa thải.",
-      finance: "Phá sản, mất hết.",
-      self: "Chạm đáy, không thể tệ hơn.",
-      health: "Tình trạng sức khỏe tệ nhất.",
-      family: "Khủng hoảng gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Bắt đầu hồi phục sau tan vỡ.",
-      career: "Bắt đầu lại từ đầu.",
-      finance: "Hồi phục sau phá sản.",
-      self: "Đang đứng dậy từ đáy.",
-      health: "Bắt đầu hồi phục.",
-      family: "Gia đình bắt đầu hồi phục."
-    },
-    keywords_up: ["chấp nhận", "để tang", "tin vào bình minh", "buông bỏ"],
-    keywords_rev: ["xây dựng lại", "kiên cường", "học hỏi", "tiến lên"],
-    summary_up: "kết thúc đau đớn, chạm đáy",
-    summary_rev: "đang đứng dậy và hồi phục"
+    meaning_up: "Kết thúc đau đớn, chạm đáy. Nhưng đây là đáy - chỉ có thể đi lên.",
+    meaning_rev: "Đang hồi phục, đứng dậy từ đáy.",
+    keywords_up: ["chấp nhận", "tin vào bình minh", "buông bỏ"],
+    keywords_rev: ["xây dựng lại", "kiên cường", "tiến lên"],
+    summary_up: "chạm đáy",
+    summary_rev: "đang đứng dậy",
+    why_appear_up: "Lá bài này xuất hiện để nói rằng đây là đáy. Từ đây chỉ có thể đi lên.",
+    why_appear_rev: "Lá bài này xuất hiện để khẳng định bạn đang đứng dậy. Tiếp tục kiên cường."
   },
   "Page of Swords": {
     name_vi: "Thị Đồng Kiếm",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Tin tức về mối quan hệ, tò mò.",
-      career: "Ý tưởng mới, học hỏi.",
-      finance: "Tin tức về tài chính.",
-      self: "Tò mò, ham học hỏi.",
-      health: "Tìm hiểu về sức khỏe.",
-      family: "Tin tức từ gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Tin đồn, nói xấu.",
-      career: "Ý tưởng không thực tế.",
-      finance: "Tin sai về tài chính.",
-      self: "Tò mò quá mức, xoi mói.",
-      health: "Thông tin sức khỏe sai.",
-      family: "Tin đồn trong gia đình."
-    },
-    keywords_up: ["tìm hiểu", "học hỏi", "đặt câu hỏi", "suy nghĩ"],
-    keywords_rev: ["kiểm tra nguồn", "im lặng", "cẩn thận lời nói", "suy nghĩ trước khi nói"],
-    summary_up: "tin tức mới và tò mò",
-    summary_rev: "cẩn thận với tin đồn"
+    meaning_up: "Tin tức, tò mò, ý tưởng mới.",
+    meaning_rev: "Tin đồn, nói xấu, ý tưởng không thực tế.",
+    keywords_up: ["tìm hiểu", "học hỏi", "suy nghĩ"],
+    keywords_rev: ["kiểm tra nguồn", "cẩn thận lời nói", "thực tế"],
+    summary_up: "tin tức mới",
+    summary_rev: "cẩn thận với tin đồn",
+    why_appear_up: "Lá bài này xuất hiện để báo tin hoặc ý tưởng mới sắp đến.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo về tin đồn. Kiểm tra trước khi tin."
   },
   "Knight of Swords": {
     name_vi: "Hiệp Sĩ Kiếm",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Theo đuổi mạnh mẽ, nói thẳng.",
-      career: "Hành động nhanh, quyết đoán.",
-      finance: "Quyết định tài chính nhanh.",
-      self: "Tham vọng, hành động mạnh.",
-      health: "Hành động quyết liệt về sức khỏe.",
-      family: "Bảo vệ gia đình mạnh mẽ."
-    },
-    meaning_matrix_rev: {
-      love: "Quá vội vàng, gây tổn thương.",
-      career: "Hấp tấp, gây sai lầm.",
-      finance: "Quyết định tài chính vội.",
-      self: "Hung hăng, thiếu kiên nhẫn.",
-      health: "Hành động thiếu suy nghĩ.",
-      family: "Gây xung đột trong gia đình."
-    },
-    keywords_up: ["hành động", "quyết đoán", "tập trung", "tiến lên"],
-    keywords_rev: ["bình tĩnh", "suy nghĩ", "kiên nhẫn", "lắng nghe"],
-    summary_up: "hành động nhanh và quyết đoán",
-    summary_rev: "quá vội vàng, cần bình tĩnh"
+    meaning_up: "Hành động nhanh, quyết đoán, theo đuổi sự thật.",
+    meaning_rev: "Quá vội vàng, gây tổn thương.",
+    keywords_up: ["hành động", "quyết đoán", "tập trung"],
+    keywords_rev: ["bình tĩnh", "suy nghĩ", "kiên nhẫn"],
+    summary_up: "hành động quyết đoán",
+    summary_rev: "quá vội vàng",
+    why_appear_up: "Lá bài này xuất hiện để khuyến khích hành động nhanh và quyết đoán.",
+    why_appear_rev: "Lá bài này xuất hiện để cảnh báo bạn đang quá vội. Bình tĩnh lại."
   },
   "Queen of Swords": {
     name_vi: "Hoàng Hậu Kiếm",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Độc lập, thông minh trong tình yêu.",
-      career: "Lãnh đạo bằng trí tuệ.",
-      finance: "Quản lý tài chính thông minh.",
-      self: "Độc lập, sáng suốt.",
-      health: "Quyết định sức khỏe sáng suốt.",
-      family: "Người phụ nữ thông minh trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá lạnh lùng, thiếu cảm xúc.",
-      career: "Quá khắc nghiệt.",
-      finance: "Quá tính toán.",
-      self: "Cay đắng, cô đơn.",
-      health: "Quá lý trí, bỏ qua cảm xúc.",
-      family: "Lạnh lùng với gia đình."
-    },
-    keywords_up: ["sáng suốt", "độc lập", "trung thực", "quyết đoán"],
-    keywords_rev: ["mở lòng", "thấu cảm", "mềm mỏng", "kết nối"],
+    meaning_up: "Sáng suốt, độc lập, trung thực không khoan nhượng.",
+    meaning_rev: "Quá lạnh lùng, thiếu cảm thông.",
+    keywords_up: ["sáng suốt", "độc lập", "trung thực"],
+    keywords_rev: ["mở lòng", "thấu cảm", "mềm mỏng"],
     summary_up: "sáng suốt và độc lập",
-    summary_rev: "quá lạnh lùng, cần mở lòng"
+    summary_rev: "quá lạnh lùng",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định sự sáng suốt của bạn. Tin vào phán đoán.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần mềm mỏng hơn. Logic không phải là tất cả."
   },
   "King of Swords": {
     name_vi: "Hoàng Đế Kiếm",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người yêu/đối tác lý trí, công bằng.",
-      career: "Lãnh đạo bằng logic và công bằng.",
-      finance: "Quản lý tài chính có hệ thống.",
-      self: "Tư duy sáng suốt, lãnh đạo.",
-      health: "Quyết định sức khỏe dựa trên logic.",
-      family: "Người đàn ông lý trí trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá lý trí, thiếu cảm xúc.",
-      career: "Lạm dụng quyền lực, độc đoán.",
-      finance: "Thao túng tài chính.",
-      self: "Kiêu ngạo, lạnh lùng.",
-      health: "Bỏ qua sức khỏe tinh thần.",
-      family: "Độc đoán với gia đình."
-    },
-    keywords_up: ["sáng suốt", "công bằng", "lãnh đạo", "quyết đoán"],
-    keywords_rev: ["thấu cảm", "lắng nghe", "mềm mỏng", "khiêm tốn"],
-    summary_up: "lãnh đạo sáng suốt và công bằng",
-    summary_rev: "quá lý trí, cần thấu cảm hơn"
+    meaning_up: "Lãnh đạo bằng logic, công bằng, sáng suốt.",
+    meaning_rev: "Quá lý trí, độc đoán, thiếu cảm xúc.",
+    keywords_up: ["sáng suốt", "công bằng", "lãnh đạo"],
+    keywords_rev: ["thấu cảm", "lắng nghe", "khiêm tốn"],
+    summary_up: "lãnh đạo sáng suốt",
+    summary_rev: "quá lý trí",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định khả năng lãnh đạo và sự công bằng.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần cân bằng giữa logic và cảm xúc."
   }
 };
 
@@ -1580,338 +803,170 @@ const pentacles: Record<string, CardData> = {
   "Ace of Pentacles": {
     name_vi: "Át Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Khởi đầu mới ổn định trong tình yêu.",
-      career: "Cơ hội việc làm mới, khởi nghiệp.",
-      finance: "Cơ hội kiếm tiền mới, đầu tư.",
-      self: "Khởi đầu mới về vật chất.",
-      health: "Bắt đầu chế độ sức khỏe mới.",
-      family: "Khởi đầu ổn định cho gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Khởi đầu bị trì hoãn.",
-      career: "Cơ hội bị bỏ lỡ.",
-      finance: "Mất cơ hội tài chính.",
-      self: "Chậm khởi đầu.",
-      health: "Khó bắt đầu thói quen mới.",
-      family: "Kế hoạch gia đình bị hoãn."
-    },
-    keywords_up: ["nắm bắt", "đầu tư", "bắt đầu", "cam kết"],
-    keywords_rev: ["chuẩn bị", "kiên nhẫn", "xem lại kế hoạch", "chờ thời"],
+    meaning_up: "Cơ hội mới về vật chất, khởi đầu thịnh vượng.",
+    meaning_rev: "Cơ hội bị bỏ lỡ hoặc trì hoãn.",
+    keywords_up: ["nắm bắt", "đầu tư", "bắt đầu"],
+    keywords_rev: ["chuẩn bị", "kiên nhẫn", "chờ thời"],
     summary_up: "cơ hội mới về vật chất",
-    summary_rev: "cơ hội bị trì hoãn"
+    summary_rev: "cơ hội bị trì hoãn",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu cơ hội vật chất. Hãy nắm bắt.",
+    why_appear_rev: "Lá bài này xuất hiện vì cơ hội đang chậm đến. Hãy chuẩn bị sẵn sàng."
   },
   "Two of Pentacles": {
     name_vi: "Hai Xu",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Cân bằng giữa tình yêu và cuộc sống.",
-      career: "Nhiều việc cùng lúc, cần cân bằng.",
-      finance: "Quản lý nhiều nguồn thu chi.",
-      self: "Linh hoạt, đa nhiệm.",
-      health: "Cân bằng các khía cạnh sức khỏe.",
-      family: "Cân bằng công việc và gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Mất cân bằng, không có thời gian cho tình yêu.",
-      career: "Quá tải, không cân bằng được.",
-      finance: "Tài chính lộn xộn.",
-      self: "Mất cân bằng cuộc sống.",
-      health: "Căng thẳng do mất cân bằng.",
-      family: "Bỏ bê gia đình."
-    },
-    keywords_up: ["ưu tiên", "linh hoạt", "tổ chức", "cân bằng"],
-    keywords_rev: ["giảm bớt", "tập trung", "nói không", "nghỉ ngơi"],
+    meaning_up: "Cân bằng nhiều việc, linh hoạt, đa nhiệm.",
+    meaning_rev: "Mất cân bằng, quá tải, lộn xộn.",
+    keywords_up: ["ưu tiên", "linh hoạt", "cân bằng"],
+    keywords_rev: ["giảm bớt", "tập trung", "nghỉ ngơi"],
     summary_up: "đang cân bằng nhiều việc",
-    summary_rev: "mất cân bằng, quá tải"
+    summary_rev: "mất cân bằng, quá tải",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang xoay sở nhiều thứ. Tiếp tục linh hoạt.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang quá tải. Cần giảm bớt."
   },
   "Three of Pentacles": {
     name_vi: "Ba Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Xây dựng mối quan hệ cùng nhau.",
-      career: "Làm việc nhóm hiệu quả, được công nhận.",
-      finance: "Hợp tác kinh doanh tốt.",
-      self: "Phát triển kỹ năng.",
-      health: "Hợp tác với chuyên gia sức khỏe.",
-      family: "Gia đình cùng xây dựng."
-    },
-    meaning_matrix_rev: {
-      love: "Thiếu hợp tác trong mối quan hệ.",
-      career: "Làm việc nhóm kém.",
-      finance: "Hợp tác không suôn sẻ.",
-      self: "Không phát triển được kỹ năng.",
-      health: "Không tuân theo lời khuyên chuyên gia.",
-      family: "Gia đình không đồng lòng."
-    },
-    keywords_up: ["hợp tác", "học hỏi", "xây dựng", "kiên nhẫn"],
-    keywords_rev: ["giao tiếp", "lắng nghe", "hợp tác", "khiêm tốn"],
+    meaning_up: "Hợp tác tốt, được công nhận, xây dựng thành công.",
+    meaning_rev: "Thiếu hợp tác, làm việc nhóm kém.",
+    keywords_up: ["hợp tác", "học hỏi", "xây dựng"],
+    keywords_rev: ["giao tiếp", "lắng nghe", "khiêm tốn"],
     summary_up: "hợp tác xây dựng thành công",
-    summary_rev: "thiếu hợp tác và giao tiếp"
+    summary_rev: "thiếu hợp tác",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định sự hợp tác tốt đẹp. Tiếp tục xây dựng.",
+    why_appear_rev: "Lá bài này xuất hiện vì cần cải thiện làm việc nhóm. Hãy giao tiếp nhiều hơn."
   },
   "Four of Pentacles": {
     name_vi: "Bốn Xu",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Bảo vệ mối quan hệ, có thể quá sở hữu.",
-      career: "Giữ vị trí, an toàn.",
-      finance: "Tiết kiệm, giữ tiền chặt.",
-      self: "Kiểm soát, an toàn.",
-      health: "Ổn định, bảo thủ.",
-      family: "Bảo vệ gia đình, có thể quá kiểm soát."
-    },
-    meaning_matrix_rev: {
-      love: "Buông bỏ, chia sẻ hơn.",
-      career: "Chấp nhận rủi ro.",
-      finance: "Chi tiêu, đầu tư.",
-      self: "Buông bỏ kiểm soát.",
-      health: "Thử phương pháp mới.",
-      family: "Bớt kiểm soát gia đình."
-    },
-    keywords_up: ["cân nhắc", "cân bằng", "chia sẻ", "linh hoạt"],
-    keywords_rev: ["tiếp tục buông bỏ", "mở lòng", "tin tưởng", "mạo hiểm"],
-    summary_up: "giữ chặt tài sản và an toàn",
-    summary_rev: "học cách buông bỏ và chia sẻ"
+    meaning_up: "An toàn, ổn định, nhưng có thể quá bám víu vật chất.",
+    meaning_rev: "Buông bỏ, chia sẻ, linh hoạt hơn.",
+    keywords_up: ["cân nhắc", "chia sẻ", "linh hoạt"],
+    keywords_rev: ["tiếp tục buông bỏ", "mở lòng", "mạo hiểm"],
+    summary_up: "an toàn nhưng có thể quá bám víu",
+    summary_rev: "học cách buông bỏ",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang nắm giữ quá chặt. Cân nhắc chia sẻ.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang học cách buông bỏ. Tốt lắm."
   },
   "Five of Pentacles": {
     name_vi: "Năm Xu",
     vibe: -1,
-    meaning_matrix_up: {
-      love: "Cô đơn, thiếu thốn trong tình yêu.",
-      career: "Mất việc, khó khăn công việc.",
-      finance: "Khó khăn tài chính, nghèo khó.",
-      self: "Cô đơn, thiếu thốn.",
-      health: "Sức khỏe kém, thiếu chăm sóc.",
-      family: "Gia đình gặp khó khăn."
-    },
-    meaning_matrix_rev: {
-      love: "Tìm được hỗ trợ, phục hồi.",
-      career: "Tìm được việc mới.",
-      finance: "Bắt đầu hồi phục tài chính.",
-      self: "Tìm được sự hỗ trợ.",
-      health: "Được chăm sóc, hồi phục.",
-      family: "Gia đình vượt qua khó khăn."
-    },
-    keywords_up: ["tìm hỗ trợ", "không cô đơn", "kiên trì", "hy vọng"],
-    keywords_rev: ["đón nhận giúp đỡ", "tri ân", "tiếp tục phục hồi", "lạc quan"],
+    meaning_up: "Khó khăn, thiếu thốn, cô đơn.",
+    meaning_rev: "Tìm được hỗ trợ, phục hồi.",
+    keywords_up: ["tìm hỗ trợ", "kiên trì", "hy vọng"],
+    keywords_rev: ["đón nhận giúp đỡ", "tri ân", "lạc quan"],
     summary_up: "khó khăn và thiếu thốn",
-    summary_rev: "đang tìm được hỗ trợ"
+    summary_rev: "tìm được hỗ trợ",
+    why_appear_up: "Lá bài này xuất hiện vì bạn đang gặp khó khăn. Hãy tìm sự giúp đỡ.",
+    why_appear_rev: "Lá bài này xuất hiện vì sự giúp đỡ đang đến. Hãy đón nhận."
   },
   "Six of Pentacles": {
     name_vi: "Sáu Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Cho và nhận trong tình yêu.",
-      career: "Được hỗ trợ hoặc hỗ trợ người khác.",
-      finance: "Cho vay hoặc nhận được giúp đỡ.",
-      self: "Hào phóng, cân bằng cho-nhận.",
-      health: "Nhận được sự chăm sóc.",
-      family: "Hỗ trợ lẫn nhau trong gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Cho-nhận mất cân bằng.",
-      career: "Bị lợi dụng hoặc lợi dụng người khác.",
-      finance: "Cho vay không được trả hoặc nợ nần.",
-      self: "Cho quá nhiều hoặc quá ít.",
-      health: "Không nhận được sự chăm sóc cần thiết.",
-      family: "Bất bình đẳng trong gia đình."
-    },
-    keywords_up: ["chia sẻ", "tri ân", "cân bằng", "hào phóng"],
-    keywords_rev: ["ranh giới", "cân bằng", "công bằng", "tự bảo vệ"],
+    meaning_up: "Cho và nhận cân bằng, hào phóng, được giúp đỡ.",
+    meaning_rev: "Mất cân bằng trong cho-nhận, bị lợi dụng.",
+    keywords_up: ["chia sẻ", "tri ân", "hào phóng"],
+    keywords_rev: ["ranh giới", "công bằng", "tự bảo vệ"],
     summary_up: "cho và nhận cân bằng",
-    summary_rev: "mất cân bằng trong cho-nhận"
+    summary_rev: "mất cân bằng trong cho-nhận",
+    why_appear_up: "Lá bài này xuất hiện để nhắc về sự hào phóng và đón nhận.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang cho quá nhiều hoặc nhận không xứng đáng."
   },
   "Seven of Pentacles": {
     name_vi: "Bảy Xu",
     vibe: 0,
-    meaning_matrix_up: {
-      love: "Đánh giá mối quan hệ, xem có đáng không.",
-      career: "Đánh giá kết quả công việc.",
-      finance: "Xem xét đầu tư, chờ kết quả.",
-      self: "Đánh giá lại cuộc sống.",
-      health: "Xem xét kết quả của nỗ lực sức khỏe.",
-      family: "Đánh giá công sức dành cho gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Nỗ lực không được đáp lại.",
-      career: "Kết quả không như mong đợi.",
-      finance: "Đầu tư không sinh lợi.",
-      self: "Thiếu kiên nhẫn.",
-      health: "Nỗ lực chưa thấy kết quả.",
-      family: "Công sức cho gia đình không được đáp lại."
-    },
-    keywords_up: ["kiên nhẫn", "đánh giá", "tiếp tục", "chờ đợi"],
-    keywords_rev: ["thay đổi chiến lược", "xem lại", "linh hoạt", "chấp nhận"],
-    summary_up: "đánh giá và chờ đợi kết quả",
-    summary_rev: "nỗ lực chưa được đền đáp"
+    meaning_up: "Đánh giá kết quả, chờ đợi, xem xét tiến độ.",
+    meaning_rev: "Nỗ lực chưa được đền đáp, thiếu kiên nhẫn.",
+    keywords_up: ["kiên nhẫn", "đánh giá", "chờ đợi"],
+    keywords_rev: ["thay đổi chiến lược", "xem lại", "linh hoạt"],
+    summary_up: "đang đánh giá kết quả",
+    summary_rev: "nỗ lực chưa được đền đáp",
+    why_appear_up: "Lá bài này xuất hiện vì bạn cần đánh giá lại những gì đang làm.",
+    why_appear_rev: "Lá bài này xuất hiện vì cần thay đổi cách tiếp cận. Kết quả chưa như ý."
   },
   "Eight of Pentacles": {
     name_vi: "Tám Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Nỗ lực xây dựng mối quan hệ.",
-      career: "Chăm chỉ, rèn luyện kỹ năng.",
-      finance: "Làm việc chăm chỉ kiếm tiền.",
-      self: "Rèn luyện, phát triển bản thân.",
-      health: "Kiên trì tập luyện.",
-      family: "Nỗ lực cho gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Làm việc quá nhiều, bỏ bê tình yêu.",
-      career: "Làm việc không hiệu quả.",
-      finance: "Làm việc nhiều mà không kiếm được.",
-      self: "Cầu toàn thái quá.",
-      health: "Tập luyện không đúng cách.",
-      family: "Bỏ bê gia đình vì công việc."
-    },
-    keywords_up: ["kiên trì", "rèn luyện", "tập trung", "cam kết"],
-    keywords_rev: ["cân bằng", "nghỉ ngơi", "đánh giá", "thay đổi cách làm"],
+    meaning_up: "Chăm chỉ, rèn luyện kỹ năng, tập trung vào công việc.",
+    meaning_rev: "Làm việc không hiệu quả, cầu toàn thái quá.",
+    keywords_up: ["kiên trì", "rèn luyện", "tập trung"],
+    keywords_rev: ["cân bằng", "nghỉ ngơi", "thay đổi cách làm"],
     summary_up: "chăm chỉ và rèn luyện",
-    summary_rev: "làm việc không hiệu quả"
+    summary_rev: "làm việc không hiệu quả",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định nỗ lực của bạn đang đúng hướng.",
+    why_appear_rev: "Lá bài này xuất hiện vì cần xem lại cách làm việc. Chất lượng hơn số lượng."
   },
   "Nine of Pentacles": {
     name_vi: "Chín Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Độc lập, tự tin trong tình yêu.",
-      career: "Thành công nhờ nỗ lực, độc lập.",
-      finance: "Giàu có, sung túc nhờ nỗ lực.",
-      self: "Tự lập, thành công.",
-      health: "Sức khỏe tốt nhờ tự chăm sóc.",
-      family: "Cung cấp tốt cho gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá độc lập, khó kết nối.",
-      career: "Thành công nhưng cô đơn.",
-      finance: "Có tiền nhưng không hạnh phúc.",
-      self: "Cô đơn dù thành công.",
-      health: "Bỏ bê sức khỏe vì công việc.",
-      family: "Xa cách gia đình dù sung túc."
-    },
-    keywords_up: ["tận hưởng", "tri ân", "chia sẻ", "cân bằng"],
-    keywords_rev: ["kết nối", "cân bằng", "mở lòng", "chia sẻ"],
+    meaning_up: "Thành công, độc lập, tận hưởng thành quả.",
+    meaning_rev: "Thành công nhưng cô đơn, quá độc lập.",
+    keywords_up: ["tận hưởng", "tri ân", "chia sẻ"],
+    keywords_rev: ["kết nối", "cân bằng", "mở lòng"],
     summary_up: "thành công và độc lập",
-    summary_rev: "thành công nhưng cô đơn"
+    summary_rev: "thành công nhưng cô đơn",
+    why_appear_up: "Lá bài này xuất hiện để chúc mừng thành quả của bạn. Hãy tận hưởng.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần kết nối với người khác, dù đã thành công."
   },
   "Ten of Pentacles": {
     name_vi: "Mười Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Hôn nhân, gia đình bền vững.",
-      career: "Thành công lâu dài, di sản.",
-      finance: "Giàu có bền vững, thừa kế.",
-      self: "Thành tựu lâu dài.",
-      health: "Sức khỏe tốt lâu dài.",
-      family: "Gia đình thịnh vượng nhiều thế hệ."
-    },
-    meaning_matrix_rev: {
-      love: "Xung đột về tài sản trong gia đình.",
-      career: "Mất mát lâu dài.",
-      finance: "Tranh chấp thừa kế.",
-      self: "Lo lắng về tương lai.",
-      health: "Vấn đề sức khỏe di truyền.",
-      family: "Xung đột tài chính gia đình."
-    },
-    keywords_up: ["tri ân", "bảo tồn", "chia sẻ", "lập kế hoạch"],
-    keywords_rev: ["giải quyết", "hòa giải", "ưu tiên gia đình", "buông bỏ vật chất"],
+    meaning_up: "Thịnh vượng bền vững, gia đình ổn định, di sản.",
+    meaning_rev: "Xung đột về tài sản, mất mát gia đình.",
+    keywords_up: ["tri ân", "bảo tồn", "chia sẻ"],
+    keywords_rev: ["giải quyết", "hòa giải", "ưu tiên gia đình"],
     summary_up: "thịnh vượng và bền vững",
-    summary_rev: "xung đột về tài sản"
+    summary_rev: "xung đột về tài sản",
+    why_appear_up: "Lá bài này xuất hiện để báo hiệu sự ổn định lâu dài. Trân trọng điều này.",
+    why_appear_rev: "Lá bài này xuất hiện vì có xung đột cần giải quyết, đặc biệt về vật chất."
   },
   "Page of Pentacles": {
     name_vi: "Thị Đồng Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Khởi đầu mới thực tế trong tình yêu.",
-      career: "Cơ hội học hỏi, việc làm mới.",
-      finance: "Tin tức tốt về tiền, cơ hội nhỏ.",
-      self: "Ham học hỏi, thực tế.",
-      health: "Bắt đầu thói quen sức khỏe.",
-      family: "Tin tốt về gia đình, có thể có thêm thành viên."
-    },
-    meaning_matrix_rev: {
-      love: "Chậm tiến triển trong tình yêu.",
-      career: "Cơ hội bị trì hoãn.",
-      finance: "Tin xấu về tài chính.",
-      self: "Thiếu động lực học hỏi.",
-      health: "Khó bắt đầu thói quen mới.",
-      family: "Tin không tốt về gia đình."
-    },
-    keywords_up: ["học hỏi", "bắt đầu", "kiên nhẫn", "thực tế"],
-    keywords_rev: ["kiên nhẫn", "chuẩn bị", "không nản", "tập trung"],
-    summary_up: "cơ hội mới và ham học",
-    summary_rev: "cơ hội bị trì hoãn"
+    meaning_up: "Cơ hội học hỏi, tin tức tốt về tài chính, khởi đầu thực tế.",
+    meaning_rev: "Cơ hội bị trì hoãn, thiếu tập trung.",
+    keywords_up: ["học hỏi", "bắt đầu", "kiên nhẫn"],
+    keywords_rev: ["kiên nhẫn", "chuẩn bị", "tập trung"],
+    summary_up: "cơ hội mới",
+    summary_rev: "cơ hội bị trì hoãn",
+    why_appear_up: "Lá bài này xuất hiện để báo tin tốt về cơ hội học hỏi hoặc tài chính.",
+    why_appear_rev: "Lá bài này xuất hiện vì cơ hội đang chậm đến. Hãy chuẩn bị sẵn."
   },
   "Knight of Pentacles": {
     name_vi: "Hiệp Sĩ Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người yêu đáng tin cậy, ổn định.",
-      career: "Làm việc chăm chỉ, đáng tin cậy.",
-      finance: "Kiếm tiền ổn định, không mạo hiểm.",
-      self: "Kiên nhẫn, đáng tin cậy.",
-      health: "Duy trì thói quen đều đặn.",
-      family: "Đáng tin cậy với gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá nhàm chán, thiếu đam mê.",
-      career: "Làm việc quá chậm, bảo thủ.",
-      finance: "Quá cẩn thận, bỏ lỡ cơ hội.",
-      self: "Bướng bỉnh, không thay đổi.",
-      health: "Quá cứng nhắc về thói quen.",
-      family: "Quá nghiêm khắc với gia đình."
-    },
-    keywords_up: ["kiên trì", "tin cậy", "ổn định", "cam kết"],
-    keywords_rev: ["linh hoạt", "mạo hiểm", "thay đổi", "vui vẻ"],
+    meaning_up: "Đáng tin cậy, kiên nhẫn, làm việc chăm chỉ.",
+    meaning_rev: "Quá bảo thủ, nhàm chán, thiếu linh hoạt.",
+    keywords_up: ["kiên trì", "tin cậy", "ổn định"],
+    keywords_rev: ["linh hoạt", "mạo hiểm", "thay đổi"],
     summary_up: "đáng tin cậy và ổn định",
-    summary_rev: "quá bảo thủ, cần linh hoạt"
+    summary_rev: "quá bảo thủ",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định sự kiên trì của bạn. Tiếp tục đi.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần linh hoạt hơn. Đừng quá cứng nhắc."
   },
   "Queen of Pentacles": {
     name_vi: "Hoàng Hậu Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người yêu/đối tác chăm sóc, thực tế.",
-      career: "Quản lý tốt, thành công thực tế.",
-      finance: "Quản lý tài chính giỏi, sung túc.",
-      self: "Chăm sóc tốt bản thân và người khác.",
-      health: "Sức khỏe tốt, biết chăm sóc.",
-      family: "Người mẹ/vợ tốt, chăm sóc gia đình."
-    },
-    meaning_matrix_rev: {
-      love: "Quá bận rộn, bỏ bê tình yêu.",
-      career: "Kiểm soát quá mức.",
-      finance: "Chi tiêu thiếu cân nhắc.",
-      self: "Bỏ bê bản thân vì lo cho người khác.",
-      health: "Không chăm sóc sức khỏe.",
-      family: "Kiểm soát gia đình quá mức."
-    },
-    keywords_up: ["chăm sóc", "cân bằng", "nuôi dưỡng", "thực tế"],
-    keywords_rev: ["tự chăm sóc", "buông bỏ", "ranh giới", "cân bằng"],
+    meaning_up: "Chăm sóc, thực tế, quản lý tốt, sung túc.",
+    meaning_rev: "Bỏ bê bản thân, quá lo lắng về vật chất.",
+    keywords_up: ["chăm sóc", "cân bằng", "thực tế"],
+    keywords_rev: ["tự chăm sóc", "buông bỏ", "ranh giới"],
     summary_up: "chăm sóc và thực tế",
-    summary_rev: "cần chăm sóc bản thân hơn"
+    summary_rev: "cần chăm sóc bản thân",
+    why_appear_up: "Lá bài này xuất hiện để nhắc bạn về sự quan trọng của việc chăm sóc.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn đang bỏ bê bản thân. Hãy ưu tiên mình."
   },
   "King of Pentacles": {
     name_vi: "Hoàng Đế Xu",
     vibe: 1,
-    meaning_matrix_up: {
-      love: "Người yêu/đối tác thành đạt, đáng tin.",
-      career: "Thành công lớn, lãnh đạo.",
-      finance: "Giàu có, quản lý tài chính xuất sắc.",
-      self: "Thành đạt, ổn định.",
-      health: "Sức khỏe tốt, ổn định.",
-      family: "Người cha/chồng thành đạt, trụ cột."
-    },
-    meaning_matrix_rev: {
-      love: "Quá coi trọng tiền bạc.",
-      career: "Tham công tiếc việc.",
-      finance: "Tham lam, không bao giờ đủ.",
-      self: "Chỉ nghĩ đến vật chất.",
-      health: "Bỏ bê sức khỏe vì tiền.",
-      family: "Xa cách gia đình vì công việc."
-    },
-    keywords_up: ["thành công", "lãnh đạo", "chia sẻ", "cân bằng"],
-    keywords_rev: ["cân bằng", "giá trị", "gia đình", "sức khỏe"],
-    summary_up: "thành đạt và đáng tin cậy",
-    summary_rev: "quá coi trọng vật chất"
+    meaning_up: "Thành đạt, ổn định, lãnh đạo thực tế.",
+    meaning_rev: "Quá coi trọng vật chất, bỏ bê gia đình.",
+    keywords_up: ["thành công", "lãnh đạo", "cân bằng"],
+    keywords_rev: ["cân bằng", "giá trị", "gia đình"],
+    summary_up: "thành đạt và ổn định",
+    summary_rev: "quá coi trọng vật chất",
+    why_appear_up: "Lá bài này xuất hiện để khẳng định sự thành đạt và ổn định.",
+    why_appear_rev: "Lá bài này xuất hiện vì bạn cần cân bằng giữa công việc và cuộc sống."
   }
 };
 
@@ -1926,114 +981,61 @@ export const allCardMeanings: Record<string, CardData> = {
 
 // ============= HELPER FUNCTIONS =============
 
-// Get Vietnamese name for a card
 export const getVietnameseName = (englishName: string): string => {
   return allCardMeanings[englishName]?.name_vi || englishName;
 };
 
-// Get interpretation based on category and position
-export const getInterpretation = (
-  cardName: string,
-  isReversed: boolean,
-  position: string,
-  category: CategoryType
-): string => {
+export const getInterpretation = (cardName: string, isReversed: boolean): string => {
   const card = allCardMeanings[cardName];
   if (!card) return "Không tìm thấy thông tin lá bài.";
-  
-  const matrix = isReversed ? card.meaning_matrix_rev : card.meaning_matrix_up;
-  return matrix[category] || matrix.self;
+  return isReversed ? card.meaning_rev : card.meaning_up;
 };
 
-// Get actionable advice
+export const getWhyAppear = (cardName: string, isReversed: boolean): string => {
+  const card = allCardMeanings[cardName];
+  if (!card) return "";
+  return isReversed ? card.why_appear_rev : card.why_appear_up;
+};
+
 export const getAdvice = (cardName: string, isReversed: boolean): string => {
   const card = allCardMeanings[cardName];
   if (!card) return "";
-  
   const keywords = isReversed ? card.keywords_rev : card.keywords_up;
   return keywords.join(", ");
 };
 
-// Get keywords for a card
 export const getKeywords = (cardName: string, isReversed: boolean): string[] => {
   const card = allCardMeanings[cardName];
   if (!card) return [];
   return isReversed ? card.keywords_rev : card.keywords_up;
 };
 
-// ============= QUESTION ANALYSIS =============
-type QuestionType = 'when' | 'should' | 'why' | 'how' | 'what' | 'general';
-
-const analyzeQuestion = (question: string): QuestionType => {
-  const lowerQ = question.toLowerCase();
-  if (lowerQ.includes('khi nào') || lowerQ.includes('bao giờ') || lowerQ.includes('lúc nào')) return 'when';
-  if (lowerQ.includes('có nên') || lowerQ.includes('nên không') || lowerQ.includes('liệu có')) return 'should';
-  if (lowerQ.includes('tại sao') || lowerQ.includes('vì sao') || lowerQ.includes('nguyên nhân')) return 'why';
-  if (lowerQ.includes('làm sao') || lowerQ.includes('làm thế nào') || lowerQ.includes('cách nào')) return 'how';
-  if (lowerQ.includes('là gì') || lowerQ.includes('điều gì')) return 'what';
-  return 'general';
-};
-
-const getQuestionLead = (questionType: QuestionType): string => {
-  switch (questionType) {
-    case 'when': return 'Về thời điểm bạn hỏi,';
-    case 'should': return 'Để trả lời câu hỏi có nên hay không,';
-    case 'why': return 'Để hiểu nguyên nhân,';
-    case 'how': return 'Về cách thức thực hiện,';
-    case 'what': return 'Để làm rõ vấn đề,';
-    default: return 'Dựa trên câu hỏi của bạn,';
-  }
-};
-
 // ============= VIBE CALCULATION =============
-const getVibeConclusion = (totalVibe: number): { conclusion: string; energy: string } => {
+const getVibeConclusion = (totalVibe: number): { conclusion: string; descriptor: string } => {
   if (totalVibe >= 2) {
-    return {
-      conclusion: "rất khả quan và tích cực",
-      energy: "Năng lượng rất tốt"
-    };
+    return { conclusion: "rất khả quan và tích cực", descriptor: "rất tích cực" };
   } else if (totalVibe === 1) {
-    return {
-      conclusion: "đang có chuyển biến tốt",
-      energy: "Năng lượng khá thuận lợi"
-    };
+    return { conclusion: "đang có chuyển biến tốt", descriptor: "tích cực" };
   } else if (totalVibe === 0 || totalVibe === -1) {
-    return {
-      conclusion: "đang trong giai đoạn biến động, cần thận trọng",
-      energy: "Năng lượng trung tính, cần cẩn thận"
-    };
+    return { conclusion: "đang trong giai đoạn chuyển tiếp, cần thận trọng", descriptor: "cần lưu ý" };
   } else {
-    return {
-      conclusion: "đang có thử thách lớn, cần thay đổi hướng đi",
-      energy: "Năng lượng cần điều chỉnh"
-    };
+    return { conclusion: "đang có thử thách, cần điều chỉnh hướng đi", descriptor: "thử thách" };
   }
-};
-
-// ============= CATEGORY NAMES =============
-const categoryNamesVi: Record<CategoryType, string> = {
-  love: "Tình yêu",
-  career: "Công việc", 
-  finance: "Tài chính",
-  self: "Bản thân",
-  health: "Sức khỏe",
-  family: "Gia đình"
 };
 
 // ============= SYNTHESIS FRAMEWORK =============
 export interface SynthesisResult {
-  part1_overview: string;      // Tổng quan & Trả lời trực diện
-  part2_past: string;          // Lý giải Quá khứ
-  part3_present: string;       // Lý giải Hiện tại
-  part4_future: string;        // Lý giải Tương lai
-  part5_advice: string;        // Lời khuyên hành động
+  part1_overview: string;
+  part2_past: string;
+  part3_present: string;
+  part4_future: string;
+  part5_advice: string;
   totalVibe: number;
   vibeDescriptor: string;
 }
 
 export const synthesizeReading = (
   cards: Array<{ name: string; isReversed?: boolean }>,
-  category: CategoryType,
   question: string = "Xem tổng quan"
 ): SynthesisResult => {
   const card1 = allCardMeanings[cards[0]?.name];
@@ -2052,71 +1054,47 @@ export const synthesizeReading = (
     };
   }
 
-  // Calculate vibe (reversed flips the sign)
+  // Calculate vibe
   const vibe1 = cards[0].isReversed ? -card1.vibe : card1.vibe;
   const vibe2 = cards[1].isReversed ? -card2.vibe : card2.vibe;
   const vibe3 = cards[2].isReversed ? -card3.vibe : card3.vibe;
   const totalVibe = vibe1 + vibe2 + vibe3;
 
-  const { conclusion, energy } = getVibeConclusion(totalVibe);
-  const questionType = analyzeQuestion(question);
-  const questionLead = getQuestionLead(questionType);
-  const categoryName = categoryNamesVi[category];
+  const { conclusion, descriptor } = getVibeConclusion(totalVibe);
 
   // Get summaries
   const summary1 = cards[0].isReversed ? card1.summary_rev : card1.summary_up;
   const summary2 = cards[1].isReversed ? card2.summary_rev : card2.summary_up;
   const summary3 = cards[2].isReversed ? card3.summary_rev : card3.summary_up;
 
-  // Get interpretations
-  const interp1 = cards[0].isReversed ? card1.meaning_matrix_rev[category] : card1.meaning_matrix_up[category];
-  const interp2 = cards[1].isReversed ? card2.meaning_matrix_rev[category] : card2.meaning_matrix_up[category];
-  const interp3 = cards[2].isReversed ? card3.meaning_matrix_rev[category] : card3.meaning_matrix_up[category];
+  // Get meanings
+  const meaning1 = cards[0].isReversed ? card1.meaning_rev : card1.meaning_up;
+  const meaning2 = cards[1].isReversed ? card2.meaning_rev : card2.meaning_up;
+  const meaning3 = cards[2].isReversed ? card3.meaning_rev : card3.meaning_up;
 
-  // Get keywords for advice (prioritize future card)
+  // Get why appear
+  const why1 = cards[0].isReversed ? card1.why_appear_rev : card1.why_appear_up;
+  const why2 = cards[1].isReversed ? card2.why_appear_rev : card2.why_appear_up;
+  const why3 = cards[2].isReversed ? card3.why_appear_rev : card3.why_appear_up;
+
+  // Get keywords for advice
   const keywords3 = cards[2].isReversed ? card3.keywords_rev : card3.keywords_up;
-  const avoidKeywords = cards.find(c => {
-    const cardData = allCardMeanings[c.name];
-    const vibe = c.isReversed ? -cardData.vibe : cardData.vibe;
-    return vibe < 0;
-  });
-  
-  let avoidAction = "";
-  if (avoidKeywords) {
-    const negCard = allCardMeanings[avoidKeywords.name];
-    const negKeywords = avoidKeywords.isReversed ? negCard.keywords_up : negCard.keywords_rev;
-    if (negKeywords.length > 0) {
-      avoidAction = negKeywords[0];
-    }
-  }
 
-  // ===== PART 1: Overview =====
-  const part1_overview = `${questionLead} về câu hỏi "${question}" trong chủ đề ${categoryName}, các lá bài cho thấy năng lượng ${conclusion}. ${energy}. Trước đây bạn đã ${summary1}, hiện tại đang ${summary2}, dẫn đến tương lai có thể ${summary3}.`;
+  // ===== PART 1: Overview - Direct answer =====
+  const part1_overview = `Các lá bài cho thấy tình hình ${conclusion}. Trước đây bạn đã ${summary1}, hiện tại đang ${summary2}, và tương lai có xu hướng ${summary3}.`;
 
   // ===== PART 2: Past =====
-  const part2_past = `**Quá Khứ**: Lá **${card1.name_vi}** (${cards[0].isReversed ? 'Ngược' : 'Xuôi'}). ${interp1} Lá này xuất hiện vì nó phản ánh những gì bạn đã trải qua, cho thấy nền tảng của tình huống hiện tại.`;
+  const part2_past = `Lá bài ${card1.name_vi} (${cards[0].isReversed ? 'Ngược' : 'Xuôi'}) có ý nghĩa là: ${meaning1}\n\n${why1}`;
 
   // ===== PART 3: Present =====
-  const part3_present = `**Hiện Tại**: Lá **${card2.name_vi}** (${cards[1].isReversed ? 'Ngược' : 'Xuôi'}). ${interp2} Đây là năng lượng bạn đang sống trong lúc này, nó ảnh hưởng trực tiếp đến cách bạn xử lý vấn đề.`;
+  const part3_present = `Lá bài ${card2.name_vi} (${cards[1].isReversed ? 'Ngược' : 'Xuôi'}) có ý nghĩa là: ${meaning2}\n\n${why2}`;
 
   // ===== PART 4: Future =====
-  const part4_future = `**Tương Lai**: Lá **${card3.name_vi}** (${cards[2].isReversed ? 'Ngược' : 'Xuôi'}). ${interp3} Đây là hướng đi có thể xảy ra nếu bạn tiếp tục con đường hiện tại.`;
+  const part4_future = `Lá bài ${card3.name_vi} (${cards[2].isReversed ? 'Ngược' : 'Xuôi'}) có ý nghĩa là: ${meaning3}\n\n${why3}`;
 
   // ===== PART 5: Advice =====
   const actionStr = keywords3.join(", ");
-  let part5_advice = `**Lời khuyên hành động**: Dựa trên toàn bộ trải bài, bạn nên tập trung vào: **${actionStr}**.`;
-  
-  if (avoidAction) {
-    part5_advice += ` Tránh ${avoidAction} vào lúc này.`;
-  }
-
-  // Determine vibe descriptor
-  let vibeDescriptor = "trung tính";
-  if (totalVibe >= 2) vibeDescriptor = "rất tích cực";
-  else if (totalVibe === 1) vibeDescriptor = "tích cực";
-  else if (totalVibe === 0) vibeDescriptor = "trung tính";
-  else if (totalVibe === -1) vibeDescriptor = "cần lưu ý";
-  else vibeDescriptor = "thử thách";
+  const part5_advice = `Dựa trên toàn bộ trải bài, lời khuyên dành cho bạn là: ${actionStr}. Hãy tập trung vào những hành động này để đạt được kết quả tốt nhất.`;
 
   return {
     part1_overview,
@@ -2125,6 +1103,6 @@ export const synthesizeReading = (
     part4_future,
     part5_advice,
     totalVibe,
-    vibeDescriptor
+    vibeDescriptor: descriptor
   };
 };

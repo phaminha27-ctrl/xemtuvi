@@ -6,22 +6,7 @@ import FestiveButton from "@/components/FestiveButton";
 import { toast } from "sonner";
 import resultBackground from "@/assets/result-background.jpg";
 import { TarotCard, getCardImageUrl } from "@/hooks/useTarotCards";
-import { 
-  getInterpretation, 
-  getAdvice, 
-  synthesizeReading,
-  SynthesisResult,
-  CategoryType 
-} from "@/services/tarot-logic";
-
-const categoryNames: { [key: string]: string } = {
-  love: "Tình Yêu",
-  career: "Công Việc",
-  finance: "Tài Chính",
-  self: "Bản Thân",
-  health: "Sức Khỏe",
-  family: "Gia Đình",
-};
+import { synthesizeReading, SynthesisResult, getVietnameseName } from "@/services/tarot-logic";
 
 const cardPositionLabels = ["Quá Khứ", "Hiện Tại", "Tương Lai"];
 const cardIcons = ["🌙", "☀️", "⭐"];
@@ -58,27 +43,20 @@ const ScrollResultCard = ({
 const TarotResultPage = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState<TarotCard[]>([]);
-  const [category, setCategory] = useState<CategoryType>("love");
   const [question, setQuestion] = useState("Xem tổng quan");
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [synthesis, setSynthesis] = useState<SynthesisResult | null>(null);
 
   useEffect(() => {
     const storedCards = sessionStorage.getItem("tarotCards");
-    const storedCategory = sessionStorage.getItem("tarotCategory");
     const storedQuestion = sessionStorage.getItem("tarotQuestion");
     
     let parsedCards: TarotCard[] = [];
-    let parsedCategory: CategoryType = "love";
     let parsedQuestion = "Xem tổng quan";
     
     if (storedCards) {
       parsedCards = JSON.parse(storedCards);
       setCards(parsedCards);
-    }
-    if (storedCategory) {
-      parsedCategory = storedCategory as CategoryType;
-      setCategory(parsedCategory);
     }
     if (storedQuestion) {
       parsedQuestion = storedQuestion;
@@ -88,7 +66,6 @@ const TarotResultPage = () => {
     if (parsedCards.length >= 3) {
       const result = synthesizeReading(
         parsedCards.map(c => ({ name: c.name, isReversed: c.isReversed })),
-        parsedCategory,
         parsedQuestion
       );
       setSynthesis(result);
@@ -98,7 +75,7 @@ const TarotResultPage = () => {
   const handleShare = async () => {
     const shareData = {
       title: "Kết Quả Bói Bài Tarot",
-      text: `Xem kết quả bói bài Tarot về ${categoryNames[category]} của tôi!`,
+      text: `Xem kết quả bói bài Tarot của tôi!`,
       url: window.location.href,
     };
 
@@ -120,6 +97,8 @@ const TarotResultPage = () => {
     setImageErrors(prev => new Set(prev).add(nameShort));
   };
 
+  const cardParts = synthesis ? [synthesis.part2_past, synthesis.part3_present, synthesis.part4_future] : [];
+
   return (
     <div className="relative min-h-screen">
       <img src={resultBackground} alt="" className="fixed inset-0 w-full h-full object-cover" />
@@ -129,11 +108,8 @@ const TarotResultPage = () => {
           {/* Header */}
           <motion.div className="text-center mb-6" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-festive-gold drop-shadow-lg">Luận Giải Tarot</h1>
-            <p className="text-festive-cream mt-2 font-sans">
-              Chủ đề: <span className="font-bold text-festive-gold">{categoryNames[category]}</span>
-            </p>
-            {question !== "Xem tổng quan" && (
-              <p className="text-festive-cream/80 mt-1 text-sm italic">"{question}"</p>
+            {question !== "Xem tổng quan cuộc sống" && question !== "Xem tổng quan" && (
+              <p className="text-festive-cream/80 mt-2 text-sm italic max-w-sm mx-auto">"{question}"</p>
             )}
           </motion.div>
 
@@ -154,7 +130,7 @@ const TarotResultPage = () => {
                           </div>
                         )}
                       </div>
-                      <p className="text-festive-brown text-xs font-bold">{card.name}</p>
+                      <p className="text-festive-brown text-xs font-bold">{getVietnameseName(card.name)}</p>
                       <p className="text-festive-brown/60 text-[10px]">{cardPositionLabels[index]} {card.isReversed && "(Ngược)"}</p>
                     </div>
                   );
@@ -163,20 +139,20 @@ const TarotResultPage = () => {
             </ScrollResultCard>
           </motion.div>
 
-          {/* Synthesis - 5 Parts */}
+          {/* Synthesis */}
           {synthesis && (
             <>
               {/* Part 1: Overview */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-4">
                 <ScrollResultCard title="Tổng Quan">
-                  <div className="flex items-start gap-3 mb-3">
+                  <div className="flex items-start gap-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-festive-red to-festive-brown flex items-center justify-center flex-shrink-0 border-2 border-festive-gold/30 shadow-lg">
                       <Sparkles className="w-6 h-6 text-festive-cream" />
                     </div>
                     <div>
                       <p className="text-sm text-festive-brown font-sans leading-relaxed">{synthesis.part1_overview}</p>
                       <p className="text-xs text-festive-brown/70 font-sans mt-2">
-                        Năng lượng: <span className="font-semibold text-festive-red">{synthesis.vibeDescriptor}</span> (Điểm: {synthesis.totalVibe})
+                        Năng lượng: <span className="font-semibold text-festive-red">{synthesis.vibeDescriptor}</span>
                       </p>
                     </div>
                   </div>
@@ -184,21 +160,21 @@ const TarotResultPage = () => {
               </motion.div>
 
               {/* Parts 2-4: Past, Present, Future */}
-              {[synthesis.part2_past, synthesis.part3_present, synthesis.part4_future].map((part, index) => (
+              {cardParts.map((part, index) => (
                 <motion.div key={index} initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + index * 0.15 }} className="mb-4">
-                  <ScrollResultCard>
+                  <ScrollResultCard title={cardPositionLabels[index]}>
                     <div className="flex items-start gap-3">
                       <div className={`w-14 h-20 rounded-lg border-2 border-festive-gold flex-shrink-0 shadow-lg overflow-hidden ${cards[index]?.isReversed ? "rotate-180" : ""}`}>
-                        {!imageErrors.has(cards[index]?.name_short) ? (
-                          <img src={getCardImageUrl(cards[index])} alt={cards[index]?.name} className="w-full h-full object-cover" onError={() => handleImageError(cards[index]?.name_short)} />
+                        {cards[index] && !imageErrors.has(cards[index].name_short) ? (
+                          <img src={getCardImageUrl(cards[index])} alt={cards[index].name} className="w-full h-full object-cover" onError={() => handleImageError(cards[index].name_short)} />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center">
                             <span className="text-xl">{cardIcons[index]}</span>
                           </div>
                         )}
                       </div>
-                      <div className="flex-1 prose-sm">
-                        <p className="text-sm text-festive-brown font-sans leading-relaxed whitespace-pre-wrap">{part.replace(/\*\*/g, '')}</p>
+                      <div className="flex-1">
+                        <p className="text-sm text-festive-brown font-sans leading-relaxed whitespace-pre-line">{part}</p>
                       </div>
                     </div>
                   </ScrollResultCard>
@@ -207,9 +183,9 @@ const TarotResultPage = () => {
 
               {/* Part 5: Advice */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="mb-6">
-                <ScrollResultCard title="Lời Khuyên Hành Động">
+                <ScrollResultCard title="Lời Khuyên">
                   <p className="text-sm text-festive-brown text-center leading-relaxed font-sans">
-                    {synthesis.part5_advice.replace(/\*\*/g, '')}
+                    💡 {synthesis.part5_advice}
                   </p>
                 </ScrollResultCard>
               </motion.div>

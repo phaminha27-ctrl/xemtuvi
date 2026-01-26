@@ -1,42 +1,24 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Send, Heart, Briefcase, DollarSign, Users, Activity, User } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import FestiveButton from "@/components/FestiveButton";
 import { Textarea } from "@/components/ui/textarea";
 import formBackground from "@/assets/form-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
 
-const categories = [
-  { id: "love", icon: Heart, title: "Tình Yêu", color: "from-pink-500 to-rose-600" },
-  { id: "career", icon: Briefcase, title: "Công Việc", color: "from-blue-500 to-indigo-600" },
-  { id: "finance", icon: DollarSign, title: "Tài Chính", color: "from-yellow-500 to-amber-600" },
-  { id: "self", icon: User, title: "Bản Thân", color: "from-purple-500 to-violet-600" },
-  { id: "health", icon: Activity, title: "Sức Khỏe", color: "from-green-500 to-emerald-600" },
-  { id: "family", icon: Users, title: "Gia Đình", color: "from-orange-500 to-red-500" },
-];
-
 const TarotQuestionPage = () => {
   const navigate = useNavigate();
   const { playClickSound, startBgMusic } = useAudio();
   const [question, setQuestion] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  const handleCategorySelect = (categoryId: string) => {
-    playClickSound();
-    setSelectedCategory(categoryId);
-  };
 
   const handleContinue = () => {
-    if (!selectedCategory) return;
-    
     playClickSound();
     startBgMusic();
     
-    // Store question and category
-    sessionStorage.setItem("tarotQuestion", question.trim() || "Xem tổng quan");
-    sessionStorage.setItem("tarotCategory", selectedCategory);
+    // Store question (default to general reading if empty)
+    sessionStorage.setItem("tarotQuestion", question.trim() || "Xem tổng quan cuộc sống");
     
     navigate("/tarot/shuffle");
   };
@@ -71,6 +53,15 @@ const TarotQuestionPage = () => {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-16">
+        <motion.div
+          className="w-20 h-20 mb-6 rounded-full bg-gradient-to-br from-festive-gold to-festive-brown flex items-center justify-center border-4 border-festive-gold/50 shadow-2xl"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", delay: 0.2 }}
+        >
+          <Sparkles className="w-10 h-10 text-festive-cream" />
+        </motion.div>
+
         <motion.h1
           className="text-festive-gold text-2xl sm:text-3xl font-bold text-center mb-2 drop-shadow-lg"
           initial={{ opacity: 0, y: -20 }}
@@ -79,15 +70,15 @@ const TarotQuestionPage = () => {
           Bói Bài Tarot
         </motion.h1>
         <motion.p
-          className="text-festive-cream text-sm mb-6 text-center max-w-sm"
+          className="text-festive-cream text-sm mb-8 text-center max-w-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Nhập câu hỏi của bạn và chọn chủ đề
+          Hãy tập trung suy nghĩ về điều bạn muốn hỏi
         </motion.p>
 
-        <div className="w-full max-w-sm space-y-5">
+        <div className="w-full max-w-sm space-y-6">
           {/* Question input */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -95,77 +86,38 @@ const TarotQuestionPage = () => {
             transition={{ delay: 0.3 }}
           >
             <label className="block text-festive-gold text-sm font-semibold mb-2">
-              Câu hỏi của bạn (không bắt buộc)
+              Câu hỏi của bạn
             </label>
             <Textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ví dụ: Tình hình công việc của tôi sẽ như thế nào?..."
-              className="bg-black/30 border-festive-gold/50 text-festive-cream placeholder:text-festive-cream/40 min-h-[80px] resize-none focus:border-festive-gold"
-              maxLength={200}
+              placeholder="Ví dụ: Tình hình công việc sắp tới như thế nào? Mối quan hệ của tôi sẽ đi về đâu?..."
+              className="bg-black/30 border-festive-gold/50 text-festive-cream placeholder:text-festive-cream/40 min-h-[120px] resize-none focus:border-festive-gold text-base"
+              maxLength={300}
             />
             <p className="text-festive-cream/50 text-xs mt-1 text-right">
-              {question.length}/200
+              {question.length}/300
             </p>
-          </motion.div>
-
-          {/* Category selection */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <label className="block text-festive-gold text-sm font-semibold mb-3">
-              Chọn chủ đề <span className="text-festive-red">*</span>
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {categories.map((category, index) => (
-                <motion.button
-                  key={category.id}
-                  onClick={() => handleCategorySelect(category.id)}
-                  className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 ${
-                    selectedCategory === category.id
-                      ? "border-festive-gold bg-festive-gold/20"
-                      : "border-festive-gold/30 bg-black/30 hover:bg-black/50"
-                  }`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center border border-white/20 shadow-lg`}>
-                    <category.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <span className={`text-xs font-medium ${
-                    selectedCategory === category.id ? "text-festive-gold" : "text-festive-cream/80"
-                  }`}>
-                    {category.title}
-                  </span>
-                </motion.button>
-              ))}
-            </div>
+            <p className="text-festive-cream/60 text-xs mt-2 text-center italic">
+              Bạn có thể để trống để xem tổng quan cuộc sống
+            </p>
           </motion.div>
 
           {/* Continue button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.5 }}
             className="pt-4"
           >
             <FestiveButton
-              icon={Send}
+              icon={Sparkles}
               onClick={handleContinue}
               compact
-              className={`w-full ${!selectedCategory ? "opacity-50 cursor-not-allowed" : ""}`}
+              className="w-full"
             >
-              Tiếp Tục
+              Xem Bài
             </FestiveButton>
-            {!selectedCategory && (
-              <p className="text-festive-cream/60 text-xs text-center mt-2">
-                Vui lòng chọn chủ đề để tiếp tục
-              </p>
-            )}
           </motion.div>
         </div>
       </div>
