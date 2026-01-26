@@ -13,6 +13,17 @@ import {
   SynthesisResult 
 } from "@/services/tarot-logic";
 
+const categoryNames: { [key: string]: string } = {
+  love: "Tình Yêu",
+  career: "Sự Nghiệp",
+  finance: "Tài Chính",
+  family: "Gia Đình",
+  health: "Sức Khỏe",
+};
+
+const cardPositionLabels = ["Quá Khứ", "Hiện Tại", "Tương Lai"];
+const cardIcons = ["🌙", "☀️", "⭐"];
+
 
 const ScrollResultCard = ({ 
   children, 
