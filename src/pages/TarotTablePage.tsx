@@ -294,23 +294,23 @@ const TarotTablePage = () => {
             })}
           </AnimatePresence>
 
-          {/* Card deck */}
+          {/* Card deck - clickable area */}
           {phase !== "complete" && (
-            <motion.div
+            <div
               className="absolute cursor-pointer"
               style={{
                 right: "10%",
                 bottom: "15%",
+                width: "80px",
+                height: "128px",
               }}
               onClick={handleDeckClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               {/* Stacked deck effect */}
               {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-16 sm:w-20 h-24 sm:h-32 rounded-lg"
+                  className="absolute w-16 sm:w-20 h-24 sm:h-32 rounded-lg pointer-events-none"
                   style={{
                     background: "linear-gradient(135deg, #2D1B4E 0%, #1A0F2E 100%)",
                     border: "2px solid #F5D27B",
@@ -319,15 +319,16 @@ const TarotTablePage = () => {
                     zIndex: 5 - i,
                   }}
                   animate={phase === "shuffling" ? {
-                    x: shuffleAnimationCards.includes(i) ? [0, (Math.random() - 0.5) * 100, 0] : 0,
-                    y: shuffleAnimationCards.includes(i) ? [0, (Math.random() - 0.5) * 80, 0] : 0,
-                    rotate: shuffleAnimationCards.includes(i) ? [0, (Math.random() - 0.5) * 45, 0] : 0,
+                    x: [0, (Math.random() - 0.5) * 100, 0],
+                    y: [0, (Math.random() - 0.5) * 80, 0],
+                    rotate: [0, (Math.random() - 0.5) * 45, 0],
                   } : {}}
                   transition={{
                     duration: 0.4,
                     repeat: phase === "shuffling" ? 4 : 0,
                     repeatType: "mirror",
                   }}
+                  whileHover={{ scale: 1.05 }}
                 >
                   {i === 0 && (
                     <div className="absolute inset-1.5 rounded border border-festive-gold/30 flex items-center justify-center">
@@ -347,7 +348,7 @@ const TarotTablePage = () => {
               
               {/* Deck label */}
               <motion.div
-                className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-festive-cream/80 text-xs whitespace-nowrap"
+                className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-festive-cream/80 text-xs whitespace-nowrap pointer-events-none"
                 animate={{ opacity: [0.6, 1, 0.6] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
@@ -355,7 +356,7 @@ const TarotTablePage = () => {
                 {phase === "shuffling" && "Đang tráo..."}
                 {(phase === "ready" || phase === "drawing") && `Chạm để rút (${3 - drawnCards.length} lá)`}
               </motion.div>
-            </motion.div>
+            </div>
           )}
         </motion.div>
 

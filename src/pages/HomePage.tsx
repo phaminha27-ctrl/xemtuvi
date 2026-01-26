@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, Calendar, Settings, Hash, Sparkles } from "lucide-react";
+import { Camera, Calendar, Settings, Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
 import SettingsModal from "@/components/SettingsModal";
@@ -69,21 +69,6 @@ const HomePage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <FestiveButton
-              icon={Hash}
-              variant="orange"
-              onClick={() => navigate("/numerology")}
-              className="w-full"
-            >
-              Xem Thần Số Học
-            </FestiveButton>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
           >
             <FestiveButton
               icon={Sparkles}
