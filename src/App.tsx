@@ -10,6 +10,12 @@ import LoadingPage from "./pages/LoadingPage";
 import FaceResultPage from "./pages/FaceResultPage";
 import FormPage from "./pages/FormPage";
 import ResultPage from "./pages/ResultPage";
+import NumerologyFormPage from "./pages/NumerologyFormPage";
+import NumerologyResultPage from "./pages/NumerologyResultPage";
+import TarotCategoryPage from "./pages/TarotCategoryPage";
+import TarotShufflePage from "./pages/TarotShufflePage";
+import TarotDealPage from "./pages/TarotDealPage";
+import TarotResultPage from "./pages/TarotResultPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,7 +34,12 @@ const App = () => (
             <Route path="/face-result" element={<FaceResultPage />} />
             <Route path="/form" element={<FormPage />} />
             <Route path="/result" element={<ResultPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/numerology" element={<NumerologyFormPage />} />
+            <Route path="/numerology/result" element={<NumerologyResultPage />} />
+            <Route path="/tarot" element={<TarotCategoryPage />} />
+            <Route path="/tarot/shuffle" element={<TarotShufflePage />} />
+            <Route path="/tarot/deal" element={<TarotDealPage />} />
+            <Route path="/tarot/result" element={<TarotResultPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
