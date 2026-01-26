@@ -65,7 +65,7 @@ const TarotQuestionPage = () => {
           />
           
           {/* Form overlay positioned on white area */}
-          <div className="absolute left-[14%] right-[14%] top-[36%] bottom-[5.5%] flex flex-col p-2">
+          <div className="absolute left-[25%] right-[25%] top-[36%] bottom-[5.5%] flex flex-col p-2">
             <Textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
