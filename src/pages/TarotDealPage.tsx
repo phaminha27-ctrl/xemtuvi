@@ -159,7 +159,7 @@ const TarotDealPage = () => {
                     >
                       {!hasImageError ? (
                         <img
-                          src={getCardImageUrl(card.name_short)}
+                          src={getCardImageUrl(card)}
                           alt={card.name}
                           className="w-full h-full object-cover"
                           onError={() => handleImageError(card.name_short)}
