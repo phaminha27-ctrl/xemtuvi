@@ -293,72 +293,74 @@ const TarotTablePage = () => {
               );
             })}
           </AnimatePresence>
-
-          {/* Card deck - clickable area */}
-          {phase !== "complete" && (
-            <div
-              className="absolute cursor-pointer"
-              style={{
-                right: "10%",
-                bottom: "15%",
-                width: "80px",
-                height: "128px",
-              }}
-              onClick={handleDeckClick}
-            >
-              {/* Stacked deck effect */}
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-16 sm:w-20 h-24 sm:h-32 rounded-lg pointer-events-none"
-                  style={{
-                    background: "linear-gradient(135deg, #2D1B4E 0%, #1A0F2E 100%)",
-                    border: "2px solid #F5D27B",
-                    bottom: i * 2,
-                    right: i * 1,
-                    zIndex: 5 - i,
-                  }}
-                  animate={phase === "shuffling" ? {
-                    x: [0, (Math.random() - 0.5) * 100, 0],
-                    y: [0, (Math.random() - 0.5) * 80, 0],
-                    rotate: [0, (Math.random() - 0.5) * 45, 0],
-                  } : {}}
-                  transition={{
-                    duration: 0.4,
-                    repeat: phase === "shuffling" ? 4 : 0,
-                    repeatType: "mirror",
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {i === 0 && (
-                    <div className="absolute inset-1.5 rounded border border-festive-gold/30 flex items-center justify-center">
-                      <div className="w-8 sm:w-12 h-12 sm:h-18 rounded border-2 border-festive-gold/50 flex items-center justify-center">
-                        <motion.span 
-                          className="text-festive-gold text-lg sm:text-xl"
-                          animate={phase === "shuffling" ? { rotate: 360 } : {}}
-                          transition={{ duration: 0.5, repeat: phase === "shuffling" ? Infinity : 0 }}
-                        >
-                          ✦
-                        </motion.span>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-              
-              {/* Deck label */}
-              <motion.div
-                className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-festive-cream/80 text-xs whitespace-nowrap pointer-events-none"
-                animate={{ opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                {phase === "idle" && "Chạm để tráo"}
-                {phase === "shuffling" && "Đang tráo..."}
-                {(phase === "ready" || phase === "drawing") && `Chạm để rút (${3 - drawnCards.length} lá)`}
-              </motion.div>
-            </div>
-          )}
         </motion.div>
+
+        {/* Card deck - outside the table */}
+        {phase !== "complete" && (
+          <motion.div
+            className="mt-6 cursor-pointer relative"
+            style={{
+              width: "90px",
+              height: "140px",
+            }}
+            onClick={handleDeckClick}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {/* Stacked deck effect */}
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-16 sm:w-20 h-24 sm:h-32 rounded-lg pointer-events-none"
+                style={{
+                  background: "linear-gradient(135deg, #2D1B4E 0%, #1A0F2E 100%)",
+                  border: "2px solid #F5D27B",
+                  bottom: i * 2,
+                  left: "50%",
+                  transform: `translateX(-50%) translateX(${i * 1}px)`,
+                  zIndex: 5 - i,
+                }}
+                animate={phase === "shuffling" ? {
+                  x: [0, (Math.random() - 0.5) * 100, 0],
+                  y: [0, (Math.random() - 0.5) * 80, 0],
+                  rotate: [0, (Math.random() - 0.5) * 45, 0],
+                } : {}}
+                transition={{
+                  duration: 0.4,
+                  repeat: phase === "shuffling" ? 4 : 0,
+                  repeatType: "mirror",
+                }}
+              >
+                {i === 0 && (
+                  <div className="absolute inset-1.5 rounded border border-festive-gold/30 flex items-center justify-center">
+                    <div className="w-8 sm:w-12 h-12 sm:h-18 rounded border-2 border-festive-gold/50 flex items-center justify-center">
+                      <motion.span 
+                        className="text-festive-gold text-lg sm:text-xl"
+                        animate={phase === "shuffling" ? { rotate: 360 } : {}}
+                        transition={{ duration: 0.5, repeat: phase === "shuffling" ? Infinity : 0 }}
+                      >
+                        ✦
+                      </motion.span>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+            
+            {/* Deck label */}
+            <motion.div
+              className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-festive-cream text-xs whitespace-nowrap pointer-events-none font-medium"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              {phase === "idle" && "Chạm để tráo"}
+              {phase === "shuffling" && "Đang tráo..."}
+              {(phase === "ready" || phase === "drawing") && `Chạm để rút (${3 - drawnCards.length} lá)`}
+            </motion.div>
+          </motion.div>
+        )}
 
         {/* Action buttons */}
         <div className="mt-8 flex gap-3">
