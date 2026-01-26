@@ -6,6 +6,7 @@ import IconButton from "@/components/IconButton";
 import CaptureButton from "@/components/CaptureButton";
 import FestiveButton from "@/components/FestiveButton";
 import scanBackground from "@/assets/scan-background.jpg";
+import meocuoi from "@/assets/meocuoi.jpg";
 
 const FaceScanPage = () => {
   const navigate = useNavigate();
@@ -157,7 +158,7 @@ const FaceScanPage = () => {
             textShadow: "0 2px 4px rgba(0,0,0,0.6)"
           }}
         >
-          Quét mặt của bạn
+          Hãy cười thật đẹp nhé!
         </p>
 
         {/* Camera Frame - Rounded square with corner accents */}
@@ -202,23 +203,12 @@ const FaceScanPage = () => {
             className="absolute inset-2 rounded-xl overflow-hidden flex items-center justify-center"
             style={{ backgroundColor: "rgba(255, 250, 240, 0.85)" }}
           >
-            {!isStreaming && !capturedImage && (
-              <div className="text-center p-4">
-                {/* Face icon - matching border color */}
-                <svg 
-                  className="w-14 h-14 mx-auto"
-                  viewBox="0 0 24 24"
-                  style={{ 
-                    fill: "none",
-                    stroke: "#F5D27B",
-                    strokeWidth: 1.8,
-                    filter: "drop-shadow(0 0 4px rgba(245, 210, 123, 0.6))"
-                  }}
-                >
-                  <circle cx="12" cy="8" r="5" />
-                  <path d="M20 21a8 8 0 1 0-16 0" />
-                </svg>
-              </div>
+          {!isStreaming && !capturedImage && (
+              <img
+                src={meocuoi}
+                alt="Mèo cười"
+                className="w-full h-full object-cover object-center"
+              />
             )}
             
             <video
