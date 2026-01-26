@@ -96,13 +96,13 @@ const TarotTablePage = () => {
     setImageErrors(prev => new Set(prev).add(nameShort));
   };
 
-  // Arc positions for 3 cards (left, center, right)
+  // Arc positions for 3 cards (left, center, right) - smaller spread for mobile
   const getArcPosition = (index: number) => {
-    const baseY = -20; // Slightly above center
+    const baseY = -10;
     const positions = [
-      { x: -120, y: baseY + 15, rotate: -15 }, // Left
+      { x: -70, y: baseY + 10, rotate: -12 }, // Left
       { x: 0, y: baseY, rotate: 0 },           // Center
-      { x: 120, y: baseY + 15, rotate: 15 },   // Right
+      { x: 70, y: baseY + 10, rotate: 12 },    // Right
     ];
     return positions[index];
   };
