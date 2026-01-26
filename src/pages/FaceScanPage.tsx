@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, Sparkles, RotateCcw } from "lucide-react";
+import { Sparkles, RotateCcw, Upload } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import CaptureButton from "@/components/CaptureButton";
 import FestiveButton from "@/components/FestiveButton";
@@ -11,6 +11,7 @@ const FaceScanPage = () => {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isStreaming, setIsStreaming] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -68,6 +69,34 @@ const FaceScanPage = () => {
     setCapturedImage(null);
     startCamera();
   }, [startCamera]);
+
+  const handleUploadClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        setError("Vui lòng chọn file ảnh hợp lệ.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageData = event.target?.result as string;
+        setCapturedImage(imageData);
+        // Stop camera if streaming
+        if (videoRef.current?.srcObject) {
+          const stream = videoRef.current.srcObject as MediaStream;
+          stream?.getTracks().forEach((track) => track.stop());
+          setIsStreaming(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+    // Reset input to allow selecting the same file again
+    e.target.value = "";
+  }, []);
 
   const analyzeFace = useCallback(() => {
     if (capturedImage) {
@@ -240,10 +269,22 @@ const FaceScanPage = () => {
         )}
       </div>
 
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+
       {/* Bottom area - Action buttons */}
       <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 z-10">
         {!isStreaming && !capturedImage && (
-          <CaptureButton onClick={() => startCamera()} icon="camera" label="MỞ CAMERA" />
+          <div className="flex flex-row gap-4 items-center justify-center">
+            <CaptureButton onClick={() => startCamera()} icon="camera" label="MỞ CAMERA" />
+            <CaptureButton onClick={handleUploadClick} icon="upload" label="TẢI ẢNH" />
+          </div>
         )}
 
         {isStreaming && (
