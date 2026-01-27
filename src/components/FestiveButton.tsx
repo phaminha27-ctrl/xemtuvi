@@ -43,7 +43,7 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative grid grid-cols-3 items-center w-full cursor-pointer rounded-full overflow-hidden
+        relative flex items-center justify-center w-full cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
         ${compact ? 'px-3 py-1' : 'px-4 sm:px-6 py-2'}
         ${className}
@@ -71,13 +71,11 @@ const FestiveButton = ({
         style={{ border: "1.5px solid rgba(0, 50, 45, 0.3)" }}
       />
 
-      {/* Icon pinned to the first "point" (1/3 width), stays aligned across stacked buttons */}
-      {Icon && (
-        <div
-          className="col-start-2 row-start-1 justify-self-start -translate-x-1/2 z-10"
-        >
+      {/* Centered content: icon + text */}
+      <div className="flex items-center gap-3 z-10">
+        {Icon && (
           <div
-            className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center`}
+            className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center flex-shrink-0`}
             style={{
               backgroundColor: "#F5D27B",
               border: "2px solid #8B5E34",
@@ -86,16 +84,8 @@ const FestiveButton = ({
           >
             <Icon className={`${compact ? 'w-4 h-4' : 'w-5 h-5 sm:w-7 sm:h-7'}`} style={{ color: "#5d3e21" }} />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Text starts after icon with fixed gap */}
-      <div
-        className={`
-          col-start-2 col-span-2 row-start-1 z-10 flex items-center justify-center
-          ${Icon ? (compact ? 'pl-1' : 'pl-9 sm:pl-[41px]') : ''}
-        `}
-      >
         {compact ? (
           <span
             className="font-extrabold uppercase leading-tight text-sm whitespace-nowrap"
