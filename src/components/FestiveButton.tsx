@@ -43,7 +43,7 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative flex items-center justify-center w-full cursor-pointer rounded-full overflow-hidden
+        relative flex items-center w-full cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
         ${compact ? 'px-3 py-1' : 'px-4 sm:px-6 py-2'}
         ${className}
@@ -71,10 +71,10 @@ const FestiveButton = ({
         style={{ border: "1.5px solid rgba(0, 50, 45, 0.3)" }}
       />
 
-      {/* Icon box */}
+      {/* Icon box - fixed width for alignment */}
       {Icon && (
         <div
-          className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center mr-2 sm:mr-3 z-10 flex-shrink-0`}
+          className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center z-10 flex-shrink-0`}
           style={{
             backgroundColor: "#F5D27B",
             border: "2px solid #8B5E34",
@@ -85,30 +85,11 @@ const FestiveButton = ({
         </div>
       )}
 
-      {/* Text - single line for compact mode */}
-      {compact ? (
-        <span
-          className="font-extrabold uppercase leading-tight text-sm z-10"
-          style={{
-            color: textColors[variant],
-            textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
-          }}
-        >
-          {children}
-        </span>
-      ) : (
-        <div className="flex flex-col text-left z-10 min-w-0">
+      {/* Text container - takes remaining space and centers text */}
+      <div className={`flex-1 flex items-center justify-center z-10 ${Icon ? 'pr-8 sm:pr-[50px]' : ''}`}>
+        {compact ? (
           <span
-            className="font-extrabold uppercase leading-tight text-sm sm:text-base"
-            style={{
-              color: textColors[variant],
-              textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
-            }}
-          >
-            XEM TỬ VI
-          </span>
-          <span
-            className="font-extrabold uppercase leading-tight text-base sm:text-lg truncate"
+            className="font-extrabold uppercase leading-tight text-sm text-center"
             style={{
               color: textColors[variant],
               textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
@@ -116,8 +97,29 @@ const FestiveButton = ({
           >
             {children}
           </span>
-        </div>
-      )}
+        ) : (
+          <div className="flex flex-col text-center">
+            <span
+              className="font-extrabold uppercase leading-tight text-sm sm:text-base"
+              style={{
+                color: textColors[variant],
+                textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              XEM TỬ VI
+            </span>
+            <span
+              className="font-extrabold uppercase leading-tight text-base sm:text-lg"
+              style={{
+                color: textColors[variant],
+                textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              {children}
+            </span>
+          </div>
+        )}
+      </div>
     </motion.button>
   );
 };
