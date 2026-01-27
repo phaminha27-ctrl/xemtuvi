@@ -5,6 +5,7 @@ import { Camera, Calendar, Settings, Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
 import SettingsModal from "@/components/SettingsModal";
+import HiddenLetter from "@/components/HiddenLetter";
 import homeBackground from "@/assets/home-background.png";
 
 const HomePage = () => {
@@ -81,6 +82,9 @@ const HomePage = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Hidden letter B */}
+      <HiddenLetter letter="B" index={0} position={{ top: "15%", right: "8%" }} />
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>

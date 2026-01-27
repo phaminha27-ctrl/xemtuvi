@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@/components/IconButton";
 import FestiveButton from "@/components/FestiveButton";
+import HiddenLetter from "@/components/HiddenLetter";
 import { Textarea } from "@/components/ui/textarea";
 import tarotBackground from "@/assets/tarot-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
@@ -123,6 +124,9 @@ const TarotQuestionPage = () => {
             </p>
           )}
         </motion.div>
+
+        {/* Hidden letter T */}
+        <HiddenLetter letter="T" index={4} position={{ top: "12%", left: "8%" }} />
       </div>
     </div>
   );

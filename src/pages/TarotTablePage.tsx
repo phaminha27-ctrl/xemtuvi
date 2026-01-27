@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, RotateCcw } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
+import HiddenLetter from "@/components/HiddenLetter";
 import tarotBackground from "@/assets/tarot-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTarotCards, shuffleCards, getCardImageUrl, TarotCard } from "@/hooks/useTarotCards";
@@ -443,6 +444,9 @@ const TarotTablePage = () => {
             </motion.div>
           )}
         </div>
+
+        {/* Hidden letter E (second one, index 5) */}
+        <HiddenLetter letter="E" index={5} position={{ bottom: "5%", left: "10%" }} />
       </div>
     </div>
   );
