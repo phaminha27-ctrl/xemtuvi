@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import loadingMascot from "@/assets/loading-mascot.png";
 import formBackground from "@/assets/form-background.jpg";
+import HiddenLetter from "@/components/HiddenLetter";
 
 const LoadingPage = () => {
   const navigate = useNavigate();
@@ -89,6 +90,9 @@ const LoadingPage = () => {
             transition={{ duration: 0.1 }}
           />
         </div>
+
+        {/* Hidden letter C */}
+        <HiddenLetter letter="C" index={6} position={{ top: "15%", right: "10%" }} />
       </div>
     </div>
   );

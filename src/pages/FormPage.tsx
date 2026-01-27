@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
+import HiddenLetter from "@/components/HiddenLetter";
 import formBackground from "@/assets/form-background.jpg";
 
 const FormPage = () => {
@@ -277,6 +278,9 @@ const FormPage = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Hidden letter U */}
+      <HiddenLetter letter="U" index={2} position={{ top: "10%", right: "10%" }} />
     </div>
   );
 };

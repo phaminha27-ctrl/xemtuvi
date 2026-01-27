@@ -5,6 +5,7 @@ import { Sparkles, RotateCcw, Upload } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import CaptureButton from "@/components/CaptureButton";
 import FestiveButton from "@/components/FestiveButton";
+import HiddenLetter from "@/components/HiddenLetter";
 import scanBackground from "@/assets/scan-background.jpg";
 import meocuoi from "@/assets/meocuoi.jpg";
 
@@ -292,6 +293,9 @@ const FaceScanPage = () => {
           </div>
         )}
       </div>
+
+      {/* Hidden letter L */}
+      <HiddenLetter letter="L" index={1} position={{ bottom: "35%", left: "5%" }} />
     </div>
   );
 };

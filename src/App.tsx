@@ -4,6 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AudioProvider } from "@/contexts/AudioContext";
+import { CollectibleProvider } from "@/contexts/CollectibleContext";
+import CollectibleProgress from "@/components/CollectibleProgress";
+import CongratulationsModal from "@/components/CongratulationsModal";
 import HomePage from "./pages/HomePage";
 import FaceScanPage from "./pages/FaceScanPage";
 import LoadingPage from "./pages/LoadingPage";
@@ -23,27 +26,31 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AudioProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/scan" element={<FaceScanPage />} />
-            <Route path="/loading" element={<LoadingPage />} />
-            <Route path="/face-result" element={<FaceResultPage />} />
-            <Route path="/form" element={<FormPage />} />
-            <Route path="/result" element={<ResultPage />} />
-            <Route path="/numerology" element={<NumerologyFormPage />} />
-            <Route path="/numerology/result" element={<NumerologyResultPage />} />
-            <Route path="/tarot" element={<TarotCharacterSelectPage />} />
-            <Route path="/tarot/question" element={<TarotQuestionPage />} />
-            <Route path="/tarot/table" element={<TarotTablePage />} />
-            <Route path="/tarot/result" element={<TarotResultPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <CollectibleProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/scan" element={<FaceScanPage />} />
+              <Route path="/loading" element={<LoadingPage />} />
+              <Route path="/face-result" element={<FaceResultPage />} />
+              <Route path="/form" element={<FormPage />} />
+              <Route path="/result" element={<ResultPage />} />
+              <Route path="/numerology" element={<NumerologyFormPage />} />
+              <Route path="/numerology/result" element={<NumerologyResultPage />} />
+              <Route path="/tarot" element={<TarotCharacterSelectPage />} />
+              <Route path="/tarot/question" element={<TarotQuestionPage />} />
+              <Route path="/tarot/table" element={<TarotTablePage />} />
+              <Route path="/tarot/result" element={<TarotResultPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+          <CollectibleProgress />
+          <CongratulationsModal />
+        </TooltipProvider>
+      </CollectibleProvider>
     </AudioProvider>
   </QueryClientProvider>
 );

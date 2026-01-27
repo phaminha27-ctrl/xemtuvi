@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import FestiveButton from "@/components/FestiveButton";
+import HiddenLetter from "@/components/HiddenLetter";
 import tarotBackground from "@/assets/tarot-background.jpg";
 import { useAudio } from "@/contexts/AudioContext";
 
@@ -214,6 +215,9 @@ const TarotCharacterSelectPage = () => {
             Chọn Thầy Bói
           </FestiveButton>
         </motion.div>
+
+        {/* Hidden letter E */}
+        <HiddenLetter letter="E" index={3} position={{ bottom: "8%", right: "8%" }} />
       </div>
     </div>
   );

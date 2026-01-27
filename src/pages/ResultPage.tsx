@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Heart, Briefcase, DollarSign, Activity, GraduationCap, Users, Share2, Home } from "lucide-react";
 import FestiveButton from "@/components/FestiveButton";
+import HiddenLetter from "@/components/HiddenLetter";
 import { toast } from "sonner";
 import resultBackground from "@/assets/result-background.jpg";
 
@@ -291,6 +292,9 @@ const ResultPage = () => {
               Chia sẻ
             </FestiveButton>
           </motion.div>
+
+          {/* Hidden letter H */}
+          <HiddenLetter letter="H" index={7} position={{ top: "5%", left: "5%" }} />
         </div>
       </div>
     </div>
