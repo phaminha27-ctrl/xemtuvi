@@ -43,7 +43,7 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative flex items-center justify-center w-full cursor-pointer rounded-full overflow-hidden
+        relative grid grid-cols-[1fr_auto_1fr] items-center w-full cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
         ${compact ? 'px-3 py-1' : 'px-4 sm:px-6 py-2'}
         ${className}
@@ -71,7 +71,10 @@ const FestiveButton = ({
         style={{ border: "1.5px solid rgba(0, 50, 45, 0.3)" }}
       />
 
-      {/* Content group - centered with fixed gap */}
+      {/* Part 1: Empty spacer */}
+      <div />
+
+      {/* Part 2: Icon + Text group (centered) */}
       <div className={`flex items-center z-10 ${compact ? 'gap-2' : 'gap-3 sm:gap-4'}`}>
         {/* Icon box - fixed size */}
         {Icon && (
@@ -90,7 +93,7 @@ const FestiveButton = ({
         {/* Text */}
         {compact ? (
           <span
-            className="font-extrabold uppercase leading-tight text-sm"
+            className="font-extrabold uppercase leading-tight text-sm whitespace-nowrap"
             style={{
               color: textColors[variant],
               textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
@@ -99,7 +102,7 @@ const FestiveButton = ({
             {children}
           </span>
         ) : (
-          <div className="flex flex-col text-left">
+          <div className="flex flex-col text-left whitespace-nowrap">
             <span
               className="font-extrabold uppercase leading-tight text-sm sm:text-base"
               style={{
@@ -121,6 +124,9 @@ const FestiveButton = ({
           </div>
         )}
       </div>
+
+      {/* Part 3: Empty spacer */}
+      <div />
     </motion.button>
   );
 };
