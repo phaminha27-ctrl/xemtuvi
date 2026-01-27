@@ -93,7 +93,7 @@ const FestiveButton = ({
       <div
         className={`
           col-start-2 col-span-2 row-start-1 z-10 flex items-center justify-center
-          ${Icon ? (compact ? 'pl-10' : 'pl-12 sm:pl-[64px]') : ''}
+          ${Icon ? (compact ? 'pl-8' : 'pl-9 sm:pl-[41px]') : ''}
         `}
       >
         {compact ? (
