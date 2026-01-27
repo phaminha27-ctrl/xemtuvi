@@ -43,7 +43,7 @@ const FestiveButton = ({
   return (
     <motion.button
       className={`
-        relative flex items-center w-full cursor-pointer rounded-full overflow-hidden
+        relative flex items-center justify-center w-full cursor-pointer rounded-full overflow-hidden
         border-[3px] border-[#F5D27B] outline-none
         ${compact ? 'px-3 py-1' : 'px-4 sm:px-6 py-2'}
         ${className}
@@ -71,25 +71,26 @@ const FestiveButton = ({
         style={{ border: "1.5px solid rgba(0, 50, 45, 0.3)" }}
       />
 
-      {/* Icon box - fixed width for alignment */}
-      {Icon && (
-        <div
-          className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center z-10 flex-shrink-0`}
-          style={{
-            backgroundColor: "#F5D27B",
-            border: "2px solid #8B5E34",
-            boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
-          }}
-        >
-          <Icon className={`${compact ? 'w-4 h-4' : 'w-5 h-5 sm:w-7 sm:h-7'}`} style={{ color: "#5d3e21" }} />
-        </div>
-      )}
+      {/* Content group - centered with fixed gap */}
+      <div className={`flex items-center z-10 ${compact ? 'gap-2' : 'gap-3 sm:gap-4'}`}>
+        {/* Icon box - fixed size */}
+        {Icon && (
+          <div
+            className={`${compact ? 'w-8 h-8' : 'w-10 h-10 sm:w-[50px] sm:h-[50px]'} rounded-full flex items-center justify-center flex-shrink-0`}
+            style={{
+              backgroundColor: "#F5D27B",
+              border: "2px solid #8B5E34",
+              boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
+            }}
+          >
+            <Icon className={`${compact ? 'w-4 h-4' : 'w-5 h-5 sm:w-7 sm:h-7'}`} style={{ color: "#5d3e21" }} />
+          </div>
+        )}
 
-      {/* Text container - takes remaining space and centers text */}
-      <div className={`flex-1 flex items-center justify-center z-10 ${Icon ? 'pr-8 sm:pr-[50px]' : ''}`}>
+        {/* Text */}
         {compact ? (
           <span
-            className="font-extrabold uppercase leading-tight text-sm text-center"
+            className="font-extrabold uppercase leading-tight text-sm"
             style={{
               color: textColors[variant],
               textShadow: variant === "gold" ? "none" : "1px 2px 3px rgba(0, 0, 0, 0.4)",
@@ -98,7 +99,7 @@ const FestiveButton = ({
             {children}
           </span>
         ) : (
-          <div className="flex flex-col text-center">
+          <div className="flex flex-col text-left">
             <span
               className="font-extrabold uppercase leading-tight text-sm sm:text-base"
               style={{
