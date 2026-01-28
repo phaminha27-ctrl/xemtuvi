@@ -29,9 +29,8 @@ const HiddenLetter = ({ letter, index }: HiddenLetterProps) => {
   const handleClick = () => {
     if (isFlying) return;
     
-    playClickSound();
     playCollectSound();
-    
+
     // Calculate fly target (bottom left corner)
     if (letterRef.current) {
       const rect = letterRef.current.getBoundingClientRect();
