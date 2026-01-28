@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Eye, RotateCcw } from "lucide-react";
@@ -23,14 +23,25 @@ const TarotTablePage = () => {
   const { playClickSound, settings } = useAudio();
   const { cards, loading, error } = useTarotCards();
 
+  // Shuffle sound ref
+  const shuffleAudioRef = useRef<HTMLAudioElement | null>(null);
+
   // Play shuffle sound
   const playShuffleSound = useCallback(() => {
     if (settings.clickSoundEnabled) {
-      const audio = new Audio(shufflingSound);
-      audio.volume = settings.clickSoundVolume;
-      audio.play().catch(() => {});
+      shuffleAudioRef.current = new Audio(shufflingSound);
+      shuffleAudioRef.current.volume = settings.clickSoundVolume;
+      shuffleAudioRef.current.play().catch(() => {});
     }
   }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
+
+  // Stop shuffle sound
+  const stopShuffleSound = useCallback(() => {
+    if (shuffleAudioRef.current) {
+      shuffleAudioRef.current.pause();
+      shuffleAudioRef.current = null;
+    }
+  }, []);
   
   const [phase, setPhase] = useState<GamePhase>("idle");
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
@@ -51,6 +62,7 @@ const TarotTablePage = () => {
       
       // Shuffle animation for 2 seconds
       setTimeout(() => {
+        stopShuffleSound();
         const shuffled = shuffleCards(cards);
         setShuffledDeck(shuffled);
         sessionStorage.setItem("shuffledDeck", JSON.stringify(shuffled));
