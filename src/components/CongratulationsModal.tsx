@@ -175,8 +175,13 @@ const CongratulationsModal = () => {
           {/* Image with scale animation */}
           <AnimatePresence>
             {showImage && (
-              <motion.div
-                className="relative z-10 w-full h-full flex items-center justify-center p-4"
+              <motion.img
+                src={loichucImage}
+                alt="Lời chúc năm mới"
+                className="absolute inset-0 z-10 w-full h-full object-contain"
+                style={{
+                  filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
+                }}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
@@ -184,18 +189,8 @@ const CongratulationsModal = () => {
                   type: "spring", 
                   stiffness: 200, 
                   damping: 20,
-                  duration: 0.8 
                 }}
-              >
-                <img
-                  src={loichucImage}
-                  alt="Lời chúc năm mới"
-                  className="max-w-full max-h-[80vh] object-contain drop-shadow-2xl"
-                  style={{
-                    filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
-                  }}
-                />
-              </motion.div>
+              />
             )}
           </AnimatePresence>
 
