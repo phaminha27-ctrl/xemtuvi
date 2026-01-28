@@ -26,14 +26,12 @@ const TarotQuestionPage = () => {
   const navigate = useNavigate();
   const { playClickSound, startBgMusic } = useAudio();
   const [question, setQuestion] = useState("");
-  const [characterImage, setCharacterImage] = useState(tarotMen);
-
-  useEffect(() => {
-    const selectedCharacter = sessionStorage.getItem("tarotCharacter");
-    if (selectedCharacter && characterImages[selectedCharacter]) {
-      setCharacterImage(characterImages[selectedCharacter]);
-    }
-  }, []);
+  
+  // Initialize character image directly from sessionStorage to avoid flash
+  const selectedCharacter = sessionStorage.getItem("tarotCharacter");
+  const characterImage = selectedCharacter && characterImages[selectedCharacter] 
+    ? characterImages[selectedCharacter] 
+    : tarotMen;
 
   const handleContinue = () => {
     if (!question.trim()) {
