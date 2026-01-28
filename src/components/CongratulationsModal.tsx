@@ -15,7 +15,7 @@ interface Firework {
 const COLORS = ["#FFD700", "#FF6B6B", "#4ECDC4", "#FF69B4", "#87CEEB", "#FFA500", "#98D8C8"];
 
 const CongratulationsModal = () => {
-  const { showCongrats, setShowCongrats, resetCollection } = useCollectible();
+  const { showCongrats, setShowCongrats } = useCollectible();
   const [fireworks, setFireworks] = useState<Firework[]>([]);
   const [showFireworks, setShowFireworks] = useState(true);
 
@@ -71,10 +71,6 @@ const CongratulationsModal = () => {
 
   const handleClose = () => {
     setShowCongrats(false);
-  };
-
-  const handleReset = () => {
-    resetCollection();
   };
 
   return (
@@ -252,23 +248,13 @@ const CongratulationsModal = () => {
               ))}
             </motion.div>
             
-            <div className="flex flex-col gap-2">
-              <FestiveButton
-                icon={Sparkles}
-                onClick={handleClose}
-                compact
-              >
-                Tuyệt vời!
-              </FestiveButton>
-              
-              <button
-                onClick={handleReset}
-                className="text-sm underline opacity-70 hover:opacity-100 transition-opacity"
-                style={{ color: "#FFF9C4" }}
-              >
-                Chơi lại từ đầu
-              </button>
-            </div>
+            <FestiveButton
+              icon={Sparkles}
+              onClick={handleClose}
+              compact
+            >
+              Tuyệt vời!
+            </FestiveButton>
           </motion.div>
         </motion.div>
       )}
