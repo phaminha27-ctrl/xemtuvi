@@ -44,13 +44,9 @@ const TarotCharacterSelectPage = () => {
   };
 
   const handleSelectCharacter = () => {
-    playClickSound();
-    startBgMusic();
-    
-    // Store selected character
+    // Note: playClickSound and startBgMusic are handled by FestiveButton
     sessionStorage.setItem("tarotCharacter", characters[currentIndex].formImage);
     sessionStorage.setItem("tarotCharacterName", characters[currentIndex].name);
-    
     navigate("/tarot/question");
   };
 
