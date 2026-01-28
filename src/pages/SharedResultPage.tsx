@@ -156,20 +156,36 @@ const SharedResultPage = () => {
       // Parse tarot data from URL
       const cardsParam = searchParams.get("cards");
       const questionParam = searchParams.get("q");
+      const synthesisParam = searchParams.get("s");
       
       if (cardsParam) {
         try {
           const parsedCards = JSON.parse(decodeURIComponent(cardsParam));
           setCards(parsedCards);
           
-          if (questionParam) {
-            setQuestion(decodeURIComponent(questionParam));
-          }
+          const decodedQuestion = questionParam ? decodeURIComponent(questionParam) : "Xem tổng quan";
+          setQuestion(decodedQuestion);
           
-          if (parsedCards.length >= 3) {
+          // Use pre-computed synthesis from URL if available
+          if (synthesisParam) {
+            try {
+              const parsedSynthesis = JSON.parse(decodeURIComponent(synthesisParam));
+              setSynthesis(parsedSynthesis);
+            } catch (e) {
+              // Fallback to computing synthesis if URL data is invalid
+              if (parsedCards.length >= 3) {
+                const result = synthesizeReading(
+                  parsedCards.map((c: TarotCard) => ({ name: c.name, isReversed: c.isReversed })),
+                  decodedQuestion
+                );
+                setSynthesis(result);
+              }
+            }
+          } else if (parsedCards.length >= 3) {
+            // Fallback for old links without synthesis
             const result = synthesizeReading(
               parsedCards.map((c: TarotCard) => ({ name: c.name, isReversed: c.isReversed })),
-              questionParam ? decodeURIComponent(questionParam) : "Xem tổng quan"
+              decodedQuestion
             );
             setSynthesis(result);
           }

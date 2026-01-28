@@ -73,7 +73,7 @@ const TarotResultPage = () => {
   }, []);
 
   const handleShare = async () => {
-    // Create shareable URL with tarot data
+    // Create shareable URL with tarot data including pre-computed synthesis
     const baseUrl = window.location.origin;
     const cardsData = encodeURIComponent(JSON.stringify(cards.map(c => ({
       name: c.name,
@@ -81,7 +81,9 @@ const TarotResultPage = () => {
       isReversed: c.isReversed
     }))));
     const questionData = encodeURIComponent(question);
-    const shareUrl = `${baseUrl}/shared?type=tarot&cards=${cardsData}&q=${questionData}`;
+    // Include synthesis so shared page shows exact same results
+    const synthesisData = synthesis ? encodeURIComponent(JSON.stringify(synthesis)) : "";
+    const shareUrl = `${baseUrl}/shared?type=tarot&cards=${cardsData}&q=${questionData}${synthesisData ? `&s=${synthesisData}` : ""}`;
     
     const shareData = {
       title: "Kết Quả Bói Bài Tarot",
