@@ -6,6 +6,7 @@ import FestiveButton from "@/components/FestiveButton";
 import IconButton from "@/components/IconButton";
 import HiddenLetter from "@/components/HiddenLetter";
 import tarotBackground from "@/assets/tarot-background.jpg";
+import shufflingSound from "@/assets/shuffling-cards.mp3";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTarotCards, shuffleCards, getCardImageUrl, TarotCard } from "@/hooks/useTarotCards";
 
@@ -19,8 +20,17 @@ interface DrawnCard {
 
 const TarotTablePage = () => {
   const navigate = useNavigate();
-  const { playClickSound } = useAudio();
+  const { playClickSound, settings } = useAudio();
   const { cards, loading, error } = useTarotCards();
+
+  // Play shuffle sound
+  const playShuffleSound = useCallback(() => {
+    if (settings.clickSoundEnabled) {
+      const audio = new Audio(shufflingSound);
+      audio.volume = settings.clickSoundVolume;
+      audio.play().catch(() => {});
+    }
+  }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
   
   const [phase, setPhase] = useState<GamePhase>("idle");
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
@@ -37,6 +47,7 @@ const TarotTablePage = () => {
       // Start shuffling
       setPhase("shuffling");
       setShuffleAnimationCards([0, 1, 2, 3, 4, 5, 6, 7]);
+      playShuffleSound();
       
       // Shuffle animation for 2 seconds
       setTimeout(() => {
