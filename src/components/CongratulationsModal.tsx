@@ -210,7 +210,7 @@ const CongratulationsModal = () => {
                 <img
                   src={loichucImage}
                   alt="Lời chúc năm mới"
-                  className="min-w-full min-h-full w-auto h-auto max-w-none object-contain"
+                  className="w-full h-full object-contain"
                   style={{
                     filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
                   }}
