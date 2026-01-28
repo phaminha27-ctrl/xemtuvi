@@ -28,11 +28,12 @@ const TarotTablePage = () => {
   // Shuffle sound ref
   const shuffleAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Play shuffle sound
+  // Play shuffle sound (skip first 1s)
   const playShuffleSound = useCallback(() => {
     if (settings.clickSoundEnabled) {
       shuffleAudioRef.current = new Audio(shufflingSound);
       shuffleAudioRef.current.volume = settings.clickSoundVolume;
+      shuffleAudioRef.current.currentTime = 1; // Skip first 1 second
       shuffleAudioRef.current.play().catch(() => {});
     }
   }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
@@ -45,11 +46,12 @@ const TarotTablePage = () => {
     }
   }, []);
 
-  // Play flip card sound
+  // Play flip card sound (skip first 1s)
   const playFlipSound = useCallback(() => {
     if (settings.clickSoundEnabled) {
       const audio = new Audio(flipcardSound);
       audio.volume = settings.clickSoundVolume;
+      audio.currentTime = 1; // Skip first 1 second
       audio.play().catch(() => {});
     }
   }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
