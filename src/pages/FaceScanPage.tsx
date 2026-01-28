@@ -16,6 +16,7 @@ const FaceScanPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isStreaming, setIsStreaming] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [imageSource, setImageSource] = useState<"camera" | "upload" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
 
@@ -58,6 +59,7 @@ const FaceScanPage = () => {
         context.drawImage(videoRef.current, 0, 0);
         const imageData = canvasRef.current.toDataURL("image/jpeg");
         setCapturedImage(imageData);
+        setImageSource("camera");
         
         // Stop camera stream
         const stream = videoRef.current.srcObject as MediaStream;
@@ -69,8 +71,17 @@ const FaceScanPage = () => {
 
   const retake = useCallback(() => {
     setCapturedImage(null);
-    startCamera();
-  }, [startCamera]);
+    setImageSource(null);
+    if (imageSource === "camera") {
+      startCamera();
+    }
+  }, [startCamera, imageSource]);
+
+  const changeImage = useCallback(() => {
+    setCapturedImage(null);
+    setImageSource(null);
+    fileInputRef.current?.click();
+  }, []);
 
   const handleUploadClick = useCallback(() => {
     fileInputRef.current?.click();
@@ -87,6 +98,7 @@ const FaceScanPage = () => {
       reader.onload = (event) => {
         const imageData = event.target?.result as string;
         setCapturedImage(imageData);
+        setImageSource("upload");
         // Stop camera if streaming
         if (videoRef.current?.srcObject) {
           const stream = videoRef.current.srcObject as MediaStream;
@@ -287,9 +299,15 @@ const FaceScanPage = () => {
             <FestiveButton onClick={analyzeFace} icon={Sparkles} compact variant="primary">
               Xem Tử Vi
             </FestiveButton>
-            <FestiveButton onClick={retake} icon={RotateCcw} compact variant="secondary">
-              Chụp Lại
-            </FestiveButton>
+            {imageSource === "upload" ? (
+              <FestiveButton onClick={changeImage} icon={Upload} compact variant="secondary">
+                Đổi Ảnh
+              </FestiveButton>
+            ) : (
+              <FestiveButton onClick={retake} icon={RotateCcw} compact variant="secondary">
+                Chụp Lại
+              </FestiveButton>
+            )}
           </div>
         )}
       </div>
