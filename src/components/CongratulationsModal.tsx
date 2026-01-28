@@ -21,7 +21,7 @@ interface Rocket {
   exploded: boolean;
 }
 
-const COLORS = ["#FF3F8E", "#04C2C9", "#2E5BFF", "#FFAC00", "#FFFFFF", "#FFD700", "#FF6B6B"];
+const COLORS = ["#FF3F8E", "#04C2C9", "#2E5BFF", "#FFAC00", "#FFFFFF", "#A020F0"];
 
 const CongratulationsModal = () => {
   const { showCongrats, setShowCongrats } = useCollectible();
@@ -56,13 +56,12 @@ const CongratulationsModal = () => {
 
     particlesRef.current = [];
     rocketsRef.current = [];
-    startTimeRef.current = Date.now();
 
     const explode = (x: number, y: number, color: string) => {
-      const count = 70;
+      const count = 60;
       for (let i = 0; i < count; i++) {
         const angle = (Math.PI * 2 / count) * i;
-        const speed = Math.random() * 5 + 2;
+        const speed = Math.random() * 4 + 2;
         particlesRef.current.push({
           x,
           y,
@@ -82,22 +81,18 @@ const CongratulationsModal = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const elapsed = (Date.now() - startTimeRef.current) / 1000;
-
-      // Launch rockets for 10 seconds
-      if (elapsed < 10) {
-        if (Math.random() < 0.03) {
-          const randomX = Math.random() * canvas.width;
-          const randomY = Math.random() * (canvas.height * 0.5);
-          rocketsRef.current.push({
-            x: randomX,
-            y: canvas.height,
-            targetY: randomY,
-            color: COLORS[Math.floor(Math.random() * COLORS.length)],
-            speed: 5,
-            exploded: false,
-          });
-        }
+      // Launch rockets infinitely with low frequency
+      if (Math.random() < 0.02) {
+        const randomX = Math.random() * canvas.width;
+        const randomY = Math.random() * (canvas.height * 0.6);
+        rocketsRef.current.push({
+          x: randomX,
+          y: canvas.height,
+          targetY: randomY,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          speed: 4,
+          exploded: false,
+        });
       }
 
       // Update and draw rockets
@@ -124,14 +119,14 @@ const CongratulationsModal = () => {
         particle.velocity.y += 0.1;
         particle.x += particle.velocity.x;
         particle.y += particle.velocity.y;
-        particle.alpha -= 0.012;
+        particle.alpha -= 0.015;
 
         if (particle.alpha <= 0) return false;
 
         ctx.save();
         ctx.globalAlpha = particle.alpha;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 1.8, 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, 1.5, 0, Math.PI * 2);
         ctx.fillStyle = particle.color;
         ctx.fill();
         ctx.restore();
@@ -166,19 +161,13 @@ const CongratulationsModal = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {/* Canvas for fireworks */}
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 z-0"
-          />
-
-          {/* Image with scale animation */}
+          {/* Image with scale animation - behind fireworks */}
           <AnimatePresence>
             {showImage && (
               <motion.img
                 src={loichucImage}
                 alt="Lời chúc năm mới"
-                className="absolute inset-0 z-10 w-full h-full object-cover"
+                className="absolute inset-0 z-0 w-full h-full object-cover"
                 style={{
                   filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
                 }}
@@ -193,6 +182,12 @@ const CongratulationsModal = () => {
               />
             )}
           </AnimatePresence>
+
+          {/* Canvas for fireworks - in front of image */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 z-10 pointer-events-none"
+          />
 
           {/* Close button at bottom */}
           <motion.button
