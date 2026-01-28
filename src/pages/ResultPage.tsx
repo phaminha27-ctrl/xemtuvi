@@ -294,7 +294,7 @@ const ResultPage = () => {
           </motion.div>
 
           {/* Hidden letter H */}
-          <HiddenLetter letter="H" index={7} position={{ top: "5%", left: "5%" }} />
+          <HiddenLetter letter="H" index={7} />
         </div>
       </div>
     </div>

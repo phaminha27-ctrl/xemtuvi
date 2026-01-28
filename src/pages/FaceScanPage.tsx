@@ -295,7 +295,7 @@ const FaceScanPage = () => {
       </div>
 
       {/* Hidden letter L */}
-      <HiddenLetter letter="L" index={1} position={{ bottom: "35%", left: "5%" }} />
+      <HiddenLetter letter="L" index={1} />
     </div>
   );
 };

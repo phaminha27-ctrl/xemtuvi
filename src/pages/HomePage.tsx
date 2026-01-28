@@ -84,7 +84,7 @@ const HomePage = () => {
       </div>
 
       {/* Hidden letter B */}
-      <HiddenLetter letter="B" index={0} position={{ top: "15%", right: "8%" }} />
+      <HiddenLetter letter="B" index={0} />
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>

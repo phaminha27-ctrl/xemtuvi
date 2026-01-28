@@ -126,7 +126,7 @@ const TarotQuestionPage = () => {
         </motion.div>
 
         {/* Hidden letter T */}
-        <HiddenLetter letter="T" index={4} position={{ top: "12%", left: "8%" }} />
+        <HiddenLetter letter="T" index={4} />
       </div>
     </div>
   );

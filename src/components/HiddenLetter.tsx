@@ -6,20 +6,16 @@ import { useAudio } from "@/contexts/AudioContext";
 interface HiddenLetterProps {
   letter: string;
   index: number;
-  position: {
-    top?: string;
-    bottom?: string;
-    left?: string;
-    right?: string;
-  };
 }
 
-const HiddenLetter = ({ letter, index, position }: HiddenLetterProps) => {
-  const { isLetterCollected, collectLetter } = useCollectible();
+const HiddenLetter = ({ letter, index }: HiddenLetterProps) => {
+  const { isLetterCollected, collectLetter, getLetterPosition } = useCollectible();
   const { playClickSound } = useAudio();
   const [isFlying, setIsFlying] = useState(false);
   const letterRef = useRef<HTMLDivElement>(null);
   const [flyTarget, setFlyTarget] = useState({ x: 0, y: 0 });
+  
+  const position = getLetterPosition(index);
 
   if (isLetterCollected(index)) return null;
 
