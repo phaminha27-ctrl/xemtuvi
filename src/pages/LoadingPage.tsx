@@ -24,6 +24,8 @@ const LoadingPage = () => {
         navigate("/face-result");
       } else if (scanType === "numerology") {
         navigate("/numerology/result");
+      } else if (scanType === "tarot") {
+        navigate("/tarot/result");
       } else {
         navigate("/result");
       }

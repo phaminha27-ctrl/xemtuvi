@@ -141,7 +141,7 @@ const TarotTablePage = () => {
 
   const handleViewResult = () => {
     sessionStorage.setItem("tarotCards", JSON.stringify(drawnCards.map(dc => dc.card)));
-    navigate("/tarot/result");
+    navigate("/loading", { state: { type: "tarot" } });
   };
 
   const handleReset = () => {
