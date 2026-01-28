@@ -96,8 +96,12 @@ const TarotTablePage = () => {
       playClickSound();
       if (drawnCards.length < 3) {
         const nextCard = shuffledDeck[drawnCards.length];
+        // 50/50 chance for reversed card
+        const isReversed = Math.random() < 0.5;
+        const cardWithReversed = { ...nextCard, isReversed };
+        
         setDrawnCards(prev => [...prev, {
-          card: nextCard,
+          card: cardWithReversed,
           isFlipped: false,
           position: prev.length
         }]);
@@ -386,7 +390,7 @@ const TarotTablePage = () => {
                         <img
                           src={getCardImageUrl(drawnCard.card)}
                           alt={drawnCard.card.name}
-                          className="w-full h-full object-cover"
+                          className={`w-full h-full object-cover ${drawnCard.card.isReversed ? "rotate-180" : ""}`}
                           onError={() => handleImageError(drawnCard.card.name_short)}
                         />
                       ) : (
