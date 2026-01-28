@@ -161,13 +161,19 @@ const CongratulationsModal = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {/* Image with scale animation - behind fireworks */}
+          {/* Canvas for fireworks - behind image */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 z-0 pointer-events-none"
+          />
+
+          {/* Image with scale animation - in front of fireworks */}
           <AnimatePresence>
             {showImage && (
               <motion.img
                 src={loichucImage}
                 alt="Lời chúc năm mới"
-                className="absolute inset-0 z-0 w-full h-full object-cover"
+                className="absolute inset-0 z-10 w-full h-full object-cover"
                 style={{
                   filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
                 }}
@@ -182,12 +188,6 @@ const CongratulationsModal = () => {
               />
             )}
           </AnimatePresence>
-
-          {/* Canvas for fireworks - in front of image */}
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 z-10 pointer-events-none"
-          />
 
           {/* Close button at bottom */}
           <motion.button
