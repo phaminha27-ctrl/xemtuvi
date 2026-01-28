@@ -8,6 +8,7 @@ import HiddenLetter from "@/components/HiddenLetter";
 import tarotBackground from "@/assets/tarot-background.jpg";
 import shufflingSound from "@/assets/shuffling-cards.mp3";
 import flipcardSound from "@/assets/flipcard.mp3";
+import tadaFanfareSound from "@/assets/tada-fanfare.mp3";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTarotCards, shuffleCards, getCardImageUrl, TarotCard } from "@/hooks/useTarotCards";
 
@@ -52,12 +53,22 @@ const TarotTablePage = () => {
       audio.play().catch(() => {});
     }
   }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
+
+  // Play fanfare sound when all cards are flipped
+  const playFanfareSound = useCallback(() => {
+    if (settings.clickSoundEnabled) {
+      const audio = new Audio(tadaFanfareSound);
+      audio.volume = settings.clickSoundVolume;
+      audio.play().catch(() => {});
+    }
+  }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
   
   const [phase, setPhase] = useState<GamePhase>("idle");
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [drawnCards, setDrawnCards] = useState<DrawnCard[]>([]);
   const [shuffleAnimationCards, setShuffleAnimationCards] = useState<number[]>([]);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  const [showGlowEffect, setShowGlowEffect] = useState(false);
 
   // Handle deck click based on current phase
   const handleDeckClick = useCallback(() => {
@@ -103,6 +114,9 @@ const TarotTablePage = () => {
   const handleCardFlip = useCallback((index: number) => {
     if (phase !== "flipping" && phase !== "complete") return;
     
+    // Check if card is already flipped
+    if (drawnCards[index]?.isFlipped) return;
+    
     playFlipSound();
     setDrawnCards(prev => prev.map((dc, i) => 
       i === index ? { ...dc, isFlipped: true } : dc
@@ -111,9 +125,13 @@ const TarotTablePage = () => {
     // Check if all cards are flipped
     const flippedCount = drawnCards.filter(dc => dc.isFlipped).length;
     if (flippedCount === 2) { // This flip will make it 3
-      setTimeout(() => setPhase("complete"), 600);
+      setTimeout(() => {
+        setPhase("complete");
+        setShowGlowEffect(true);
+        playFanfareSound();
+      }, 600);
     }
-  }, [phase, drawnCards, playClickSound]);
+  }, [phase, drawnCards, playFlipSound, playFanfareSound]);
 
   const handleViewResult = () => {
     sessionStorage.setItem("tarotCards", JSON.stringify(drawnCards.map(dc => dc.card)));
@@ -125,6 +143,7 @@ const TarotTablePage = () => {
     setShuffledDeck([]);
     setDrawnCards([]);
     setShuffleAnimationCards([]);
+    setShowGlowEffect(false);
   };
 
   const handleImageError = (nameShort: string) => {
@@ -308,6 +327,28 @@ const TarotTablePage = () => {
                   whileHover={!drawnCard.isFlipped ? { scale: 1.05, y: pos.y - 70 } : {}}
                   whileTap={!drawnCard.isFlipped ? { scale: 0.98 } : {}}
                 >
+                  {/* Golden glow effect when all cards are flipped */}
+                  {showGlowEffect && drawnCard.isFlipped && (
+                    <motion.div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: "radial-gradient(ellipse at center, rgba(255, 215, 0, 0.6) 0%, rgba(255, 180, 0, 0.3) 40%, transparent 70%)",
+                        filter: "blur(8px)",
+                        transform: "scale(1.8)",
+                        zIndex: -1,
+                      }}
+                      initial={{ opacity: 0, scale: 1 }}
+                      animate={{ 
+                        opacity: [0, 1, 0.7, 1],
+                        scale: [1.5, 2, 1.8, 2],
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }}
+                    />
+                  )}
                   <motion.div
                     className="relative w-20 sm:w-24 h-32 sm:h-40"
                     animate={{ rotateY: drawnCard.isFlipped ? 180 : 0 }}
