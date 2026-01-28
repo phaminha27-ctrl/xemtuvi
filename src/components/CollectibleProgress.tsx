@@ -88,7 +88,7 @@ const CollectibleProgress = () => {
             
             {/* Popup */}
             <motion.div
-              className="relative z-10 rounded-2xl p-6"
+              className="relative z-10 rounded-2xl p-4 sm:p-6 mx-4 max-w-[90vw] sm:max-w-sm"
               style={{
                 background: "linear-gradient(135deg, rgba(139, 94, 52, 0.98) 0%, rgba(93, 62, 33, 0.98) 100%)",
                 border: "3px solid #F5D27B",
@@ -108,20 +108,20 @@ const CollectibleProgress = () => {
               </button>
 
               <h3
-                className="text-center text-lg font-bold mb-4"
+                className="text-center text-base sm:text-lg font-bold mb-3 sm:mb-4"
                 style={{ color: "#F5D27B" }}
               >
                 Thu thập chữ cái
               </h3>
 
-              {/* Letter slots */}
-              <div className="flex gap-2 justify-center">
+              {/* Letter slots - responsive grid */}
+              <div className="flex gap-1.5 sm:gap-2 justify-center flex-wrap">
                 {LETTERS.map((letter, index) => {
                   const collected = isLetterCollected(index);
                   return (
                     <motion.div
                       key={index}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-bold text-base sm:text-lg"
                       style={{
                         background: collected 
                           ? "linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%)"
@@ -153,7 +153,7 @@ const CollectibleProgress = () => {
               </div>
 
               <p
-                className="text-center text-sm mt-4"
+                className="text-center text-xs sm:text-sm mt-3 sm:mt-4"
                 style={{ color: "#FFF9C4" }}
               >
                 {count}/{totalLetters} chữ cái đã tìm thấy
