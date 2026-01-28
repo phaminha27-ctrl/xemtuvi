@@ -66,14 +66,21 @@ const HiddenLetter = ({ letter, index, position }: HiddenLetterProps) => {
           <div
             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-sm sm:text-base"
             style={{
-              background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
-              boxShadow: "0 0 15px rgba(255, 215, 0, 0.6), inset 0 2px 4px rgba(255,255,255,0.4)",
-              border: "2px solid #8B5E34",
-              color: "#5d3e21",
-              textShadow: "0 1px 2px rgba(255,255,255,0.5)",
+              background: "linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%)",
+              boxShadow: "0 0 15px rgba(255, 215, 0, 0.6), inset 0 2px 4px rgba(255,255,255,0.3)",
+              border: "3px solid #F5D27B",
             }}
           >
-            {letter}
+            <span
+              style={{
+                color: "#DC143C",
+                WebkitTextStroke: "1.5px #F5D27B",
+                textShadow: "0 0 8px rgba(255, 215, 0, 0.8), 0 2px 4px rgba(0,0,0,0.5)",
+                fontWeight: 800,
+              }}
+            >
+              {letter}
+            </span>
           </div>
           
           {/* Sparkle effect */}
@@ -105,13 +112,21 @@ const HiddenLetter = ({ letter, index, position }: HiddenLetterProps) => {
           <div
             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-sm sm:text-base"
             style={{
-              background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+              background: "linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%)",
               boxShadow: "0 0 20px rgba(255, 215, 0, 0.8)",
-              border: "2px solid #8B5E34",
-              color: "#5d3e21",
+              border: "3px solid #F5D27B",
             }}
           >
-            {letter}
+            <span
+              style={{
+                color: "#DC143C",
+                WebkitTextStroke: "1.5px #F5D27B",
+                textShadow: "0 0 8px rgba(255, 215, 0, 0.8), 0 2px 4px rgba(0,0,0,0.5)",
+                fontWeight: 800,
+              }}
+            >
+              {letter}
+            </span>
           </div>
         </motion.div>
       )}
