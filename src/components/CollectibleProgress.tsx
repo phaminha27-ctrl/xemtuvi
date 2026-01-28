@@ -122,8 +122,8 @@ const CollectibleProgress = () => {
                 Thu thập chữ cái
               </h3>
 
-              {/* Letter slots - responsive grid */}
-              <div className="flex gap-1.5 sm:gap-2 justify-center flex-wrap">
+              {/* Letter slots - single row */}
+              <div className="flex gap-1 sm:gap-2 justify-center">
                 {LETTERS.map((letter, index) => {
                   const collected = isLetterCollected(index);
                   return (
