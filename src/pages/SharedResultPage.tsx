@@ -41,56 +41,20 @@ const faceResultData = {
   ],
 };
 
-// Form result data
-const formResultData = {
+// Default form result data (fallback)
+const defaultFormResultData = {
   overall: {
     title: "Tổng Quan Năm Bính Ngọ 2026",
     content: "Năm Bính Ngọ 2026 đánh dấu một bước ngoặt quan trọng trong cuộc đời bạn. Với sự kết hợp của ngũ hành và can chi, đây là năm thuận lợi để phát triển sự nghiệp và mở rộng các mối quan hệ. Hãy nắm bắt cơ hội và tiến về phía trước!",
     score: 85,
   },
   categories: [
-    {
-      icon: Briefcase,
-      title: "Sự Nghiệp",
-      score: 90,
-      content: "Năm nay sự nghiệp phát triển mạnh mẽ. Có nhiều cơ hội thăng tiến và được cấp trên tin tưởng.",
-      iconBg: "from-blue-500 to-blue-700",
-    },
-    {
-      icon: Heart,
-      title: "Tình Duyên",
-      score: 80,
-      content: "Tình duyên năm nay khá tốt. Người độc thân có cơ hội gặp người ý hợp tâm đầu.",
-      iconBg: "from-pink-500 to-rose-600",
-    },
-    {
-      icon: DollarSign,
-      title: "Tài Lộc",
-      score: 75,
-      content: "Tài lộc năm nay ổn định. Thu nhập chính tăng trưởng tốt.",
-      iconBg: "from-yellow-500 to-amber-600",
-    },
-    {
-      icon: Activity,
-      title: "Sức Khỏe",
-      score: 70,
-      content: "Sức khỏe cần được chú ý nhiều hơn năm nay.",
-      iconBg: "from-green-500 to-emerald-600",
-    },
-    {
-      icon: GraduationCap,
-      title: "Học Vấn",
-      score: 88,
-      content: "Năm thuận lợi cho việc học hành và thi cử.",
-      iconBg: "from-purple-500 to-violet-600",
-    },
-    {
-      icon: Users,
-      title: "Gia Đình",
-      score: 82,
-      content: "Quan hệ gia đình hòa thuận, ấm áp.",
-      iconBg: "from-orange-500 to-red-500",
-    },
+    { title: "Sự Nghiệp", score: 90, content: "Năm nay sự nghiệp phát triển mạnh mẽ. Có nhiều cơ hội thăng tiến và được cấp trên tin tưởng.", iconBg: "from-blue-500 to-blue-700" },
+    { title: "Tình Duyên", score: 80, content: "Tình duyên năm nay khá tốt. Người độc thân có cơ hội gặp người ý hợp tâm đầu.", iconBg: "from-pink-500 to-rose-600" },
+    { title: "Tài Lộc", score: 75, content: "Tài lộc năm nay ổn định. Thu nhập chính tăng trưởng tốt.", iconBg: "from-yellow-500 to-amber-600" },
+    { title: "Sức Khỏe", score: 70, content: "Sức khỏe cần được chú ý nhiều hơn năm nay.", iconBg: "from-green-500 to-emerald-600" },
+    { title: "Học Vấn", score: 88, content: "Năm thuận lợi cho việc học hành và thi cử.", iconBg: "from-purple-500 to-violet-600" },
+    { title: "Gia Đình", score: 82, content: "Quan hệ gia đình hòa thuận, ấm áp.", iconBg: "from-orange-500 to-red-500" },
   ],
   luckyInfo: {
     numbers: [3, 8, 15, 23, 38],
@@ -99,6 +63,22 @@ const formResultData = {
     months: ["Tháng 3", "Tháng 8", "Tháng 10"],
   },
 };
+
+// Icon mapping for categories
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Sự Nghiệp": Briefcase,
+  "Tình Duyên": Heart,
+  "Tài Lộc": DollarSign,
+  "Sức Khỏe": Activity,
+  "Học Vấn": GraduationCap,
+  "Gia Đình": Users,
+};
+
+interface FormResultData {
+  overall: { title: string; content: string; score: number };
+  categories: Array<{ title: string; score: number; content: string; iconBg: string; advice?: string }>;
+  luckyInfo: { numbers: number[]; colors: string[]; directions: string[]; months: string[] };
+}
 
 interface FormData {
   name: string;
@@ -150,6 +130,7 @@ const SharedResultPage = () => {
   
   // Form states
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [formResults, setFormResults] = useState<FormResultData>(defaultFormResultData);
 
   useEffect(() => {
     if (type === "tarot") {
@@ -196,12 +177,23 @@ const SharedResultPage = () => {
     } else if (type === "form") {
       // Parse form data from URL
       const dataParam = searchParams.get("data");
+      const resultsParam = searchParams.get("results");
+      
       if (dataParam) {
         try {
           const parsedData = JSON.parse(decodeURIComponent(dataParam));
           setFormData(parsedData);
         } catch (e) {
           console.error("Failed to parse shared form data:", e);
+        }
+      }
+      
+      if (resultsParam) {
+        try {
+          const parsedResults = JSON.parse(decodeURIComponent(resultsParam));
+          setFormResults(parsedResults);
+        } catch (e) {
+          console.error("Failed to parse shared form results:", e);
         }
       }
     }
@@ -394,50 +386,53 @@ const SharedResultPage = () => {
         transition={{ delay: 0.2 }}
         className="mb-6"
       >
-        <ScrollResultCard title={formResultData.overall.title}>
+        <ScrollResultCard title={formResults.overall.title}>
           <div className="text-center mb-4">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-festive-gold to-festive-brown border-4 border-festive-brown shadow-lg">
               <span className="text-3xl font-bold text-white drop-shadow">
-                {formResultData.overall.score}
+                {formResults.overall.score}
               </span>
             </div>
             <p className="text-sm text-festive-brown mt-2 font-sans">Điểm vận mệnh</p>
           </div>
-          <p className="text-gray-700 text-center leading-relaxed font-sans">
-            {formResultData.overall.content}
+          <p className="text-festive-brown/80 text-center leading-relaxed font-sans">
+            {formResults.overall.content}
           </p>
         </ScrollResultCard>
       </motion.div>
 
       {/* Category details */}
-      {formResultData.categories.map((category, index) => (
-        <motion.div
-          key={category.title}
-          initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 + index * 0.1 }}
-          className="mb-4"
-        >
-          <ScrollResultCard>
-            <div className="flex items-start gap-3">
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${category.iconBg} flex items-center justify-center flex-shrink-0 border-2 border-white/30 shadow-lg`}>
-                <category.icon className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-bold text-festive-brown text-lg font-sans">
-                    {category.title}
-                  </h3>
-                  <span className={`font-bold text-lg ${getScoreColor(category.score)} font-sans`}>
-                    {category.score}/100
-                  </span>
+      {formResults.categories.map((category, index) => {
+        const IconComponent = categoryIcons[category.title] || Briefcase;
+        return (
+          <motion.div
+            key={category.title}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 + index * 0.1 }}
+            className="mb-4"
+          >
+            <ScrollResultCard>
+              <div className="flex items-start gap-3">
+                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${category.iconBg} flex items-center justify-center flex-shrink-0 border-2 border-white/30 shadow-lg`}>
+                  <IconComponent className="w-6 h-6 text-white" />
                 </div>
-                <p className="text-sm text-gray-700 font-sans">{category.content}</p>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-bold text-festive-brown text-lg font-sans">
+                      {category.title}
+                    </h3>
+                    <span className={`font-bold text-lg ${getScoreColor(category.score)} font-sans`}>
+                      {category.score}/100
+                    </span>
+                  </div>
+                  <p className="text-sm text-festive-brown/80 font-sans">{category.content}</p>
+                </div>
               </div>
-            </div>
-          </ScrollResultCard>
-        </motion.div>
-      ))}
+            </ScrollResultCard>
+          </motion.div>
+        );
+      })}
 
       {/* Lucky info */}
       <motion.div
@@ -450,19 +445,19 @@ const SharedResultPage = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">🔢 Số may mắn</h4>
-              <p className="text-sm text-gray-700 font-sans">{formResultData.luckyInfo.numbers.join(", ")}</p>
+              <p className="text-sm text-festive-brown/80 font-sans">{formResults.luckyInfo.numbers.join(", ")}</p>
             </div>
             <div>
               <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">🎨 Màu may mắn</h4>
-              <p className="text-sm text-gray-700 font-sans">{formResultData.luckyInfo.colors.join(", ")}</p>
+              <p className="text-sm text-festive-brown/80 font-sans">{formResults.luckyInfo.colors.join(", ")}</p>
             </div>
             <div>
               <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">🧭 Hướng tốt</h4>
-              <p className="text-sm text-gray-700 font-sans">{formResultData.luckyInfo.directions.join(", ")}</p>
+              <p className="text-sm text-festive-brown/80 font-sans">{formResults.luckyInfo.directions.join(", ")}</p>
             </div>
             <div>
               <h4 className="font-bold text-festive-brown text-sm mb-1 font-sans">📅 Tháng đẹp</h4>
-              <p className="text-sm text-gray-700 font-sans">{formResultData.luckyInfo.months.join(", ")}</p>
+              <p className="text-sm text-festive-brown/80 font-sans">{formResults.luckyInfo.months.join(", ")}</p>
             </div>
           </div>
         </ScrollResultCard>
