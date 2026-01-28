@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCollectible } from "@/contexts/CollectibleContext";
 import { useAudio } from "@/contexts/AudioContext";
+import letterCollectSound from "@/assets/letter-collect.mp3";
 
 interface HiddenLetterProps {
   letter: string;
@@ -19,10 +20,17 @@ const HiddenLetter = ({ letter, index }: HiddenLetterProps) => {
 
   if (isLetterCollected(index)) return null;
 
+  const playCollectSound = () => {
+    const audio = new Audio(letterCollectSound);
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+  };
+
   const handleClick = () => {
     if (isFlying) return;
     
     playClickSound();
+    playCollectSound();
     
     // Calculate fly target (bottom left corner)
     if (letterRef.current) {
