@@ -182,7 +182,7 @@ const CongratulationsModal = () => {
     <AnimatePresence>
       {showCongrats && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[100] flex flex-col items-center overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -193,16 +193,11 @@ const CongratulationsModal = () => {
             className="absolute inset-0 z-0 pointer-events-none"
           />
 
-          {/* Image with scale animation - in front of fireworks */}
+          {/* Scrollable container for image */}
           <AnimatePresence>
             {showImage && (
-              <motion.img
-                src={loichucImage}
-                alt="Lời chúc năm mới"
-                className="absolute inset-0 z-10 w-full h-full object-cover"
-                style={{
-                  filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
-                }}
+              <motion.div
+                className="absolute inset-0 z-10 overflow-auto flex items-center justify-center"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
@@ -211,7 +206,16 @@ const CongratulationsModal = () => {
                   stiffness: 200, 
                   damping: 20,
                 }}
-              />
+              >
+                <img
+                  src={loichucImage}
+                  alt="Lời chúc năm mới"
+                  className="min-w-full min-h-full w-auto h-auto max-w-none object-contain"
+                  style={{
+                    filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
+                  }}
+                />
+              </motion.div>
             )}
           </AnimatePresence>
 
