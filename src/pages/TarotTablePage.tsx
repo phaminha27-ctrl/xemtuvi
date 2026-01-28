@@ -7,6 +7,7 @@ import IconButton from "@/components/IconButton";
 import HiddenLetter from "@/components/HiddenLetter";
 import tarotBackground from "@/assets/tarot-background.jpg";
 import shufflingSound from "@/assets/shuffling-cards.mp3";
+import flipcardSound from "@/assets/flipcard.mp3";
 import { useAudio } from "@/contexts/AudioContext";
 import { useTarotCards, shuffleCards, getCardImageUrl, TarotCard } from "@/hooks/useTarotCards";
 
@@ -42,6 +43,15 @@ const TarotTablePage = () => {
       shuffleAudioRef.current = null;
     }
   }, []);
+
+  // Play flip card sound
+  const playFlipSound = useCallback(() => {
+    if (settings.clickSoundEnabled) {
+      const audio = new Audio(flipcardSound);
+      audio.volume = settings.clickSoundVolume;
+      audio.play().catch(() => {});
+    }
+  }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
   
   const [phase, setPhase] = useState<GamePhase>("idle");
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
@@ -52,10 +62,9 @@ const TarotTablePage = () => {
   // Handle deck click based on current phase
   const handleDeckClick = useCallback(() => {
     if (loading || cards.length === 0) return;
-    playClickSound();
 
     if (phase === "idle") {
-      // Start shuffling
+      // Start shuffling - NO button click sound, only shuffle sound
       setPhase("shuffling");
       setShuffleAnimationCards([0, 1, 2, 3, 4, 5, 6, 7]);
       playShuffleSound();
@@ -70,7 +79,8 @@ const TarotTablePage = () => {
         setShuffleAnimationCards([]);
       }, 2000);
     } else if (phase === "ready" || phase === "drawing") {
-      // Draw a card
+      // Draw a card - keep button click sound
+      playClickSound();
       if (drawnCards.length < 3) {
         const nextCard = shuffledDeck[drawnCards.length];
         setDrawnCards(prev => [...prev, {
@@ -87,13 +97,13 @@ const TarotTablePage = () => {
         }
       }
     }
-  }, [phase, cards, loading, shuffledDeck, drawnCards, playClickSound]);
+  }, [phase, cards, loading, shuffledDeck, drawnCards, playClickSound, playShuffleSound, stopShuffleSound]);
 
   // Handle card flip
   const handleCardFlip = useCallback((index: number) => {
     if (phase !== "flipping" && phase !== "complete") return;
     
-    playClickSound();
+    playFlipSound();
     setDrawnCards(prev => prev.map((dc, i) => 
       i === index ? { ...dc, isFlipped: true } : dc
     ));
