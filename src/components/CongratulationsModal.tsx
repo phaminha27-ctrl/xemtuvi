@@ -178,7 +178,7 @@ const CongratulationsModal = () => {
               <motion.img
                 src={loichucImage}
                 alt="Lời chúc năm mới"
-                className="absolute inset-0 z-10 w-full h-full object-contain"
+                className="absolute inset-0 z-10 w-full h-full object-cover"
                 style={{
                   filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
                 }}
