@@ -217,7 +217,7 @@ const TarotCharacterSelectPage = () => {
         </motion.div>
 
         {/* Hidden letter E */}
-        <HiddenLetter letter="E" index={3} position={{ bottom: "8%", right: "8%" }} />
+        <HiddenLetter letter="E" index={3} />
       </div>
     </div>
   );

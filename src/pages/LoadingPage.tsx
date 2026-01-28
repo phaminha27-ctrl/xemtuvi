@@ -92,7 +92,7 @@ const LoadingPage = () => {
         </div>
 
         {/* Hidden letter C */}
-        <HiddenLetter letter="C" index={6} position={{ top: "15%", right: "10%" }} />
+        <HiddenLetter letter="C" index={6} />
       </div>
     </div>
   );

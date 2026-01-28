@@ -446,7 +446,7 @@ const TarotTablePage = () => {
         </div>
 
         {/* Hidden letter E (second one, index 5) */}
-        <HiddenLetter letter="E" index={5} position={{ bottom: "5%", left: "10%" }} />
+        <HiddenLetter letter="E" index={5} />
       </div>
     </div>
   );

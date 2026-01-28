@@ -280,7 +280,7 @@ const FormPage = () => {
       </div>
 
       {/* Hidden letter U */}
-      <HiddenLetter letter="U" index={2} position={{ top: "10%", right: "10%" }} />
+      <HiddenLetter letter="U" index={2} />
     </div>
   );
 };
