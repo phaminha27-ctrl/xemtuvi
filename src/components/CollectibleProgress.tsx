@@ -2,15 +2,23 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Gift, X } from "lucide-react";
 import { useCollectible } from "@/contexts/CollectibleContext";
+import { useAudio } from "@/contexts/AudioContext";
 
 const LETTERS = ["B", "L", "U", "E", "T", "E", "C", "H"] as const;
 
 const CollectibleProgress = () => {
-  const { collectedLetters, totalLetters, isComplete, isLetterCollected } = useCollectible();
+  const { collectedLetters, totalLetters, isComplete, isLetterCollected, hasCompletedGame } = useCollectible();
+  const { playClickSound } = useAudio();
   const [showPopup, setShowPopup] = useState(false);
   const count = collectedLetters.length;
 
-  if (count === 0) return null;
+  // Hide progress box if game is completed and congrats was shown
+  if (count === 0 || hasCompletedGame) return null;
+
+  const handleGiftClick = () => {
+    playClickSound();
+    setShowPopup(true);
+  };
 
   return (
     <AnimatePresence>
@@ -35,7 +43,7 @@ const CollectibleProgress = () => {
             ]
           } : {}}
           transition={{ duration: 1, repeat: isComplete ? Infinity : 0 }}
-          onClick={() => setShowPopup(true)}
+          onClick={handleGiftClick}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
