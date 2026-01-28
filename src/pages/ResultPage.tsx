@@ -135,7 +135,7 @@ const ResultPage = () => {
   };
 
   const handleShare = async () => {
-    // Create shareable URL with form data
+    // Create shareable URL with form data and full results
     const baseUrl = window.location.origin;
     const formDataParam = userData ? encodeURIComponent(JSON.stringify({
       name: userData.name,
@@ -144,7 +144,9 @@ const ResultPage = () => {
       birthYear: userData.birthYear,
       gender: userData.gender,
     })) : "";
-    const shareUrl = `${baseUrl}/shared?type=form${formDataParam ? `&data=${formDataParam}` : ""}`;
+    // Include full results so shared page shows exact same content
+    const resultsParam = encodeURIComponent(JSON.stringify(detailedResults));
+    const shareUrl = `${baseUrl}/shared?type=form${formDataParam ? `&data=${formDataParam}` : ""}&results=${resultsParam}`;
     
     const shareData = {
       title: "Tử Vi Tết Bính Ngọ 2026",
