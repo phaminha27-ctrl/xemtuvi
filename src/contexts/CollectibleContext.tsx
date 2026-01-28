@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 const LETTERS = ["B", "L", "U", "E", "T", "E", "C", "H"] as const;
 const STORAGE_KEY = "bluetech-collected";
 const POSITIONS_KEY = "bluetech-positions";
+const COMPLETED_KEY = "bluetech-completed";
 
 // Define EDGE zones for each letter position (corners and edges only - avoid center UI)
 // Zones: top-left, top-right, bottom-left, bottom-right corners and left/right edges
@@ -37,6 +38,7 @@ interface CollectibleContextType {
   showCongrats: boolean;
   setShowCongrats: (show: boolean) => void;
   getLetterPosition: (index: number) => LetterPosition;
+  hasCompletedGame: boolean;
 }
 
 const CollectibleContext = createContext<CollectibleContextType | null>(null);
@@ -86,6 +88,18 @@ export const CollectibleProvider = ({ children }: CollectibleProviderProps) => {
   });
   
   const [showCongrats, setShowCongrats] = useState(false);
+  const [hasCompletedGame, setHasCompletedGame] = useState<boolean>(() => {
+    return localStorage.getItem(COMPLETED_KEY) === "true";
+  });
+
+  const handleSetShowCongrats = (show: boolean) => {
+    setShowCongrats(show);
+    // When closing congrats modal, mark game as permanently completed
+    if (!show && collectedIndices.length === LETTERS.length) {
+      setHasCompletedGame(true);
+      localStorage.setItem(COMPLETED_KEY, "true");
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(collectedIndices));
@@ -130,8 +144,9 @@ export const CollectibleProvider = ({ children }: CollectibleProviderProps) => {
         isComplete: collectedIndices.length === LETTERS.length,
         resetCollection,
         showCongrats,
-        setShowCongrats,
+        setShowCongrats: handleSetShowCongrats,
         getLetterPosition,
+        hasCompletedGame,
       }}
     >
       {children}
