@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCollectible } from "@/contexts/CollectibleContext";
+import { useAudio } from "@/contexts/AudioContext";
 import { X } from "lucide-react";
 import loichucImage from "@/assets/loichuc.png";
+import fireworkSound from "@/assets/firework-sound.mp3";
 
 interface Particle {
   x: number;
@@ -25,12 +27,31 @@ const COLORS = ["#FF3F8E", "#04C2C9", "#2E5BFF", "#FFAC00", "#FFFFFF", "#A020F0"
 
 const CongratulationsModal = () => {
   const { showCongrats, setShowCongrats } = useCollectible();
+  const { settings } = useAudio();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const particlesRef = useRef<Particle[]>([]);
   const rocketsRef = useRef<Rocket[]>([]);
   const startTimeRef = useRef<number>(0);
+  const fireworkAudioRef = useRef<HTMLAudioElement | null>(null);
   const [showImage, setShowImage] = useState(false);
+
+  // Play firework sound when modal opens
+  useEffect(() => {
+    if (showCongrats && settings.clickSoundEnabled) {
+      fireworkAudioRef.current = new Audio(fireworkSound);
+      fireworkAudioRef.current.volume = settings.clickSoundVolume;
+      fireworkAudioRef.current.loop = true;
+      fireworkAudioRef.current.play().catch(() => {});
+    }
+
+    return () => {
+      if (fireworkAudioRef.current) {
+        fireworkAudioRef.current.pause();
+        fireworkAudioRef.current = null;
+      }
+    };
+  }, [showCongrats, settings.clickSoundEnabled, settings.clickSoundVolume]);
 
   useEffect(() => {
     if (!showCongrats) {
@@ -149,6 +170,11 @@ const CongratulationsModal = () => {
   }, [showCongrats]);
 
   const handleClose = () => {
+    // Stop firework sound
+    if (fireworkAudioRef.current) {
+      fireworkAudioRef.current.pause();
+      fireworkAudioRef.current = null;
+    }
     setShowCongrats(false);
   };
 
