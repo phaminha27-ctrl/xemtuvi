@@ -38,9 +38,6 @@ const TarotQuestionPage = () => {
       return; // Don't proceed if question is empty
     }
     
-    playClickSound();
-    startBgMusic();
-    
     sessionStorage.setItem("tarotQuestion", question.trim());
     navigate("/tarot/table");
   };
