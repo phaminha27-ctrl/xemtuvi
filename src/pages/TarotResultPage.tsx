@@ -73,17 +73,27 @@ const TarotResultPage = () => {
   }, []);
 
   const handleShare = async () => {
+    // Create shareable URL with tarot data
+    const baseUrl = window.location.origin;
+    const cardsData = encodeURIComponent(JSON.stringify(cards.map(c => ({
+      name: c.name,
+      name_short: c.name_short,
+      isReversed: c.isReversed
+    }))));
+    const questionData = encodeURIComponent(question);
+    const shareUrl = `${baseUrl}/shared?type=tarot&cards=${cardsData}&q=${questionData}`;
+    
     const shareData = {
       title: "Kết Quả Bói Bài Tarot",
       text: `Xem kết quả bói bài Tarot của tôi!`,
-      url: window.location.href,
+      url: shareUrl,
     };
 
     try {
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        await navigator.clipboard.writeText(`${shareData.text}\n${window.location.href}`);
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareUrl}`);
         toast.success("Đã sao chép link để chia sẻ!");
       }
     } catch (error) {

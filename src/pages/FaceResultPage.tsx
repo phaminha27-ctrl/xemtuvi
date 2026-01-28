@@ -78,17 +78,21 @@ const FaceResultPage = () => {
   const capturedFace = sessionStorage.getItem("capturedFace");
 
   const handleShare = async () => {
+    // Create shareable URL with type parameter
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}/shared?type=face`;
+    
     const shareData = {
       title: "Tử Vi Xem Tướng Bính Ngọ 2026",
       text: "Xem kết quả tử vi khuôn mặt năm Bính Ngọ 2026 của tôi!",
-      url: window.location.href,
+      url: shareUrl,
     };
 
     try {
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        await navigator.clipboard.writeText(`${shareData.text}\n${window.location.href}`);
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareUrl}`);
         toast.success("Đã sao chép link để chia sẻ!");
       }
     } catch (error) {

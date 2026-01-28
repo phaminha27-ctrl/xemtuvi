@@ -19,6 +19,7 @@ import TarotCharacterSelectPage from "./pages/TarotCharacterSelectPage";
 import TarotQuestionPage from "./pages/TarotQuestionPage";
 import TarotTablePage from "./pages/TarotTablePage";
 import TarotResultPage from "./pages/TarotResultPage";
+import SharedResultPage from "./pages/SharedResultPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/tarot/question" element={<TarotQuestionPage />} />
               <Route path="/tarot/table" element={<TarotTablePage />} />
               <Route path="/tarot/result" element={<TarotResultPage />} />
+              <Route path="/shared" element={<SharedResultPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
