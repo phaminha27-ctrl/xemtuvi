@@ -4,16 +4,22 @@ const LETTERS = ["B", "L", "U", "E", "T", "E", "C", "H"] as const;
 const STORAGE_KEY = "bluetech-collected";
 const POSITIONS_KEY = "bluetech-positions";
 
-// Define safe zones for each letter position (avoid edges and important UI areas)
-const POSITION_ZONES = [
-  { minTop: 15, maxTop: 40, minLeft: 10, maxLeft: 85 }, // B - upper area
-  { minTop: 20, maxTop: 50, minLeft: 5, maxLeft: 90 },  // L
-  { minTop: 25, maxTop: 55, minLeft: 10, maxLeft: 85 }, // U
-  { minTop: 15, maxTop: 45, minLeft: 5, maxLeft: 90 },  // E1
-  { minTop: 20, maxTop: 50, minLeft: 10, maxLeft: 85 }, // T
-  { minTop: 25, maxTop: 55, minLeft: 5, maxLeft: 90 },  // E2
-  { minTop: 30, maxTop: 60, minLeft: 10, maxLeft: 85 }, // C
-  { minTop: 20, maxTop: 50, minLeft: 5, maxLeft: 90 },  // H
+// Define EDGE zones for each letter position (corners and edges only - avoid center UI)
+// Zones: top-left, top-right, bottom-left, bottom-right corners and left/right edges
+const EDGE_ZONES = [
+  // Top corners (safe from top navigation buttons)
+  { minTop: 12, maxTop: 25, minLeft: 2, maxLeft: 15 },   // Top-left edge
+  { minTop: 12, maxTop: 25, minLeft: 85, maxLeft: 96 },  // Top-right edge
+  // Left edge (middle area)
+  { minTop: 30, maxTop: 50, minLeft: 2, maxLeft: 10 },   // Left edge mid
+  // Right edge (middle area)  
+  { minTop: 30, maxTop: 50, minLeft: 90, maxLeft: 96 },  // Right edge mid
+  // Bottom corners (safe from bottom action buttons)
+  { minTop: 70, maxTop: 85, minLeft: 2, maxLeft: 15 },   // Bottom-left edge
+  { minTop: 70, maxTop: 85, minLeft: 85, maxLeft: 96 },  // Bottom-right edge
+  // Additional edge spots
+  { minTop: 55, maxTop: 70, minLeft: 2, maxLeft: 10 },   // Lower-left edge
+  { minTop: 55, maxTop: 70, minLeft: 90, maxLeft: 96 },  // Lower-right edge
 ];
 
 interface LetterPosition {
@@ -44,7 +50,7 @@ export const useCollectible = () => {
 };
 
 // Generate random position within a zone
-const generateRandomPosition = (zone: typeof POSITION_ZONES[0]): LetterPosition => {
+const generateRandomPosition = (zone: typeof EDGE_ZONES[0]): LetterPosition => {
   const top = zone.minTop + Math.random() * (zone.maxTop - zone.minTop);
   const left = zone.minLeft + Math.random() * (zone.maxLeft - zone.minLeft);
   return {
@@ -55,7 +61,7 @@ const generateRandomPosition = (zone: typeof POSITION_ZONES[0]): LetterPosition 
 
 // Generate all positions for a new player
 const generateAllPositions = (): LetterPosition[] => {
-  return POSITION_ZONES.map(zone => generateRandomPosition(zone));
+  return EDGE_ZONES.map(zone => generateRandomPosition(zone));
 };
 
 interface CollectibleProviderProps {
