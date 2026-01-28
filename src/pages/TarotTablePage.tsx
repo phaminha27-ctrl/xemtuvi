@@ -46,12 +46,12 @@ const TarotTablePage = () => {
     }
   }, []);
 
-  // Play flip card sound (skip first 1s)
+  // Play flip card sound (skip first 0.25s)
   const playFlipSound = useCallback(() => {
     if (settings.clickSoundEnabled) {
       const audio = new Audio(flipcardSound);
       audio.volume = settings.clickSoundVolume;
-      audio.currentTime = 1; // Skip first 1 second
+      audio.currentTime = 0.25; // Skip first 0.25 second
       audio.play().catch(() => {});
     }
   }, [settings.clickSoundEnabled, settings.clickSoundVolume]);
