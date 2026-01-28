@@ -135,17 +135,28 @@ const ResultPage = () => {
   };
 
   const handleShare = async () => {
+    // Create shareable URL with form data
+    const baseUrl = window.location.origin;
+    const formDataParam = userData ? encodeURIComponent(JSON.stringify({
+      name: userData.name,
+      birthDay: userData.birthDay,
+      birthMonth: userData.birthMonth,
+      birthYear: userData.birthYear,
+      gender: userData.gender,
+    })) : "";
+    const shareUrl = `${baseUrl}/shared?type=form${formDataParam ? `&data=${formDataParam}` : ""}`;
+    
     const shareData = {
       title: "Tử Vi Tết Bính Ngọ 2026",
       text: `Xem kết quả tử vi năm Bính Ngọ 2026 của ${userData?.name || "tôi"}! Điểm vận mệnh: ${detailedResults.overall.score}/100`,
-      url: window.location.href,
+      url: shareUrl,
     };
 
     try {
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        await navigator.clipboard.writeText(`${shareData.text}\n${window.location.href}`);
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareUrl}`);
         toast.success("Đã sao chép link để chia sẻ!");
       }
     } catch (error) {
