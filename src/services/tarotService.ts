@@ -276,3 +276,26 @@ export const fetchTarotCards = async (): Promise<TarotCard[]> => {
 
 // Export helper for getting image URL
 export { getCardImageUrl };
+
+// Get image URL by card name (for reconstructing from shared links)
+export const getCardImageUrlByName = (name: string, nameShort: string): string => {
+  // Check if it's a Major Arcana
+  if (majorArcanaImages[name]) {
+    return majorArcanaImages[name];
+  }
+
+  // Minor Arcana - determine suit and value from name_short
+  const suit = getSuitFromShort(nameShort);
+  const suitPath = suitImagePaths[suit];
+  
+  // Extract value from name (e.g., "Two of Wands" -> "two")
+  const valuePart = name.split(' ')[0].toLowerCase();
+  const valueNum = valueToNumber[valuePart];
+  
+  if (suitPath && valueNum) {
+    return `${WIKIMEDIA_BASE}/thumb/${getMinorArcanaPath(suitPath, valueNum)}`;
+  }
+  
+  // Fallback
+  return `${WIKIMEDIA_BASE}/9/90/RWS_Tarot_00_Fool.jpg`;
+};
