@@ -4,15 +4,21 @@ import {
   fetchTarotCards,
   shuffleCards,
   drawCardsWithReversed,
+  getCardImageUrlByName,
 } from "@/services/tarotService";
 
 // Re-export types and utilities from service
 export type { TarotCard };
 export { shuffleCards, drawCardsWithReversed };
 
-// Get image URL for a card (convenience export)
-export const getCardImageUrl = (card: TarotCard): string => {
-  return card.imageUrl;
+// Get image URL for a card (handles both full cards and partial cards from URL)
+export const getCardImageUrl = (card: TarotCard | { name: string; name_short: string; isReversed?: boolean }): string => {
+  // If card has imageUrl, use it directly
+  if ('imageUrl' in card && card.imageUrl) {
+    return card.imageUrl;
+  }
+  // Otherwise, reconstruct from name (for shared links)
+  return getCardImageUrlByName(card.name, card.name_short);
 };
 
 export const useTarotCards = () => {
