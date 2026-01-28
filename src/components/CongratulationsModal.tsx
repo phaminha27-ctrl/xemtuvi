@@ -1,71 +1,155 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCollectible } from "@/contexts/CollectibleContext";
-import { Sparkles, PartyPopper } from "lucide-react";
-import FestiveButton from "./FestiveButton";
+import { X } from "lucide-react";
+import loichucImage from "@/assets/loichuc.png";
 
-interface Firework {
-  id: number;
+interface Particle {
   x: number;
   y: number;
   color: string;
-  particles: { angle: number; distance: number; size: number }[];
+  velocity: { x: number; y: number };
+  alpha: number;
 }
 
-const COLORS = ["#FFD700", "#FF6B6B", "#4ECDC4", "#FF69B4", "#87CEEB", "#FFA500", "#98D8C8"];
+interface Rocket {
+  x: number;
+  y: number;
+  targetY: number;
+  color: string;
+  speed: number;
+  exploded: boolean;
+}
+
+const COLORS = ["#FF3F8E", "#04C2C9", "#2E5BFF", "#FFAC00", "#FFFFFF", "#FFD700", "#FF6B6B"];
 
 const CongratulationsModal = () => {
   const { showCongrats, setShowCongrats } = useCollectible();
-  const [fireworks, setFireworks] = useState<Firework[]>([]);
-  const [showFireworks, setShowFireworks] = useState(true);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+  const particlesRef = useRef<Particle[]>([]);
+  const rocketsRef = useRef<Rocket[]>([]);
+  const startTimeRef = useRef<number>(0);
+  const [showImage, setShowImage] = useState(false);
 
   useEffect(() => {
     if (!showCongrats) {
-      setShowFireworks(true);
-      setFireworks([]);
+      setShowImage(false);
       return;
     }
 
-    // Create fireworks for 5 seconds
-    let fireworkId = 0;
-    const createFirework = () => {
-      const newFirework: Firework = {
-        id: fireworkId++,
-        x: 10 + Math.random() * 80,
-        y: 20 + Math.random() * 50,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        particles: Array.from({ length: 12 }, (_, i) => ({
-          angle: (i * 30) + Math.random() * 15,
-          distance: 50 + Math.random() * 50,
-          size: 3 + Math.random() * 4,
-        })),
-      };
-      
-      setFireworks(prev => [...prev, newFirework]);
-      
-      // Remove firework after animation
-      setTimeout(() => {
-        setFireworks(prev => prev.filter(f => f.id !== newFirework.id));
-      }, 1500);
+    // Show image after a short delay
+    const imageTimer = setTimeout(() => setShowImage(true), 300);
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    particlesRef.current = [];
+    rocketsRef.current = [];
+    startTimeRef.current = Date.now();
+
+    const explode = (x: number, y: number, color: string) => {
+      const count = 70;
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 / count) * i;
+        const speed = Math.random() * 5 + 2;
+        particlesRef.current.push({
+          x,
+          y,
+          color,
+          velocity: {
+            x: Math.cos(angle) * speed,
+            y: Math.sin(angle) * speed,
+          },
+          alpha: 1,
+        });
+      }
     };
 
-    // Launch fireworks rapidly for first 3 seconds
-    const rapidInterval = setInterval(createFirework, 200);
-    
-    // Slow down after 3 seconds
-    setTimeout(() => {
-      clearInterval(rapidInterval);
-      const slowInterval = setInterval(createFirework, 500);
-      
-      // Stop completely after 5 seconds
-      setTimeout(() => {
-        clearInterval(slowInterval);
-        setShowFireworks(false);
-      }, 2000);
-    }, 3000);
+    const animate = () => {
+      if (!ctx || !canvas) return;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const elapsed = (Date.now() - startTimeRef.current) / 1000;
+
+      // Launch rockets for 10 seconds
+      if (elapsed < 10) {
+        if (Math.random() < 0.03) {
+          const randomX = Math.random() * canvas.width;
+          const randomY = Math.random() * (canvas.height * 0.5);
+          rocketsRef.current.push({
+            x: randomX,
+            y: canvas.height,
+            targetY: randomY,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            speed: 5,
+            exploded: false,
+          });
+        }
+      }
+
+      // Update and draw rockets
+      rocketsRef.current = rocketsRef.current.filter((rocket) => {
+        rocket.y -= rocket.speed;
+        if (rocket.y <= rocket.targetY && !rocket.exploded) {
+          rocket.exploded = true;
+          explode(rocket.x, rocket.y, rocket.color);
+          return false;
+        }
+
+        ctx.beginPath();
+        ctx.arc(rocket.x, rocket.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = rocket.color;
+        ctx.fill();
+
+        return !rocket.exploded;
+      });
+
+      // Update and draw particles
+      particlesRef.current = particlesRef.current.filter((particle) => {
+        particle.velocity.x *= 0.95;
+        particle.velocity.y *= 0.95;
+        particle.velocity.y += 0.1;
+        particle.x += particle.velocity.x;
+        particle.y += particle.velocity.y;
+        particle.alpha -= 0.012;
+
+        if (particle.alpha <= 0) return false;
+
+        ctx.save();
+        ctx.globalAlpha = particle.alpha;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.fill();
+        ctx.restore();
+
+        return true;
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
 
     return () => {
-      clearInterval(rapidInterval);
+      clearTimeout(imageTimer);
+      window.removeEventListener("resize", resizeCanvas);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, [showCongrats]);
 
@@ -77,185 +161,64 @@ const CongratulationsModal = () => {
     <AnimatePresence>
       {showCongrats && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-hidden"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {/* Backdrop */}
-          <motion.div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-            onClick={handleClose}
+          {/* Canvas for fireworks */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 z-0"
           />
-          
-          {/* Fireworks */}
+
+          {/* Image with scale animation */}
           <AnimatePresence>
-            {showFireworks && fireworks.map((firework) => (
-              <div
-                key={firework.id}
-                className="absolute pointer-events-none"
-                style={{
-                  left: `${firework.x}%`,
-                  top: `${firework.y}%`,
+            {showImage && (
+              <motion.div
+                className="relative z-10 w-full h-full flex items-center justify-center p-4"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 200, 
+                  damping: 20,
+                  duration: 0.8 
                 }}
               >
-                {/* Center burst */}
-                <motion.div
-                  className="absolute w-4 h-4 rounded-full"
+                <img
+                  src={loichucImage}
+                  alt="Lời chúc năm mới"
+                  className="max-w-full max-h-[80vh] object-contain drop-shadow-2xl"
                   style={{
-                    backgroundColor: firework.color,
-                    boxShadow: `0 0 20px ${firework.color}, 0 0 40px ${firework.color}`,
-                    left: "-8px",
-                    top: "-8px",
+                    filter: "drop-shadow(0 0 30px rgba(255, 215, 0, 0.5))",
                   }}
-                  initial={{ scale: 0, opacity: 1 }}
-                  animate={{ scale: [0, 2, 0], opacity: [1, 1, 0] }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
                 />
-                
-                {/* Particles */}
-                {firework.particles.map((particle, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute rounded-full"
-                    style={{
-                      width: particle.size,
-                      height: particle.size,
-                      backgroundColor: firework.color,
-                      boxShadow: `0 0 6px ${firework.color}`,
-                      left: -particle.size / 2,
-                      top: -particle.size / 2,
-                    }}
-                    initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-                    animate={{
-                      x: Math.cos((particle.angle * Math.PI) / 180) * particle.distance,
-                      y: Math.sin((particle.angle * Math.PI) / 180) * particle.distance + 30,
-                      opacity: [1, 1, 0],
-                      scale: [1, 1.2, 0],
-                    }}
-                    transition={{ duration: 1.2, ease: "easeOut" }}
-                  />
-                ))}
-                
-                {/* Sparkle trails */}
-                {[...Array(6)].map((_, i) => (
-                  <motion.div
-                    key={`sparkle-${i}`}
-                    className="absolute text-xs"
-                    style={{ left: 0, top: 0 }}
-                    initial={{ x: 0, y: 0, opacity: 1 }}
-                    animate={{
-                      x: (Math.random() - 0.5) * 100,
-                      y: (Math.random() - 0.5) * 100 + 20,
-                      opacity: [1, 0],
-                      rotate: Math.random() * 360,
-                    }}
-                    transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                  >
-                    ✦
-                  </motion.div>
-                ))}
-              </div>
-            ))}
+              </motion.div>
+            )}
           </AnimatePresence>
-          
-          {/* Confetti background */}
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-2xl pointer-events-none"
-              initial={{ 
-                top: "50%",
-                left: "50%",
-                opacity: 1,
-              }}
-              animate={{ 
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                opacity: 0,
-                rotate: Math.random() * 720,
-              }}
-              transition={{ 
-                duration: 2,
-                delay: i * 0.05,
-                ease: "easeOut",
-              }}
-            >
-              {["🎉", "🎊", "✨", "⭐", "🌟"][i % 5]}
-            </motion.div>
-          ))}
-          
-          {/* Modal */}
-          <motion.div
-            className="relative z-10 max-w-sm w-full mx-4 rounded-2xl p-6 text-center"
+
+          {/* Close button at bottom */}
+          <motion.button
+            className="absolute bottom-8 z-20 flex items-center gap-2 px-6 py-3 rounded-full font-bold"
             style={{
-              background: "linear-gradient(135deg, #8B0000 0%, #B22222 50%, #8B0000 100%)",
-              border: "4px solid #F5D27B",
-              boxShadow: "0 0 40px rgba(255, 215, 0, 0.4), inset 0 2px 10px rgba(255,255,255,0.1)",
+              background: "linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%)",
+              border: "3px solid #F5D27B",
+              color: "#F5D27B",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(255, 215, 0, 0.3)",
             }}
-            initial={{ scale: 0, rotate: -10 }}
-            animate={{ scale: 1, rotate: 0 }}
-            exit={{ scale: 0, rotate: 10 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            onClick={handleClose}
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 50, opacity: 0 }}
+            transition={{ delay: 0.5 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {/* Decorative corners */}
-            <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-[#F5D27B] rounded-tl-lg" />
-            <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-[#F5D27B] rounded-tr-lg" />
-            <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#F5D27B] rounded-bl-lg" />
-            <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#F5D27B] rounded-br-lg" />
-            
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 1 }}
-            >
-              <PartyPopper className="w-16 h-16 mx-auto mb-4" style={{ color: "#F5D27B" }} />
-            </motion.div>
-            
-            <h2 
-              className="text-2xl font-bold mb-2"
-              style={{ 
-                color: "#F5D27B",
-                textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
-              }}
-            >
-              🎉 Chúc Mừng! 🎉
-            </h2>
-            
-            <p 
-              className="mb-4"
-              style={{ color: "#FFF9C4" }}
-            >
-              Bạn đã tìm được tất cả các chữ cái!
-            </p>
-            
-            <motion.div
-              className="flex justify-center gap-2 mb-6 text-3xl font-bold"
-            >
-              {["B", "L", "U", "E", "T", "E", "C", "H"].map((letter, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 20, scale: 0 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: 0.5 + i * 0.1, type: "spring" }}
-                  style={{
-                    color: "#DC143C",
-                    WebkitTextStroke: "1.5px #F5D27B",
-                    textShadow: "0 0 10px rgba(255, 215, 0, 0.8), 0 2px 4px rgba(0,0,0,0.5)",
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </motion.div>
-            
-            <FestiveButton
-              icon={Sparkles}
-              onClick={handleClose}
-              compact
-            >
-              Tuyệt vời!
-            </FestiveButton>
-          </motion.div>
+            <X className="w-5 h-5" />
+            Đóng
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>
